@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_arhitect/connecting_widgets_notifier.dart';
+import 'package:flutter_arhitect/domain/connecting_widgets_notifier.dart';
+import 'package:flutter_arhitect/painters/connecting_painter.dart';
 import 'package:flutter_arhitect/widget_with_global_key.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -67,7 +68,7 @@ class PainterWidget extends ConsumerWidget {
     // log('DRAWING $details');
 
     return CustomPaint(
-      painter: LinePainter(
+      painter: UserConnectingLinePainter(
         startPoint: details.firstPoint,
         endPoint: details.secondPoint,
       ),
@@ -140,33 +141,4 @@ class _WidgetAState extends ConsumerState<WidgetA> {
       ),
     );
   }
-}
-
-class LinePainter extends CustomPainter {
-  final Offset? startPoint;
-  final Offset? endPoint;
-
-  LinePainter({this.startPoint, this.endPoint});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // log('Start point $startPoint, end point $endPoint');
-    if (startPoint == null || endPoint == null) {
-      //   final paint = Paint()
-      //     ..color = Colors.black
-      //     ..strokeWidth = 5;
-      //   canvas.drawLine(startPoint!, endPoint!, paint);
-      return;
-    }
-
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 5;
-    canvas.drawLine(startPoint ?? const Offset(100, 200),
-        endPoint ?? const Offset(300, 300), paint);
-  }
-
-  @override
-  bool shouldRepaint(LinePainter oldDelegate) =>
-      oldDelegate.startPoint != startPoint || oldDelegate.endPoint != endPoint;
 }

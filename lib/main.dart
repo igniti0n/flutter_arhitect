@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/domain/mouse_position_state_provider.dart';
+import 'package:flutter_arhitect/domain/user_connecting_positions_provider.dart';
 import 'package:flutter_arhitect/draggable_icon.dart';
+import 'package:flutter_arhitect/painters/connecting_painter.dart';
 import 'package:flutter_arhitect/scale_update_details_state_provider.dart';
 import 'package:flutter_arhitect/temp.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,15 +21,39 @@ class MyApp extends StatelessWidget {
     return ProviderScope(
       child: MaterialApp(
         title: 'Flutter Demo',
+
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home:
             //const ChooseWidgetsToConnect(),
 
-            const ConnectWidgets(),
+            const _Screen(),
 
         // const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
+    );
+  }
+}
+
+class _Screen extends ConsumerWidget {
+  const _Screen();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userConnectingLinePoints = ref.watch(userConnectingPositionsProvider);
+
+    log('Changed positions ${userConnectingLinePoints.first} : ${userConnectingLinePoints.second} ');
+
+    return MouseRegion(
+      onHover: (event) =>
+          ref.read(mousePositionStateProvider.notifier).state = event.position,
+      child: CustomPaint(
+        foregroundPainter: UserConnectingLinePainter(
+          startPoint: userConnectingLinePoints.first,
+          endPoint: userConnectingLinePoints.second,
+        ),
+        child: const ConnectWidgets(),
       ),
     );
   }
