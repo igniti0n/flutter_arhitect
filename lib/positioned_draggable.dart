@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PositionedDraggableIcon extends ConsumerStatefulWidget {
+class PositionedDraggable extends ConsumerStatefulWidget {
   final double top;
   final double left;
-  final Function()? onChange;
+  final Widget child;
+  final Function(Offset offset)? onChange;
 
-  const PositionedDraggableIcon(
-      {super.key, required this.top, required this.left, this.onChange});
+  const PositionedDraggable({
+    super.key,
+    required this.child,
+    required this.top,
+    required this.left,
+    this.onChange,
+  });
 
   @override
-  ConsumerState createState() => _PositionedDraggableIconState();
+  ConsumerState createState() => _PositionedDraggablenState();
 }
 
-class _PositionedDraggableIconState
-    extends ConsumerState<PositionedDraggableIcon> {
+class _PositionedDraggablenState extends ConsumerState<PositionedDraggable> {
   final GlobalKey _key = GlobalKey();
   late double top, left;
   late double xOff, yOff;
@@ -55,11 +60,14 @@ class _PositionedDraggableIconState
       top: top,
       left: left,
       child: Draggable(
-        feedback: const Icon(Icons.input),
+        feedback: Material(
+          color: Colors.transparent,
+          child: widget.child,
+        ),
         childWhenDragging: Container(),
         onDragUpdate: (details) =>
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          widget.onChange?.call();
+          widget.onChange?.call(details.globalPosition);
         }),
         onDragEnd: (drag) {
           setState(() {
@@ -67,10 +75,10 @@ class _PositionedDraggableIconState
             left = (drag.offset.dx - xOff); // * horizontalScale;
           });
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            widget.onChange?.call();
+            widget.onChange?.call(drag.offset);
           });
         },
-        child: const Icon(Icons.input),
+        child: widget.child,
       ),
     );
   }

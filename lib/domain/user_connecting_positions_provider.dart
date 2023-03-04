@@ -11,11 +11,11 @@ final userConnectingPositionsProvider = Provider<ConnectingPositions>((ref) {
   if (selectedWidgets.first == null) {
     return ConnectingPositions();
   }
-  final widgetSize = selectedWidgets.first!.getSize();
+  final widgetSize = selectedWidgets.first!.widgetsGlobalKey.getSize();
   final offsetFromTopLeftToCenter =
       Offset(widgetSize.width / 2, widgetSize.height / 2);
-  final screenOffset =
-      selectedWidgets.first!.getPosition() + offsetFromTopLeftToCenter;
+  final screenOffset = selectedWidgets.first!.widgetsGlobalKey.getPosition() +
+      offsetFromTopLeftToCenter;
   return ConnectingPositions(first: screenOffset, second: mouseOffset);
 });
 

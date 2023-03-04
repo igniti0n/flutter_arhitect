@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/mouse_position_state_provider.dart';
 import 'package:flutter_arhitect/domain/user_connecting_positions_provider.dart';
-import 'package:flutter_arhitect/draggable_icon.dart';
 import 'package:flutter_arhitect/painters/connecting_painter.dart';
 import 'package:flutter_arhitect/scale_update_details_state_provider.dart';
 import 'package:flutter_arhitect/temp.dart';
@@ -43,7 +40,7 @@ class _Screen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userConnectingLinePoints = ref.watch(userConnectingPositionsProvider);
 
-    log('Changed positions ${userConnectingLinePoints.first} : ${userConnectingLinePoints.second} ');
+    // log('Changed positions ${userConnectingLinePoints.first} : ${userConnectingLinePoints.second} ');
 
     return MouseRegion(
       onHover: (event) =>
@@ -153,10 +150,10 @@ class _Viewer extends ConsumerWidget {
               ],
             ),
           ),
-          const PositionedDraggableIcon(
-            top: 100,
-            left: 100,
-          ),
+          // const PositionedDraggableIcon(
+          //   top: 100,
+          //   left: 100,
+          // ),
         ],
       ),
     );

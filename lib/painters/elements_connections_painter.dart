@@ -46,16 +46,21 @@ class ElementsConnectionsPainter extends CustomPainter {
     log('Move to: ${widget1Position.dx} - ${widget1Position.dy}');
     log('Move to: ${widget2Position.dx} - ${widget2Position.dy}');
 
-    // canvas.drawCircle(const Offset(40, 40), 60, paint);
-    // Move to the center of widget1
+    // // canvas.drawCircle(const Offset(40, 40), 60, paint);
+    // // Move to the center of widget1
+    // path.moveTo(
+    //   widget1Position.dx + firstWidth,
+    //   widget1Position.dy + widget1Size.height / 2,
+    // );
+
+    // path.lineTo(
+    //   widget1Position.dx + firstWidth,
+    //   widget1Position.dy + anchorHeight,
+    // );
+
     path.moveTo(
       widget1Position.dx + firstWidth,
       widget1Position.dy + widget1Size.height / 2,
-    );
-
-    path.lineTo(
-      widget1Position.dx + firstWidth,
-      widget1Position.dy + anchorHeight,
     );
 
     // Draw horizontal line to the same Y coordinate as widget2
