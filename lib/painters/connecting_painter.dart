@@ -21,7 +21,7 @@ class UserConnectingLinePainter extends CustomPainter {
     log('PAINTING STUFFFF');
 
     final paint = Paint()
-      ..color = Colors.green
+      ..color = Colors.red
       ..strokeWidth = 5;
     canvas.drawLine(startPoint ?? const Offset(100, 200),
         endPoint ?? const Offset(300, 300), paint);
