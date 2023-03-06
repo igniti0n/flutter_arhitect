@@ -1,8 +1,8 @@
 import 'dart:developer';
 
+import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/extensions/global_key_extension.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final selectedWidgetsNotifier =

@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/connecting_widgets_notifier.dart';
-import 'package:flutter_arhitect/painters/connecting_painter.dart';
+import 'package:flutter_arhitect/presentation/painters/connecting_painter.dart';
 import 'package:flutter_arhitect/widget_with_global_key.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

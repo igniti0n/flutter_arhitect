@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/positioned_draggable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

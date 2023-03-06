@@ -6,7 +6,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_arhitect/models/element_pair.dart';
+import 'package:flutter_arhitect/common/models/element_pair.dart';
 
 class ElementsConnectionsPainter extends CustomPainter {
   final List<ElementPair> pairs;

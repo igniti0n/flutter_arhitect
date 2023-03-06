@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:flutter_arhitect/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 typedef AllArhitectureElements = List<BaseArhitectureElement>;

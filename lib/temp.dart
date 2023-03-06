@@ -1,24 +1,19 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/manager_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/page_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/repository_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/riverpod/notifier_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/riverpod/provider_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/riverpod/state_provider_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/service_arhitecture_element.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/arhitecture_element_pairs_provider.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/manager_arhitecture_element.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/page_arhitecture_element.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/repository_arhitecture_element.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/riverpod/notifier_arhitecture_element.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/riverpod/provider_arhitecture_element.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/riverpod/state_provider_arhitecture_element.dart';
-import 'package:flutter_arhitect/models/arhitecture_elements/service_arhitecture_element.dart';
-import 'package:flutter_arhitect/widgets/arhitecture_element_widget.dart';
+import 'package:flutter_arhitect/domain/files_generation_notifier.dart';
+import 'package:flutter_arhitect/presentation/painters/elements_connections_painter.dart';
+import 'package:flutter_arhitect/presentation/widgets/arhitecture_element_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'painters/elements_connections_painter.dart';
-
-GlobalKey widget1Key = GlobalKey();
-GlobalKey widget2Key = GlobalKey();
-GlobalKey widget3Key = GlobalKey();
-GlobalKey widget4Key = GlobalKey();
 
 class ConnectWidgets extends ConsumerStatefulWidget {
   const ConnectWidgets({super.key});
@@ -28,31 +23,6 @@ class ConnectWidgets extends ConsumerStatefulWidget {
 }
 
 class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
-  // var dist = 1.0;
-
-  // void updateDist(double num) {
-  //   setState(() {
-  //     dist = num;
-  //     pairs = [
-  //       ElementPair(
-  //         WidgetScreenData(widget1Key.getPosition(), widget1Key.getSize()),
-  //         WidgetScreenData(widget2Key.getPosition(), widget2Key.getSize()),
-  //       ),
-  //       ElementPair(
-  //         WidgetScreenData(widget3Key.getPosition(), widget3Key.getSize()),
-  //         WidgetScreenData(widget4Key.getPosition(), widget4Key.getSize()),
-  //       ),
-  //     ];
-  //   });
-  // }
-
-  // var pairs = [
-  //   ElementPair(
-  //     WidgetScreenData(widget1Key.getPosition(), widget1Key.getSize()),
-  //     WidgetScreenData(widget2Key.getPosition(), widget2Key.getSize()),
-  //   ),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     final pairs = ref.watch(arhitectureElementPairsProvider);
@@ -147,6 +117,14 @@ class _DummyControls extends ConsumerWidget {
               ),
           child: const Text('Page'),
         ),
+        const SizedBox(
+          width: 100,
+        ),
+        TextButton(
+          onPressed: () =>
+              ref.read(filesGenerationNotifier.notifier).generate(),
+          child: const Text('GENERATE'),
+        ),
       ],
     );
   }
@@ -167,17 +145,5 @@ class _Elements extends ConsumerWidget {
           )
           .toList(),
     );
-
-    // Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   crossAxisAlignment: CrossAxisAlignment.center,
-    //   children:
-    //    allArhitectureElements
-    //       .map(
-    //         (arhitectureElement) => ArhitectureElementWidget(
-    //             arhitectureElement: arhitectureElement),
-    //       )
-    //       .toList(),
-    // );
   }
 }

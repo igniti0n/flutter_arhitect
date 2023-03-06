@@ -1,6 +1,6 @@
+import 'package:flutter_arhitect/common/models/element_pair.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/extensions/global_key_extension.dart';
-import 'package:flutter_arhitect/models/element_pair.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final arhitectureElementPairsProvider = Provider<List<ElementPair>>((ref) {

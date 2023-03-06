@@ -2,6 +2,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
 
 class BaseArhitectureElement {
   final String id;
@@ -70,26 +72,4 @@ class BaseArhitectureElement {
   String toString() {
     return 'BaseArhitectureElement(widgetsGlobalKey: $widgetsGlobalKey, layer: $layer, name: $name, dependencies: $dependencies, methods: $methods, dataValue: $dataValue)';
   }
-}
-
-class Method {
-  final String name;
-  final String returnType;
-  final List<Method> parameters;
-
-  Method(
-      {required this.name, required this.returnType, required this.parameters});
-}
-
-class MethodParameter {
-  final String name;
-  final String returnType;
-
-  MethodParameter({required this.name, required this.returnType});
-}
-
-enum ArhitectureLayer {
-  data,
-  domain,
-  presentation,
 }
