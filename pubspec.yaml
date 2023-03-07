@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  file_selector: ^0.9.2+4
   flutter:
     sdk: flutter
   flutter_reorderable_list: ^1.2.0
