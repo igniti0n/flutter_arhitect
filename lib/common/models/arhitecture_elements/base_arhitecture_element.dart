@@ -2,8 +2,10 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/brick_model.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:uuid/uuid.dart';
 
 class BaseArhitectureElement {
   final String id;
@@ -14,17 +16,38 @@ class BaseArhitectureElement {
   final List<Method> methods;
   final String dataValue;
   final Offset canvasPosition;
+  final String brickBundleName;
 
   BaseArhitectureElement({
+    required this.id,
     required this.widgetsGlobalKey,
     required this.layer,
     required this.name,
     required this.dependencies,
     required this.methods,
     required this.dataValue,
-    required this.id,
+    required this.brickBundleName,
     this.canvasPosition = const Offset(100, 100),
   });
+
+  factory BaseArhitectureElement.empty() => BaseArhitectureElement(
+        id: const Uuid().v1(),
+        widgetsGlobalKey: GlobalKey(),
+        layer: ArhitectureLayer.data,
+        name: 'unnamed',
+        dependencies: [],
+        methods: [],
+        dataValue: '',
+        brickBundleName: '',
+      );
+
+  BrickModel toBrickModel() => BrickModel(
+        name: name,
+        dependencies: dependencies
+            .map((dependency) => Dependency(dependencyName: dependency.name))
+            .toList(),
+        methods: methods,
+      );
 
   BaseArhitectureElement copyWith({
     GlobalKey? widgetsGlobalKey,
@@ -34,8 +57,11 @@ class BaseArhitectureElement {
     List<Method>? methods,
     String? dataValue,
     Offset? canvasPosition,
+    String? brickBundleName,
   }) =>
       BaseArhitectureElement(
+        id: id,
+        brickBundleName: brickBundleName ?? this.brickBundleName,
         dataValue: dataValue ?? this.dataValue,
         dependencies: dependencies ?? this.dependencies,
         layer: layer ?? this.layer,
@@ -43,7 +69,6 @@ class BaseArhitectureElement {
         name: name ?? this.name,
         widgetsGlobalKey: widgetsGlobalKey ?? this.widgetsGlobalKey,
         canvasPosition: canvasPosition ?? this.canvasPosition,
-        id: id,
       );
 
   @override

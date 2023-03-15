@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 typedef AllArhitectureElements = List<BaseArhitectureElement>;
@@ -14,8 +16,13 @@ class AllArhitectureElementsNotifier
     extends StateNotifier<AllArhitectureElements> {
   AllArhitectureElementsNotifier() : super([]);
 
-  void addArhitectureElement(BaseArhitectureElement arhitectureElement) {
-    log('Adding arhitecture element: ${arhitectureElement.name}');
+  void addArhitectureElementFromTemplate(Template template) {
+    log('Adding arhitecture element from template: ${template.name}');
+    final arhitectureElement = template.generateArhitectureElement();
+
+    final randomNumber = math.Random().nextInt(100);
+    arhitectureElement.copyWith(name: randomNumber.toString());
+
     state = [...state, arhitectureElement];
   }
 
@@ -32,11 +39,35 @@ class AllArhitectureElementsNotifier
     required BaseArhitectureElement dependency,
   }) {
     log('Updating dependency to arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');
+    state = state.map(
+      (element) {
+        if (element.id != arhitectureElement.id) {
+          return element;
+        }
+        if (element.dependencies.contains(dependency)) {
+          return element;
+        }
+        return element.copyWith(
+          dependencies: [...element.dependencies, dependency],
+        );
+      },
+    ).toList();
+  }
+
+  void removeDependencyFromArhitectureElement({
+    required BaseArhitectureElement arhitectureElement,
+    required BaseArhitectureElement dependency,
+  }) {
+    log('Removing dependency from arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');
     state = state
         .map(
           (element) => element.id == arhitectureElement.id
-              ? element
-                  .copyWith(dependencies: [...element.dependencies, dependency])
+              ? element.copyWith(
+                  dependencies: element.dependencies
+                    ..removeWhere(
+                      (element) => element.id == dependency.id,
+                    ),
+                )
               : element,
         )
         .toList();
@@ -50,6 +81,15 @@ class AllArhitectureElementsNotifier
           (element) => element.id == arhitectureElement.id
               ? arhitectureElement
               : element,
+        )
+        .toList();
+  }
+
+  void updateArhitectureElementName(String id, String name) {
+    state = state
+        .map(
+          (element) =>
+              element.id == id ? element.copyWith(name: name) : element,
         )
         .toList();
   }

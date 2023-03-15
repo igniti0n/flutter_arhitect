@@ -1,4 +1,6 @@
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter_arhitect/data/bricks_service.dart';
+import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final bricksRepositoryProvider = Provider<BricksRepository>(
@@ -8,7 +10,9 @@ final bricksRepositoryProvider = Provider<BricksRepository>(
 );
 
 abstract class BricksRepository {
-  Future<void> generateBrickFrom({required String bundlePath});
+  Future<void> generateBricksFor({
+    required AllArhitectureElements arhitectureElements,
+  });
 }
 
 class BricksRepositoryImpl extends BricksRepository {
@@ -17,7 +21,16 @@ class BricksRepositoryImpl extends BricksRepository {
   BricksRepositoryImpl(this._bricksGeneratorService);
 
   @override
-  Future<void> generateBrickFrom({required String bundlePath}) async {
-    await _bricksGeneratorService.generateBrickFrom(bundlePath: bundlePath);
+  Future<void> generateBricksFor({
+    required AllArhitectureElements arhitectureElements,
+  }) async {
+    final savePath = await getDirectoryPath() ?? "";
+    for (var element in arhitectureElements) {
+      await _bricksGeneratorService.generateBrickLocalyFrom(
+        bundlePath: 'assets/bundled_bricks/${element.brickBundleName}.bundle',
+        brickModel: element.toBrickModel(),
+        savePath: savePath,
+      );
+    }
   }
 }
