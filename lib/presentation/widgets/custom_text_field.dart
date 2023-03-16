@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final String name;
   final String? text;
   final String? hint;
+  final String? initialValue;
   final bool isPassword;
   final TextEditingController? textEditingController;
   final FormFieldValidator<String>? validator;
@@ -18,6 +19,7 @@ class CustomTextField extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
   final AutovalidateMode? autoValidateMode;
   final TextCapitalization? textCapitalization;
+  final bool isMultilineDescription;
 
   const CustomTextField._({
     Key? key,
@@ -34,6 +36,8 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters = const [],
     this.autoValidateMode,
     this.textCapitalization,
+    this.isMultilineDescription = false,
+    this.initialValue,
   }) : super(key: key);
 
   factory CustomTextField.password({
@@ -50,6 +54,7 @@ class CustomTextField extends StatefulWidget {
         name: name,
         text: text,
         isPassword: true,
+        initialValue: initialValue,
         validator: validator ??
             (isRequired
                 ? FormBuilderValidators.required(
@@ -90,11 +95,50 @@ class CustomTextField extends StatefulWidget {
         textInputType: textInputType,
         onChanged: onChanged,
         hint: hint,
+        initialValue: initialValue,
         textEditingController: textEditingController,
         style: style,
         isRequired: isRequired,
         inputFormatters: inputFormatters ?? [],
         autoValidateMode: autoValidateMode,
+        textCapitalization: TextCapitalization.sentences,
+      );
+
+  factory CustomTextField.multilineDescription({
+    required String name,
+    String? text,
+    FormFieldValidator<String>? validator,
+    void Function(String?)? onChanged,
+    TextInputType? textInputType,
+    TextEditingController? textEditingController,
+    String? hint,
+    String? initialValue,
+    TextStyle? style,
+    bool isRequired = false,
+    List<TextInputFormatter>? inputFormatters,
+    AutovalidateMode? autoValidateMode,
+    String? isRequiredValidatorErrorText,
+  }) =>
+      CustomTextField._(
+        name: name,
+        text: text,
+        validator: validator ??
+            (isRequired
+                ? FormBuilderValidators.required(
+                    errorText: isRequiredValidatorErrorText ??
+                        'This field is required',
+                  )
+                : null),
+        textInputType: textInputType,
+        onChanged: onChanged,
+        hint: hint,
+        initialValue: initialValue,
+        textEditingController: textEditingController,
+        style: style,
+        isRequired: isRequired,
+        inputFormatters: inputFormatters ?? [],
+        autoValidateMode: autoValidateMode,
+        isMultilineDescription: true,
         textCapitalization: TextCapitalization.sentences,
       );
 
@@ -126,6 +170,7 @@ class CustomTextField extends StatefulWidget {
         onChanged: onChanged,
         hint: hint,
         isRequired: isRequired,
+        initialValue: initialValue,
         textInputType: TextInputType.emailAddress,
         autoValidateMode: autoValidateMode,
       );
@@ -154,6 +199,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return FormBuilderField<String>(
       name: widget.name,
       validator: widget.validator,
+      initialValue: 'DAAJJ NETSTO',
       autovalidateMode:
           widget.autoValidateMode ?? AutovalidateMode.onUserInteraction,
       builder: (field) {
@@ -183,7 +229,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
               style: widget.style ?? Theme.of(context).textTheme.titleMedium,
               obscureText: isHidden,
               enableSuggestions: !isHidden,
+              textInputAction: TextInputAction.done,
               autocorrect: !isHidden,
+              maxLines: widget.isMultilineDescription ? 30 : 1,
+              minLines: widget.isMultilineDescription ? 3 : null,
               decoration: InputDecoration(
                 hintText: widget.hint,
                 suffixIcon: widget.isPassword

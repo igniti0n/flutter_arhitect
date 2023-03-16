@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method_parameter.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -90,6 +92,126 @@ class AllArhitectureElementsNotifier
         .map(
           (element) =>
               element.id == id ? element.copyWith(name: name) : element,
+        )
+        .toList();
+  }
+
+  void addArhitectureElementMethod(String id) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element.copyWith(
+                  methods: [...element.methods, Method.defaultMethod()])
+              : element,
+        )
+        .toList();
+  }
+
+  void removeArhitectureElementMethod(
+    String id,
+    String methodId,
+  ) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element.copyWith(
+                  methods: [...element.methods]..removeWhere(
+                      (element) => element.id == methodId,
+                    ),
+                )
+              : element,
+        )
+        .toList();
+  }
+
+  void updateArhitectureElementMethod(String id, Method method) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element.copyWith(
+                  methods: element.methods
+                    ..removeWhere(
+                      (element) => element.id == method.id,
+                    )
+                    ..add(method),
+                )
+              : element,
+        )
+        .toList();
+  }
+
+  addArhitectureElementParameter(String id, Method method) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element.copyWith(
+                  methods: element.methods
+                    ..removeWhere(
+                      (element) => element.id == method.id,
+                    )
+                    ..add(method.copyWith(
+                      parameters: [
+                        ...method.parameters,
+                        Parameter.defaultParameter()
+                      ],
+                    )),
+                )
+              : element,
+        )
+        .toList();
+  }
+
+  removeArhitectureElementParameter(
+      String id, Method method, Parameter parameter) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element.copyWith(
+                  methods: element.methods
+                    ..removeWhere(
+                      (element) => element.id == method.id,
+                    )
+                    ..add(method.copyWith(
+                      parameters: method.parameters
+                        ..removeWhere(
+                          (element) => element.id == parameter.id,
+                        ),
+                    )),
+                )
+              : element,
+        )
+        .toList();
+  }
+
+  updateArhitectureElementParameter(
+      String id, Method method, Parameter parameter) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element.copyWith(
+                  methods: element.methods
+                    ..removeWhere(
+                      (element) => element.id == method.id,
+                    )
+                    ..add(method.copyWith(
+                      parameters: method.parameters
+                        ..removeWhere(
+                          (element) => element.id == parameter.id,
+                        )
+                        ..add(parameter),
+                    )),
+                )
+              : element,
+        )
+        .toList();
+  }
+
+  void updateArhitectureElementDescription(String id, String description) {
+    state = state
+        .map(
+          (element) => element.id == id
+              ? element //.copyWith(description: description)
+              : element,
         )
         .toList();
   }
