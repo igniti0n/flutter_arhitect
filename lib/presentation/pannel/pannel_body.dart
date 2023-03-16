@@ -1,4 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
+import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,8 +32,6 @@ class PannelBody extends ConsumerWidget {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                SizedBox(width: 120),
-                Text('TITLE'),
                 Expanded(child: _Body()),
                 SizedBox(width: 120),
                 SizedBox(width: 24),
@@ -42,54 +46,232 @@ class PannelBody extends ConsumerWidget {
   }
 }
 
-class _Body extends StatefulWidget {
+class _Body extends ConsumerStatefulWidget {
   const _Body();
 
   @override
-  State<_Body> createState() => _BodyState();
+  ConsumerState<_Body> createState() => _BodyState();
 }
 
-class _BodyState extends State<_Body> {
+/// Tittle
+/// dependencies
+/// methods + parameters
+/// description
+
+class _BodyState extends ConsumerState<_Body> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
+    final initialValue = ref.read(
+          currentlySelectedArhitectureElementStateProvider,
+        ) ??
+        BaseArhitectureElement.empty();
+    final arhitectureElement =
+        ref.watch(arhitectureElementProvider(initialValue.id));
+
+    log('Initial value: $initialValue');
+
     return FormBuilder(
       key: _formKey,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
-          child: Column(children: [
-            const SizedBox(height: 8),
-            CustomTextField.email(
-              name: '', //AuthForm.emailKey,
-              text: 'address',
-              autoValidateMode: AutovalidateMode.onUserInteraction,
-              isRequired: true,
-              isRequiredValidatorErrorText: 'Enter your email',
-            ),
-            const SizedBox(height: 8),
-            CustomTextField.password(
-              name: '', //AuthForm.passwordKey,
-              text: 'pass',
-              isRequired: true,
-              isRequiredValidatorErrorText: 'Enter your password',
-            ),
-            const SizedBox(height: 16),
-            TextButton(
-              child: const Text('Save'),
-              onPressed: () {
-                _formKey.currentState?.saveAndValidate();
-                if (_formKey.currentState?.isValid == true) {
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              CustomTextField.normal(
+                name: '', //AuthForm.emailKey,
+                text: 'Name',
+                textEditingController: TextEditingController(
+                  text: initialValue.name,
+                ),
+                autoValidateMode: AutovalidateMode.onUserInteraction,
+                isRequired: true,
+
+                // isRequiredValidatorErrorText: 'Name is required',
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                child: const Text('Add dependency'),
+                onPressed: () {
                   // ref.read(authNotifierProvider.notifier).submitLoginForm(
                   //       formMap: _formKey.currentState!.value,
                   //     );
-                }
-              },
-            ),
-          ]),
+                },
+              ),
+              const _AddMethodFormRow(),
+              for (var method in arhitectureElement.methods)
+                _MethodFormRow(method),
+              const SizedBox(height: 16),
+              CustomTextField.multilineDescription(
+                name: '', //AuthForm.emailKey,
+                text: 'Descirption',
+                textInputType: TextInputType.multiline,
+                isRequired: false,
+
+                // isRequiredValidatorErrorText: 'Name is required',
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                child: const Text('Save'),
+                onPressed: () {
+                  _formKey.currentState?.saveAndValidate();
+                  if (_formKey.currentState?.isValid == true) {
+                    // ref.read(authNotifierProvider.notifier).submitLoginForm(
+                    //       formMap: _formKey.currentState!.value,
+                    //     );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _MethodFormRow extends ConsumerWidget {
+  final Method method;
+  const _MethodFormRow(this.method);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: () => ref
+                  .read(allArhitectureElementsNotifier.notifier)
+                  .removeArhitectureElementMethod(
+                    ref
+                            .read(
+                                currentlySelectedArhitectureElementStateProvider)
+                            ?.id ??
+                        '',
+                    method.id,
+                  ),
+              icon: const Icon(
+                Icons.remove_circle_outline_rounded,
+              ),
+            ),
+            Expanded(
+              child: CustomTextField.normal(
+                name: '', //AuthForm.passwordKey,
+                text: 'Return value',
+                isRequired: true,
+                textEditingController:
+                    TextEditingController(text: method.returnValue),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 2,
+              child: CustomTextField.normal(
+                name: '', //AuthForm.passwordKey,
+                text: 'Method name',
+                isRequired: true,
+                textEditingController:
+                    TextEditingController(text: method.methodName),
+              ),
+            ),
+          ],
+        ),
+        const ExpansionTile(
+          leading: Icon(Icons.arrow_drop_down),
+          title: Text(
+            'Parameters',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          children: [
+            _ParameterFormRow(),
+            _ParameterFormRow(),
+            _ParameterFormRow(),
+            _ParameterFormRow(),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _AddMethodFormRow extends ConsumerWidget {
+  const _AddMethodFormRow();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: () => ref
+                  .read(allArhitectureElementsNotifier.notifier)
+                  .addArhitectureElementMethod(ref
+                          .read(
+                              currentlySelectedArhitectureElementStateProvider)
+                          ?.id ??
+                      ''),
+              icon: const Icon(
+                Icons.add_circle_outline_rounded,
+              ),
+            ),
+            Expanded(
+              child: CustomTextField.normal(
+                name: '', //AuthForm.passwordKey,
+                isRequired: false,
+                textInputType: TextInputType.none,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 2,
+              child: CustomTextField.normal(
+                name: '', //AuthForm.passwordKey,
+                isRequired: false,
+                textInputType: TextInputType.none,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _ParameterFormRow extends StatelessWidget {
+  const _ParameterFormRow();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(
+          width: 60,
+        ),
+        Expanded(
+          child: CustomTextField.normal(
+            name: '', //AuthForm.passwordKey,
+            text: 'Type',
+            isRequired: true,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
+          child: CustomTextField.normal(
+            name: '', //AuthForm.passwordKey,
+            text: 'Parameter name',
+            isRequired: true,
+          ),
+        ),
+      ],
     );
   }
 }
