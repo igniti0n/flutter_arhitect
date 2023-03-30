@@ -1,4 +1,4 @@
-import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method_parameter.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:uuid/uuid.dart';
 
 class Method {
@@ -23,7 +23,7 @@ class Method {
   factory Method.fromMap(Map<String, dynamic> json) => Method(
         id: json["id"],
         methodName: json["methodName"],
-        returnValue: json["returnValue"],
+        returnValue: json["type"],
         parameters: List<Parameter>.from(
             json["parameters"].map((x) => Parameter.fromMap(x))),
       );
@@ -42,7 +42,7 @@ class Method {
 
   Map<String, dynamic> toMap() => {
         "methodName": methodName,
-        "returnValue": returnValue,
+        "type": returnValue,
         "parameters": List<dynamic>.from(parameters.map((x) => x.toMap())),
       };
 
@@ -58,5 +58,10 @@ class Method {
   @override
   int get hashCode {
     return methodName.hashCode ^ returnValue.hashCode ^ parameters.hashCode;
+  }
+
+  @override
+  String toString() {
+    return '$returnValue $methodName(${parameters.map((e) => e.toString()).join(', ')})';
   }
 }

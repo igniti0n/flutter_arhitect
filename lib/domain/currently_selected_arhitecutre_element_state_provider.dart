@@ -7,10 +7,12 @@ final currentlySelectedArhitectureElementStateProvider =
 
 final arhitectureElementProvider =
     Provider.family<BaseArhitectureElement, String>((ref, id) {
+  final currentlySelectedArhitectureElement =
+      ref.watch(currentlySelectedArhitectureElementStateProvider);
   final allArhitectureElements = ref.watch(allArhitectureElementsNotifier);
 
   return allArhitectureElements.firstWhere(
-    (element) => element.id == id,
+    (element) => element.id == (currentlySelectedArhitectureElement?.id ?? ''),
     orElse: () => BaseArhitectureElement.empty(),
   );
 });

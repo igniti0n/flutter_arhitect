@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
-import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method_parameter.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -95,6 +95,6 @@ class BaseArhitectureElement {
 
   @override
   String toString() {
-    return 'BaseArhitectureElement(widgetsGlobalKey: $widgetsGlobalKey, layer: $layer, name: $name, dependencies: $dependencies, methods: $methods, dataValue: $dataValue)';
+    return 'BaseArhitectureElement(widgetsGlobalKey: $widgetsGlobalKey, layer: $layer, name: $name, dependencies: $dependencies, methods: ${methods.fold('', (previousValue, element) => '$previousValue\n $element')})}, dataValue: $dataValue)';
   }
 }

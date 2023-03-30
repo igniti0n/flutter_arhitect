@@ -22,6 +22,12 @@ class Parameter {
         type: json["type"],
       );
 
+  Parameter copyWith({String? parameterName, String? type}) => Parameter(
+        id: id,
+        parameterName: parameterName ?? this.parameterName,
+        type: type ?? this.type,
+      );
+
   Map<String, dynamic> toMap() => {
         "id": id,
         "parameterName": parameterName,
@@ -38,5 +44,10 @@ class Parameter {
   @override
   int get hashCode {
     return parameterName.hashCode ^ type.hashCode;
+  }
+
+  @override
+  String toString() {
+    return '$type $parameterName';
   }
 }

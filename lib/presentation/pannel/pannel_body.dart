@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
@@ -84,9 +85,17 @@ class _BodyState extends ConsumerState<_Body> {
               CustomTextField.normal(
                 name: '', //AuthForm.emailKey,
                 text: 'Name',
-                textEditingController: TextEditingController(
-                  text: initialValue.name,
-                ),
+                onChanged: (newText) {
+                  ref
+                      .read(allArhitectureElementsNotifier.notifier)
+                      .updateArhitectureElementName(
+                        arhitectureElement.id,
+                        newText ?? '',
+                      );
+                },
+                // textEditingController: TextEditingController(
+                //   text: initialValue.name,
+                // ),
                 autoValidateMode: AutovalidateMode.onUserInteraction,
                 isRequired: true,
 
@@ -164,8 +173,20 @@ class _MethodFormRow extends ConsumerWidget {
                 name: '', //AuthForm.passwordKey,
                 text: 'Return value',
                 isRequired: true,
-                textEditingController:
-                    TextEditingController(text: method.returnValue),
+                onChanged: (newValue) {
+                  ref
+                      .read(allArhitectureElementsNotifier.notifier)
+                      .updateArhitectureElementMethod(
+                        ref
+                                .read(
+                                    currentlySelectedArhitectureElementStateProvider)
+                                ?.id ??
+                            '',
+                        method.copyWith(type: newValue ?? ''),
+                      );
+                },
+                // textEditingController:
+                //     TextEditingController(text: method.returnValue),
               ),
             ),
             const SizedBox(width: 8),
@@ -175,23 +196,47 @@ class _MethodFormRow extends ConsumerWidget {
                 name: '', //AuthForm.passwordKey,
                 text: 'Method name',
                 isRequired: true,
-                textEditingController:
-                    TextEditingController(text: method.methodName),
+                onChanged: (newValue) {
+                  ref
+                      .read(allArhitectureElementsNotifier.notifier)
+                      .updateArhitectureElementMethod(
+                        ref
+                                .read(
+                                    currentlySelectedArhitectureElementStateProvider)
+                                ?.id ??
+                            '',
+                        method.copyWith(methodName: newValue ?? ''),
+                      );
+                },
+                // textEditingController:
+                //     TextEditingController(text: method.methodName),
               ),
             ),
           ],
         ),
-        const ExpansionTile(
-          leading: Icon(Icons.arrow_drop_down),
-          title: Text(
+        ExpansionTile(
+          leading: const Icon(Icons.arrow_drop_down),
+          title: const Text(
             'Parameters',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           children: [
-            _ParameterFormRow(),
-            _ParameterFormRow(),
-            _ParameterFormRow(),
-            _ParameterFormRow(),
+            _ParameterFormRow(
+              method: method,
+              parameter: Parameter.defaultParameter(),
+            ),
+            _ParameterFormRow(
+              method: method,
+              parameter: Parameter.defaultParameter(),
+            ),
+            _ParameterFormRow(
+              method: method,
+              parameter: Parameter.defaultParameter(),
+            ),
+            _ParameterFormRow(
+              method: method,
+              parameter: Parameter.defaultParameter(),
+            ),
           ],
         ),
       ],
@@ -244,11 +289,17 @@ class _AddMethodFormRow extends ConsumerWidget {
   }
 }
 
-class _ParameterFormRow extends StatelessWidget {
-  const _ParameterFormRow();
+class _ParameterFormRow extends ConsumerWidget {
+  final Method method;
+  final Parameter parameter;
+  const _ParameterFormRow({
+    Key? key,
+    required this.method,
+    required this.parameter,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -260,6 +311,19 @@ class _ParameterFormRow extends StatelessWidget {
             name: '', //AuthForm.passwordKey,
             text: 'Type',
             isRequired: true,
+            onChanged: (newValue) {
+              ref
+                  .read(allArhitectureElementsNotifier.notifier)
+                  .updateArhitectureElementParameter(
+                    ref
+                            .read(
+                                currentlySelectedArhitectureElementStateProvider)
+                            ?.id ??
+                        '',
+                    method,
+                    parameter.copyWith(type: newValue ?? ''),
+                  );
+            },
           ),
         ),
         const SizedBox(width: 8),
@@ -269,6 +333,19 @@ class _ParameterFormRow extends StatelessWidget {
             name: '', //AuthForm.passwordKey,
             text: 'Parameter name',
             isRequired: true,
+            onChanged: (newValue) {
+              ref
+                  .read(allArhitectureElementsNotifier.notifier)
+                  .updateArhitectureElementParameter(
+                    ref
+                            .read(
+                                currentlySelectedArhitectureElementStateProvider)
+                            ?.id ??
+                        '',
+                    method,
+                    parameter.copyWith(parameterName: newValue ?? ''),
+                  );
+            },
           ),
         ),
       ],

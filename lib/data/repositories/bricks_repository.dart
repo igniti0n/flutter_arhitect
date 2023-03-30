@@ -1,5 +1,5 @@
 import 'package:file_selector/file_selector.dart';
-import 'package:flutter_arhitect/data/bricks_service.dart';
+import 'package:flutter_arhitect/data/services/bricks_service.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
