@@ -19,6 +19,7 @@ final userConnectingPositionsProvider = Provider<ConnectingPositions>((ref) {
   return ConnectingPositions(first: screenOffset, second: mouseOffset);
 });
 
+// ignore: prefer-match-file-name
 class ConnectingPositions {
   final Offset? first;
   final Offset? second;

@@ -3,61 +3,78 @@ import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/domain/common/request_notifier/request_notifier.dart';
 import 'package:flutter_arhitect/domain/common/request_notifier/request_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mason/mason.dart';
 import 'package:uuid/uuid.dart';
 
 typedef AllTemplates = List<Template>;
 
 final allTemplatesNotifier =
     StateNotifierProvider<AllTemplatesNotifier, RequestState<AllTemplates>>(
-        (ref) {
-  return AllTemplatesNotifier();
-});
+  (ref) => AllTemplatesNotifier(),
+);
 
 class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
-  AllTemplatesNotifier() : super() {
-    getAllTemplates();
-  }
-
   final mockedTemplates = [
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Repository',
-      brickBundleName: 'clean_repository',
+      brick: Brick.git(const GitPath(
+        'https://github.com/igniti0n/bricks',
+        path: 'clean_repository',
+      )),
     ),
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Service',
-      brickBundleName: 'clean_service',
+      brick: Brick.git(const GitPath(
+        'https://github.com/igniti0n/bricks',
+        path: 'clean_service',
+      )),
     ),
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Provider',
-      brickBundleName: 'provider',
+      brick: Brick.git(const GitPath(
+        'https://github.com/igniti0n/bricks',
+        path: 'provider',
+      )),
     ),
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'StateProvider',
-      brickBundleName: 'state_provider',
+      brick: Brick.git(const GitPath(
+        'https://github.com/igniti0n/bricks',
+        path: 'state_provider',
+      )),
     ),
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Notifier',
-      brickBundleName: 'notifier',
+      brick: Brick.git(const GitPath(
+        'https://github.com/igniti0n/bricks',
+        path: 'notifier',
+      )),
     ),
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Page',
-      brickBundleName: 'page',
+      brick: Brick.git(
+        const GitPath('https://github.com/altive/bricks', path: 'page'),
+      ),
     ),
   ];
 
-  void getAllTemplates() async => executeRequest(
+  AllTemplatesNotifier() : super() {
+    getAllTemplates();
+  }
+
+  Future<void> getAllTemplates() async => executeRequest(
         requestBuilder: () async {
           await Future.delayed(const Duration(milliseconds: 400));
 
@@ -65,7 +82,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
         },
       );
 
-  void addTemplate({required Template template}) async => executeRequest(
+  Future<void> addTemplate({required Template template}) async =>
+      executeRequest(
         requestBuilder: () async {
           await Future.delayed(const Duration(milliseconds: 400));
 
@@ -73,7 +91,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
         },
       );
 
-  void removeTemplate({required Template template}) async => executeRequest(
+  Future<void> removeTemplate({required Template template}) async =>
+      executeRequest(
         requestBuilder: () async {
           await Future.delayed(const Duration(milliseconds: 400));
 

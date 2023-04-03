@@ -2,46 +2,55 @@
 //
 //     final temperatures = temperaturesFromMap(jsonString);
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class BrickModel {
-  BrickModel({
+class BrickModel extends Equatable {
+  final String name;
+  final List<Dependency> dependencies;
+  final List<Method> methods;
+
+  const BrickModel({
     required this.name,
     required this.dependencies,
     required this.methods,
   });
 
-  String name;
-  List<Dependency> dependencies;
-  List<Method> methods;
-
   factory BrickModel.fromMap(Map<String, dynamic> json) => BrickModel(
-        name: json["name"],
+        name: json['name'],
         dependencies: List<Dependency>.from(
-            json["dependencies"].map((x) => Dependency.fromMap(x))),
+          json['dependencies'].map((x) => Dependency.fromMap(x)),
+        ),
         methods:
-            List<Method>.from(json["methods"].map((x) => Method.fromMap(x))),
+            List<Method>.from(json['methods'].map((x) => Method.fromMap(x))),
       );
 
   Map<String, dynamic> toMap() => {
-        "name": name,
-        "dependencies": List<dynamic>.from(dependencies.map((x) => x.toMap())),
-        "methods": List<dynamic>.from(methods.map((x) => x.toMap())),
+        'name': name,
+        'dependencies': List.from(dependencies.map((x) => x.toMap())),
+        'methods': List.from(methods.map((x) => x.toMap())),
       };
+  @override
+  List<Object?> get props => [name, dependencies, methods];
 }
 
-class Dependency {
-  Dependency({
+@JsonSerializable()
+class Dependency extends Equatable {
+  final String dependencyName;
+
+  const Dependency({
     required this.dependencyName,
   });
 
-  String dependencyName;
-
   factory Dependency.fromMap(Map<String, dynamic> json) => Dependency(
-        dependencyName: json["dependencyName"],
+        dependencyName: json['dependencyName'],
       );
 
   Map<String, dynamic> toMap() => {
-        "dependencyName": dependencyName,
+        'dependencyName': dependencyName,
       };
+
+  @override
+  List<Object?> get props => [dependencyName];
 }

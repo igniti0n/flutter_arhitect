@@ -5,18 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final arhitectureElementPairsProvider = Provider<List<ElementPair>>((ref) {
   final allArhitectureElements = ref.watch(allArhitectureElementsNotifier);
-  List<ElementPair> pairs = [];
+  final List<ElementPair> pairs = [];
 
   /// Make a pair of (element -> dependncy) for each dependency of an element
-  for (var element in allArhitectureElements) {
-    for (var depedency in element.dependencies) {
+  for (final element in allArhitectureElements) {
+    for (final dependency in element.dependencies) {
       final first = WidgetScreenData(
         element.widgetsGlobalKey.getPosition(),
         element.widgetsGlobalKey.getSize(),
       );
       final second = WidgetScreenData(
-        depedency.widgetsGlobalKey.getPosition(),
-        depedency.widgetsGlobalKey.getSize(),
+        dependency.widgetsGlobalKey.getPosition(),
+        dependency.widgetsGlobalKey.getSize(),
       );
       final pair = ElementPair(second, first);
       pairs.add(pair);
@@ -26,12 +26,10 @@ final arhitectureElementPairsProvider = Provider<List<ElementPair>>((ref) {
   return pairs;
 });
 
-
 // final elementsNotifier =
 //     StateNotifierProvider<ElementPairsNotifier, List<ElementPair>>((ref) {
 //   return ElementPairsNotifier();
 // });
-
 
 // class ElementPairsNotifier extends StateNotifier<List<ElementPair>> {
 //   ElementPairsNotifier() : super([]);

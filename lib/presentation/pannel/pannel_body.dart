@@ -159,7 +159,8 @@ class _MethodFormRow extends ConsumerWidget {
                   .removeArhitectureElementMethod(
                     ref
                             .read(
-                                currentlySelectedArhitectureElementStateProvider)
+                              currentlySelectedArhitectureElementStateProvider,
+                            )
                             ?.id ??
                         '',
                     method.id,
@@ -179,7 +180,8 @@ class _MethodFormRow extends ConsumerWidget {
                       .updateArhitectureElementMethod(
                         ref
                                 .read(
-                                    currentlySelectedArhitectureElementStateProvider)
+                                  currentlySelectedArhitectureElementStateProvider,
+                                )
                                 ?.id ??
                             '',
                         method.copyWith(type: newValue ?? ''),
@@ -202,7 +204,8 @@ class _MethodFormRow extends ConsumerWidget {
                       .updateArhitectureElementMethod(
                         ref
                                 .read(
-                                    currentlySelectedArhitectureElementStateProvider)
+                                  currentlySelectedArhitectureElementStateProvider,
+                                )
                                 ?.id ??
                             '',
                         method.copyWith(methodName: newValue ?? ''),
@@ -259,7 +262,8 @@ class _AddMethodFormRow extends ConsumerWidget {
                   .read(allArhitectureElementsNotifier.notifier)
                   .addArhitectureElementMethod(ref
                           .read(
-                              currentlySelectedArhitectureElementStateProvider)
+                            currentlySelectedArhitectureElementStateProvider,
+                          )
                           ?.id ??
                       ''),
               icon: const Icon(
@@ -317,7 +321,8 @@ class _ParameterFormRow extends ConsumerWidget {
                   .updateArhitectureElementParameter(
                     ref
                             .read(
-                                currentlySelectedArhitectureElementStateProvider)
+                              currentlySelectedArhitectureElementStateProvider,
+                            )
                             ?.id ??
                         '',
                     method,
@@ -339,7 +344,8 @@ class _ParameterFormRow extends ConsumerWidget {
                   .updateArhitectureElementParameter(
                     ref
                             .read(
-                                currentlySelectedArhitectureElementStateProvider)
+                              currentlySelectedArhitectureElementStateProvider,
+                            )
                             ?.id ??
                         '',
                     method,

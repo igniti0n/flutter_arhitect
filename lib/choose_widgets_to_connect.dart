@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/connectable_widget.dart';
 import 'package:flutter_arhitect/domain/connecting_widgets_notifier.dart';
-import 'package:flutter_arhitect/presentation/painters/connecting_painter.dart';
-import 'package:flutter_arhitect/widget_with_global_key.dart';
+import 'package:flutter_arhitect/presentation/painters/user_connecting_line_painter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChooseWidgetsToConnect extends ConsumerWidget {
@@ -15,10 +15,10 @@ class ChooseWidgetsToConnect extends ConsumerWidget {
       body: GestureDetector(
         // behavior: HitTestBehavior.deferToChild,
         onPanUpdate: (details) {
-          final x = details.globalPosition.dx;
-          final y = details.globalPosition.dy;
+          final dx = details.globalPosition.dx;
+          final dy = details.globalPosition.dy;
           ref.read(connectingWidgetsNotifier.notifier).updateSecondPointOffset(
-                secondPoint: Offset(x, y),
+                secondPoint: Offset(dx, dy),
               );
         },
 
@@ -38,16 +38,16 @@ class ChooseWidgetsToConnect extends ConsumerWidget {
                   const Positioned(
                     bottom: 400,
                     right: 800,
-                    child: WidgetA(),
+                    child: _WidgetA(),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: const [
-                      WidgetA(),
-                      WidgetA(),
+                      _WidgetA(),
+                      _WidgetA(),
                     ],
                   ),
-                  const PainterWidget(),
+                  const _PainterWidget(),
                 ],
               ),
             ),
@@ -58,8 +58,8 @@ class ChooseWidgetsToConnect extends ConsumerWidget {
   }
 }
 
-class PainterWidget extends ConsumerWidget {
-  const PainterWidget({super.key});
+class _PainterWidget extends ConsumerWidget {
+  const _PainterWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,14 +76,14 @@ class PainterWidget extends ConsumerWidget {
   }
 }
 
-class WidgetA extends ConsumerStatefulWidget {
-  const WidgetA({super.key});
+class _WidgetA extends ConsumerStatefulWidget {
+  const _WidgetA({super.key});
 
   @override
   ConsumerState createState() => _WidgetAState();
 }
 
-class _WidgetAState extends ConsumerState<WidgetA> {
+class _WidgetAState extends ConsumerState<_WidgetA> {
   bool _isConnecting = false;
   Offset? _startPoint;
 

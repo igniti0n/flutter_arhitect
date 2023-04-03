@@ -17,7 +17,7 @@ class ElementsConnectionsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (var pair in pairs) {
+    for (final pair in pairs) {
       var first = pair.first.position;
       var second = pair.second.position;
       if (second.dy < first.dy) {

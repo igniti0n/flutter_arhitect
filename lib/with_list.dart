@@ -12,16 +12,15 @@ class WithList extends StatefulWidget {
   final Function() onUpdate;
 
   @override
-  _WithListState createState() => _WithListState();
+  State<StatefulWidget> createState() => _WithListState();
 }
 
 class ItemData {
-  ItemData(this.title, this.key);
-
   final String title;
-
   // Each item in reorderable list needs stable and unique key
   final Key key;
+
+  ItemData(this.title, this.key);
 }
 
 enum DraggingMode {
@@ -30,16 +29,27 @@ enum DraggingMode {
 }
 
 class _WithListState extends State<WithList> {
-  final array = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9];
+  final array = <int>[
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+  ];
 
-  void _update(old, ew) {
+  void _update(oldIndex, newIndex) {
     setState(() {
-      var el = array[old];
-      if (old < ew) {
-        ew = ew - 1;
+      final el = array[oldIndex];
+      var tmpNewIndex = newIndex;
+      if (oldIndex < newIndex) {
+        tmpNewIndex = tmpNewIndex - 1;
       }
-      array.removeAt(old);
-      array.insert(ew, el);
+      array.removeAt(oldIndex);
+      array.insert(tmpNewIndex, el);
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.onUpdate();
@@ -65,19 +75,19 @@ class _WithListState extends State<WithList> {
               height: 100,
               width: 100,
               margin: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: Colors.blueGrey,
-                  border: Border.all(
+              decoration: const BoxDecoration(
+                color: Colors.blueGrey,
+                border: Border.fromBorderSide(
+                  BorderSide(color: Colors.black, width: 2),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                boxShadow: [
+                  BoxShadow(
                     color: Colors.black,
-                    width: 2,
+                    blurRadius: 4,
                   ),
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 4,
-                    ),
-                  ]),
+                ],
+              ),
               child: Center(
                 child: Text('Item $item'),
               ),

@@ -1,14 +1,16 @@
+import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-class Parameter {
-  Parameter({
+class Parameter extends Equatable {
+  final String id;
+  final String parameterName;
+  final String type;
+
+  const Parameter({
     required this.id,
     required this.parameterName,
     required this.type,
   });
-  String id = const Uuid().v1();
-  String parameterName;
-  String type;
 
   factory Parameter.defaultParameter() => Parameter(
         id: const Uuid().v1(),
@@ -17,10 +19,16 @@ class Parameter {
       );
 
   factory Parameter.fromMap(Map<String, dynamic> json) => Parameter(
-        id: json["id"],
-        parameterName: json["parameterName"],
-        type: json["type"],
+        id: json['id'],
+        parameterName: json['parameterName'],
+        type: json['type'],
       );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'parameterName': parameterName,
+        'type': type,
+      };
 
   Parameter copyWith({String? parameterName, String? type}) => Parameter(
         id: id,
@@ -28,26 +36,6 @@ class Parameter {
         type: type ?? this.type,
       );
 
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "parameterName": parameterName,
-        "type": type,
-      };
-
   @override
-  bool operator ==(covariant Parameter other) {
-    if (identical(this, other)) return true;
-
-    return other.parameterName == parameterName && other.type == type;
-  }
-
-  @override
-  int get hashCode {
-    return parameterName.hashCode ^ type.hashCode;
-  }
-
-  @override
-  String toString() {
-    return '$type $parameterName';
-  }
+  List<Object?> get props => [id, parameterName, type];
 }

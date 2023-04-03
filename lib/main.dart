@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/connect_widgets.dart';
 import 'package:flutter_arhitect/domain/mouse_position_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/domain/user_connecting_positions_provider.dart';
-import 'package:flutter_arhitect/presentation/painters/connecting_painter.dart';
+import 'package:flutter_arhitect/presentation/painters/user_connecting_line_painter.dart';
 import 'package:flutter_arhitect/scale_update_details_state_provider.dart';
-import 'package:flutter_arhitect/temp.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {

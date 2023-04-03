@@ -28,7 +28,8 @@ class FilesGenerationNotifier extends RequestNotifier<void> {
           );
           log('All elements: $allArhitectureElements');
           await _bricksRepository.generateBricksFor(
-              arhitectureElements: allArhitectureElements);
+            arhitectureElements: allArhitectureElements,
+          );
         },
       );
 }

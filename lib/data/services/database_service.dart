@@ -9,8 +9,9 @@ final databaseServiceProvider = Provider<DatabaseService>((ref) {
 abstract class DatabaseService {
   Future<List<BaseArhitectureElement>> getStoredArhitectureElements();
   Future<void> addArhitectureElement({required BaseArhitectureElement element});
-  Future<BaseArhitectureElement> deleteArhitectureElements(
-      {required String id});
+  Future<BaseArhitectureElement> deleteArhitectureElements({
+    required String id,
+  });
 }
 
 class DatabaseServiceImpl extends DatabaseService {
@@ -19,17 +20,14 @@ class DatabaseServiceImpl extends DatabaseService {
     return [
       BaseArhitectureElement.empty().copyWith(
         name: 'Repository',
-        brickBundleName: 'clean_repository',
         layer: ArhitectureLayer.data,
       ),
       BaseArhitectureElement.empty().copyWith(
         name: 'Service',
-        brickBundleName: 'clean_service',
         layer: ArhitectureLayer.data,
       ),
       BaseArhitectureElement.empty().copyWith(
         name: 'Page',
-        brickBundleName: 'page',
         layer: ArhitectureLayer.data,
       ),
       // BaseArhitectureElement.empty().copyWith(
@@ -46,15 +44,17 @@ class DatabaseServiceImpl extends DatabaseService {
   }
 
   @override
-  Future<void> addArhitectureElement(
-      {required BaseArhitectureElement element}) {
+  Future<void> addArhitectureElement({
+    required BaseArhitectureElement element,
+  }) {
     // TODO: implement addArhitectureElement
     throw UnimplementedError();
   }
 
   @override
-  Future<BaseArhitectureElement> deleteArhitectureElements(
-      {required String id}) {
+  Future<BaseArhitectureElement> deleteArhitectureElements({
+    required String id,
+  }) {
     // TODO: implement deleteArhitectureElements
     throw UnimplementedError();
   }

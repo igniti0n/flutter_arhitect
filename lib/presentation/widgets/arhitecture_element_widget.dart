@@ -45,7 +45,7 @@ class ArhitectureElementWidget extends HookConsumerWidget {
                   blurRadius: 1,
                   spreadRadius: 0.5,
                   offset: Offset(0, 1),
-                )
+                ),
               ],
             ),
             child: Padding(

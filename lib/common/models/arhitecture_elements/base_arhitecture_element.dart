@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/brick_model.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:mason/mason.dart';
 import 'package:uuid/uuid.dart';
 
 class BaseArhitectureElement {
@@ -16,7 +17,7 @@ class BaseArhitectureElement {
   final List<Method> methods;
   final String dataValue;
   final Offset canvasPosition;
-  final String brickBundleName;
+  final Brick brick;
 
   BaseArhitectureElement({
     required this.id,
@@ -26,7 +27,7 @@ class BaseArhitectureElement {
     required this.dependencies,
     required this.methods,
     required this.dataValue,
-    required this.brickBundleName,
+    required this.brick,
     this.canvasPosition = const Offset(100, 100),
   });
 
@@ -38,7 +39,7 @@ class BaseArhitectureElement {
         dependencies: [],
         methods: [],
         dataValue: '',
-        brickBundleName: '',
+        brick: Brick.path(''),
       );
 
   BrickModel toBrickModel() => BrickModel(
@@ -57,11 +58,11 @@ class BaseArhitectureElement {
     List<Method>? methods,
     String? dataValue,
     Offset? canvasPosition,
-    String? brickBundleName,
+    Brick? brick,
   }) =>
       BaseArhitectureElement(
         id: id,
-        brickBundleName: brickBundleName ?? this.brickBundleName,
+        brick: brick ?? this.brick,
         dataValue: dataValue ?? this.dataValue,
         dependencies: dependencies ?? this.dependencies,
         layer: layer ?? this.layer,

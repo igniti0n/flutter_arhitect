@@ -76,7 +76,8 @@ class AllArhitectureElementsNotifier
   }
 
   void updateArhitectureElementCanvasPosition(
-      BaseArhitectureElement arhitectureElement) {
+    BaseArhitectureElement arhitectureElement,
+  ) {
     log('Updating arhitecture element: ${arhitectureElement.name}');
     state = state
         .map(
@@ -101,7 +102,8 @@ class AllArhitectureElementsNotifier
         .map(
           (element) => element.id == id
               ? element.copyWith(
-                  methods: [...element.methods, Method.defaultMethod()])
+                  methods: [...element.methods, Method.defaultMethod()],
+                )
               : element,
         )
         .toList();
@@ -140,7 +142,7 @@ class AllArhitectureElementsNotifier
         .toList();
   }
 
-  addArhitectureElementParameter(String id, Method method) {
+  void addArhitectureElementParameter(String id, Method method) {
     state = state
         .map(
           (element) => element.id == id
@@ -152,7 +154,7 @@ class AllArhitectureElementsNotifier
                     ..add(method.copyWith(
                       parameters: [
                         ...method.parameters,
-                        Parameter.defaultParameter()
+                        Parameter.defaultParameter(),
                       ],
                     )),
                 )
@@ -161,8 +163,11 @@ class AllArhitectureElementsNotifier
         .toList();
   }
 
-  removeArhitectureElementParameter(
-      String id, Method method, Parameter parameter) {
+  void removeArhitectureElementParameter(
+    String id,
+    Method method,
+    Parameter parameter,
+  ) {
     state = state
         .map(
           (element) => element.id == id
@@ -183,8 +188,11 @@ class AllArhitectureElementsNotifier
         .toList();
   }
 
-  updateArhitectureElementParameter(
-      String id, Method method, Parameter parameter) {
+  void updateArhitectureElementParameter(
+    String id,
+    Method method,
+    Parameter parameter,
+  ) {
     state = state
         .map(
           (element) => element.id == id
@@ -209,9 +217,8 @@ class AllArhitectureElementsNotifier
   void updateArhitectureElementDescription(String id, String description) {
     state = state
         .map(
-          (element) => element.id == id
-              ? element //.copyWith(description: description)
-              : element,
+          (element) => //element.id == id ? element //.copyWith(description: description):
+              element,
         )
         .toList();
   }

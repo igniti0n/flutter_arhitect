@@ -19,7 +19,8 @@ class ElementInfoPannel extends HookConsumerWidget {
       begin: Offset(maxPannelWidth - 20, 0),
       end: Offset.zero,
     ).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeInOut));
+      CurvedAnimation(parent: animationController, curve: Curves.easeInOut),
+    );
 
     ref.listen<bool>(isPannelOpenedProvider, (_, isOpened) {
       if (isOpened) {

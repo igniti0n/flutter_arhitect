@@ -48,7 +48,7 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
             top: 0,
             right: 0,
             child: ElementInfoPannel(),
-          )
+          ),
         ],
       ),
     );
@@ -100,7 +100,8 @@ class _Elements extends ConsumerWidget {
       children: allArhitectureElements
           .map(
             (arhitectureElement) => ArhitectureElementWidget(
-                arhitectureElement: arhitectureElement),
+              arhitectureElement: arhitectureElement,
+            ),
           )
           .toList(),
     );
