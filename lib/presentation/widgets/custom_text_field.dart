@@ -207,12 +207,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (widget.text != null) ...[
-              Text(
-                widget.text!.toUpperCase(),
-                style: TextStyle(
-                  color: field.hasError && !field.isValid
-                      ? AppColors.inputValidationErrorPlaceholderLabel
-                      : AppColors.inputPlaceholderLabel,
+              SizedBox(
+                height: 16,
+                child: FittedBox(
+                  child: Text(
+                    widget.text!.toUpperCase(),
+                    style: TextStyle(
+                      color: field.hasError && !field.isValid
+                          ? AppColors.inputValidationErrorPlaceholderLabel
+                          : AppColors.inputPlaceholderLabel,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 4),
@@ -266,17 +271,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             if (field.hasError && !field.isValid) ...[
               const SizedBox(height: 4),
-              Row(
-                children: [
-                  const Icon(Icons.warning_rounded, color: Color(0xFF8F0A00)),
-                  const SizedBox(width: 6),
-                  Text(
-                    field.errorText!,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppColors.inputValidationErrorPlaceholderLabel,
-                        ),
-                  ),
-                ],
+              Text(
+                field.errorText!,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.inputValidationErrorPlaceholderLabel,
+                    ),
               ),
             ],
           ],

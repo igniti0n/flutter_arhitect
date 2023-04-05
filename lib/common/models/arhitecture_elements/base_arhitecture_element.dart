@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/brick_model.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_arhitect/common/models/arhitecture_elements/element_part
 import 'package:mason/mason.dart';
 import 'package:uuid/uuid.dart';
 
-class BaseArhitectureElement {
+class BaseArhitectureElement extends Equatable {
   final String id;
   final GlobalKey widgetsGlobalKey;
   final ArhitectureLayer layer;
@@ -19,7 +19,7 @@ class BaseArhitectureElement {
   final Offset canvasPosition;
   final Brick brick;
 
-  BaseArhitectureElement({
+  const BaseArhitectureElement({
     required this.id,
     required this.widgetsGlobalKey,
     required this.layer,
@@ -36,8 +36,8 @@ class BaseArhitectureElement {
         widgetsGlobalKey: GlobalKey(),
         layer: ArhitectureLayer.data,
         name: 'unnamed',
-        dependencies: [],
-        methods: [],
+        dependencies: const [],
+        methods: const [],
         dataValue: '',
         brick: Brick.path(''),
       );
@@ -73,29 +73,15 @@ class BaseArhitectureElement {
       );
 
   @override
-  bool operator ==(covariant BaseArhitectureElement other) {
-    if (identical(this, other)) return true;
-
-    return other.widgetsGlobalKey == widgetsGlobalKey &&
-        other.layer == layer &&
-        other.name == name &&
-        listEquals(other.dependencies, dependencies) &&
-        listEquals(other.methods, methods) &&
-        other.dataValue == dataValue;
-  }
-
-  @override
-  int get hashCode {
-    return widgetsGlobalKey.hashCode ^
-        layer.hashCode ^
-        name.hashCode ^
-        dependencies.hashCode ^
-        methods.hashCode ^
-        dataValue.hashCode;
-  }
-
-  @override
-  String toString() {
-    return 'BaseArhitectureElement(widgetsGlobalKey: $widgetsGlobalKey, layer: $layer, name: $name, dependencies: $dependencies, methods: ${methods.fold('', (previousValue, element) => '$previousValue\n $element')})}, dataValue: $dataValue)';
-  }
+  List<Object?> get props => [
+        id,
+        widgetsGlobalKey,
+        layer,
+        name,
+        dependencies,
+        methods,
+        dataValue,
+        canvasPosition,
+        brick,
+      ];
 }

@@ -13,6 +13,8 @@ abstract class BricksGeneratorService {
   Future<void> generateBrickLocallyFrom({
     required BaseArhitectureElement baseArhitectureElement,
     required String savePath,
+    required String projectName,
+    required String featureName,
   });
 }
 
@@ -21,9 +23,9 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
   Future<void> generateBrickLocallyFrom({
     required BaseArhitectureElement baseArhitectureElement,
     required String savePath,
+    required String projectName,
+    required String featureName,
   }) async {
-    // Create a MasonGenerator from the existing bundle.
-
     log('Generating....!');
     final generator =
         await MasonGenerator.fromBrick(baseArhitectureElement.brick);
@@ -32,7 +34,20 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
     final directory = Directory.fromUri(Uri.parse(savePath));
     final generatedFiles = await generator.generate(
       DirectoryGeneratorTarget(directory),
-      vars: baseArhitectureElement.toBrickModel().toMap(),
+      vars: baseArhitectureElement.toBrickModel().toMap()
+        ..addAll({
+          'project_name': projectName,
+          'feature_name': featureName,
+          // 'methods': [
+          //   {
+          //     'methodName': 'logMe',
+          //     'type': 'String?',
+          //     'parameters': [
+          //       {'parameterName': 'email', 'type': 'List<int?>?'},
+          //     ],
+          //   },
+          // ],
+        }),
 
       //  {
       //   "name": "ime_neko",

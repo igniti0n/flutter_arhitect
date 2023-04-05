@@ -19,10 +19,11 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Repository',
-      brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'clean_repository',
-      )),
+      brick: Brick.path('../QBricks/bricks/repository'),
+      //     Brick.git(const GitPath(
+      //   'https://github.com/Q-Agency/QBricks/',
+      //   path: 'bricks/repository',
+      // )),
     ),
     Template(
       id: const Uuid().v1(),
@@ -55,17 +56,18 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Notifier',
-      brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'notifier',
-      )),
+      brick: Brick.path('../QBricks/bricks/notifier'),
+      // Brick.git(const GitPath(
+      //   'https://github.com/Q-Agency/QBricks/',
+      //   path: 'bricks/notifier',
+      // )),
     ),
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Page',
       brick: Brick.git(
-        const GitPath('https://github.com/altive/bricks', path: 'page'),
+        const GitPath('https://github.com/igniti0n/bricks', path: 'page'),
       ),
     ),
   ];

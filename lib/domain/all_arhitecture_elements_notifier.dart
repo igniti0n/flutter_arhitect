@@ -127,40 +127,47 @@ class AllArhitectureElementsNotifier
   }
 
   void updateArhitectureElementMethod(String id, Method method) {
-    state = state
-        .map(
-          (element) => element.id == id
-              ? element.copyWith(
-                  methods: element.methods
-                    ..removeWhere(
-                      (element) => element.id == method.id,
-                    )
-                    ..add(method),
-                )
-              : element,
-        )
-        .toList();
+    state = state.map(
+      (element) {
+        if (element.id == id) {
+          final index =
+              element.methods.indexWhere((element) => element.id == method.id);
+          return element.copyWith(
+            methods: [...element.methods]
+              ..removeAt(index)
+              ..add(method),
+          );
+        }
+        return element;
+      },
+    ).toList();
   }
 
   void addArhitectureElementParameter(String id, Method method) {
-    state = state
-        .map(
-          (element) => element.id == id
-              ? element.copyWith(
-                  methods: element.methods
-                    ..removeWhere(
-                      (element) => element.id == method.id,
-                    )
-                    ..add(method.copyWith(
-                      parameters: [
-                        ...method.parameters,
-                        Parameter.defaultParameter(),
-                      ],
-                    )),
-                )
-              : element,
-        )
-        .toList();
+    log('initial state: $state');
+    state = state.map(
+      (element) {
+        if (element.id == id) {
+          final index =
+              element.methods.indexWhere((element) => element.id == method.id);
+          return element.copyWith(
+            methods: [...element.methods]
+              ..removeAt(index)
+              ..insert(
+                index,
+                method.copyWith(
+                  parameters: [
+                    ...method.parameters,
+                    Parameter.defaultParameter(),
+                  ],
+                ),
+              ),
+          );
+        }
+        return element;
+      },
+    ).toList();
+    log('final state: $state');
   }
 
   void removeArhitectureElementParameter(
@@ -168,24 +175,26 @@ class AllArhitectureElementsNotifier
     Method method,
     Parameter parameter,
   ) {
-    state = state
-        .map(
-          (element) => element.id == id
-              ? element.copyWith(
-                  methods: element.methods
-                    ..removeWhere(
-                      (element) => element.id == method.id,
-                    )
-                    ..add(method.copyWith(
-                      parameters: method.parameters
-                        ..removeWhere(
-                          (element) => element.id == parameter.id,
-                        ),
-                    )),
-                )
-              : element,
-        )
-        .toList();
+    log('initial state: $state');
+    state = state.map(
+      (element) {
+        if (element.id == id) {
+          final index =
+              element.methods.indexWhere((element) => element.id == method.id);
+          return element.copyWith(
+            methods: [...element.methods]
+              ..removeAt(index)
+              ..add(method.copyWith(
+                parameters: [...method.parameters]..removeWhere(
+                    (element) => element.id == parameter.id,
+                  ),
+              )),
+          );
+        }
+        return element;
+      },
+    ).toList();
+    log('final state: $state');
   }
 
   void updateArhitectureElementParameter(
@@ -193,25 +202,26 @@ class AllArhitectureElementsNotifier
     Method method,
     Parameter parameter,
   ) {
-    state = state
-        .map(
-          (element) => element.id == id
-              ? element.copyWith(
-                  methods: element.methods
-                    ..removeWhere(
-                      (element) => element.id == method.id,
-                    )
-                    ..add(method.copyWith(
-                      parameters: method.parameters
-                        ..removeWhere(
-                          (element) => element.id == parameter.id,
-                        )
-                        ..add(parameter),
-                    )),
-                )
-              : element,
-        )
-        .toList();
+    state = state.map(
+      (element) {
+        if (element.id == id) {
+          final index =
+              element.methods.indexWhere((element) => element.id == method.id);
+          final index2 = method.parameters
+              .indexWhere((element) => element.id == parameter.id);
+          return element.copyWith(
+            methods: [...element.methods]
+              ..removeAt(index)
+              ..add(method.copyWith(
+                parameters: [...method.parameters]
+                  ..removeAt(index2)
+                  ..add(parameter),
+              )),
+          );
+        }
+        return element;
+      },
+    ).toList();
   }
 
   void updateArhitectureElementDescription(String id, String description) {

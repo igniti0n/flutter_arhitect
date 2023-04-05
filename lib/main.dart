@@ -7,6 +7,9 @@ import 'package:flutter_arhitect/presentation/painters/user_connecting_line_pain
 import 'package:flutter_arhitect/scale_update_details_state_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+const projectName = 'starter';
+const featureName = 'login';
+
 void main() {
   runApp(const MyApp());
 }

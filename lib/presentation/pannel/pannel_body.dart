@@ -71,13 +71,13 @@ class _BodyState extends ConsumerState<_Body> {
     final arhitectureElement =
         ref.watch(arhitectureElementProvider(initialValue.id));
 
-    log('Initial value: $initialValue');
+    log('Initial value: $initialValue, architecture element: $arhitectureElement');
 
     return FormBuilder(
       key: _formKey,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -101,22 +101,14 @@ class _BodyState extends ConsumerState<_Body> {
 
                 // isRequiredValidatorErrorText: 'Name is required',
               ),
-              const SizedBox(height: 8),
-              TextButton(
-                child: const Text('Add dependency'),
-                onPressed: () {
-                  // ref.read(authNotifierProvider.notifier).submitLoginForm(
-                  //       formMap: _formKey.currentState!.value,
-                  //     );
-                },
-              ),
-              const _AddMethodFormRow(),
-              for (var method in arhitectureElement.methods)
+              const SizedBox(height: 16),
+              for (final method in arhitectureElement.methods)
                 _MethodFormRow(method),
+              const _AddMethodButton(),
               const SizedBox(height: 16),
               CustomTextField.multilineDescription(
                 name: '', //AuthForm.emailKey,
-                text: 'Descirption',
+                text: 'Description',
                 textInputType: TextInputType.multiline,
                 isRequired: false,
 
@@ -152,26 +144,30 @@ class _MethodFormRow extends ConsumerWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            IconButton(
-              onPressed: () => ref
-                  .read(allArhitectureElementsNotifier.notifier)
-                  .removeArhitectureElementMethod(
-                    ref
-                            .read(
-                              currentlySelectedArhitectureElementStateProvider,
-                            )
-                            ?.id ??
-                        '',
-                    method.id,
-                  ),
-              icon: const Icon(
-                Icons.remove_circle_outline_rounded,
+            Container(
+              margin: const EdgeInsets.only(top: 16),
+              child: IconButton(
+                onPressed: () => ref
+                    .read(allArhitectureElementsNotifier.notifier)
+                    .removeArhitectureElementMethod(
+                      ref
+                              .read(
+                                currentlySelectedArhitectureElementStateProvider,
+                              )
+                              ?.id ??
+                          '',
+                      method.id,
+                    ),
+                icon: const Icon(
+                  Icons.remove_circle_outline_rounded,
+                ),
               ),
             ),
             Expanded(
               child: CustomTextField.normal(
-                name: '', //AuthForm.passwordKey,
+                name: 'return_value_${method.id}',
                 text: 'Return value',
                 isRequired: true,
                 onChanged: (newValue) {
@@ -195,7 +191,7 @@ class _MethodFormRow extends ConsumerWidget {
             Expanded(
               flex: 2,
               child: CustomTextField.normal(
-                name: '', //AuthForm.passwordKey,
+                name: 'method_name_${method.id}',
                 text: 'Method name',
                 isRequired: true,
                 onChanged: (newValue) {
@@ -224,71 +220,47 @@ class _MethodFormRow extends ConsumerWidget {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           children: [
-            _ParameterFormRow(
-              method: method,
-              parameter: Parameter.defaultParameter(),
-            ),
-            _ParameterFormRow(
-              method: method,
-              parameter: Parameter.defaultParameter(),
-            ),
-            _ParameterFormRow(
-              method: method,
-              parameter: Parameter.defaultParameter(),
-            ),
-            _ParameterFormRow(
-              method: method,
-              parameter: Parameter.defaultParameter(),
+            for (final parameter in method.parameters)
+              _ParameterFormRow(
+                method: method,
+                parameter: parameter,
+              ),
+            const SizedBox(height: 16),
+            Container(
+              margin: const EdgeInsets.only(left: 30),
+              child: _AddParameterButton(method: method),
             ),
           ],
         ),
+        const SizedBox(height: 16),
       ],
     );
   }
 }
 
-class _AddMethodFormRow extends ConsumerWidget {
-  const _AddMethodFormRow();
+class _AddMethodButton extends ConsumerWidget {
+  const _AddMethodButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () => ref
-                  .read(allArhitectureElementsNotifier.notifier)
-                  .addArhitectureElementMethod(ref
-                          .read(
-                            currentlySelectedArhitectureElementStateProvider,
-                          )
-                          ?.id ??
-                      ''),
-              icon: const Icon(
-                Icons.add_circle_outline_rounded,
-              ),
-            ),
-            Expanded(
-              child: CustomTextField.normal(
-                name: '', //AuthForm.passwordKey,
-                isRequired: false,
-                textInputType: TextInputType.none,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: CustomTextField.normal(
-                name: '', //AuthForm.passwordKey,
-                isRequired: false,
-                textInputType: TextInputType.none,
-              ),
-            ),
-          ],
-        ),
-      ],
+    return TextButton(
+      onPressed: () => ref
+          .read(allArhitectureElementsNotifier.notifier)
+          .addArhitectureElementMethod(ref
+                  .read(
+                    currentlySelectedArhitectureElementStateProvider,
+                  )
+                  ?.id ??
+              ''),
+      child: Row(
+        children: const [
+          Icon(
+            Icons.add_circle_outline_rounded,
+          ),
+          SizedBox(width: 8),
+          Text('Add new method'),
+        ],
+      ),
     );
   }
 }
@@ -304,21 +276,21 @@ class _ParameterFormRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(
-          width: 60,
-        ),
-        Expanded(
-          child: CustomTextField.normal(
-            name: '', //AuthForm.passwordKey,
-            text: 'Type',
-            isRequired: true,
-            onChanged: (newValue) {
-              ref
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            child: IconButton(
+              onPressed: () => ref
                   .read(allArhitectureElementsNotifier.notifier)
-                  .updateArhitectureElementParameter(
+                  .removeArhitectureElementParameter(
                     ref
                             .read(
                               currentlySelectedArhitectureElementStateProvider,
@@ -326,35 +298,91 @@ class _ParameterFormRow extends ConsumerWidget {
                             ?.id ??
                         '',
                     method,
-                    parameter.copyWith(type: newValue ?? ''),
-                  );
-            },
+                    parameter,
+                  ),
+              icon: const Icon(
+                Icons.remove_circle_outline_rounded,
+              ),
+            ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          flex: 2,
-          child: CustomTextField.normal(
-            name: '', //AuthForm.passwordKey,
-            text: 'Parameter name',
-            isRequired: true,
-            onChanged: (newValue) {
-              ref
-                  .read(allArhitectureElementsNotifier.notifier)
-                  .updateArhitectureElementParameter(
-                    ref
-                            .read(
-                              currentlySelectedArhitectureElementStateProvider,
-                            )
-                            ?.id ??
-                        '',
-                    method,
-                    parameter.copyWith(parameterName: newValue ?? ''),
-                  );
-            },
+          Expanded(
+            child: CustomTextField.normal(
+              name: 'type_${method.id}_${parameter.id}',
+              text: 'Type',
+              isRequired: true,
+              onChanged: (newValue) {
+                ref
+                    .read(allArhitectureElementsNotifier.notifier)
+                    .updateArhitectureElementParameter(
+                      ref
+                              .read(
+                                currentlySelectedArhitectureElementStateProvider,
+                              )
+                              ?.id ??
+                          '',
+                      method,
+                      parameter.copyWith(type: newValue ?? ''),
+                    );
+              },
+            ),
           ),
-        ),
-      ],
+          const SizedBox(width: 8),
+          Expanded(
+            flex: 2,
+            child: CustomTextField.normal(
+              name: 'parameter_name_${method.id}_${parameter.id}',
+              text: 'Parameter name',
+              isRequired: true,
+              onChanged: (newValue) {
+                ref
+                    .read(allArhitectureElementsNotifier.notifier)
+                    .updateArhitectureElementParameter(
+                      ref
+                              .read(
+                                currentlySelectedArhitectureElementStateProvider,
+                              )
+                              ?.id ??
+                          '',
+                      method,
+                      parameter.copyWith(parameterName: newValue ?? ''),
+                    );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AddParameterButton extends ConsumerWidget {
+  final Method method;
+
+  const _AddParameterButton({required this.method});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () => ref
+          .read(allArhitectureElementsNotifier.notifier)
+          .addArhitectureElementParameter(
+            ref
+                    .read(
+                      currentlySelectedArhitectureElementStateProvider,
+                    )
+                    ?.id ??
+                '',
+            method,
+          ),
+      child: Row(
+        children: const [
+          Icon(
+            Icons.add_circle_outline_rounded,
+          ),
+          SizedBox(width: 8),
+          Text('Add new parameter'),
+        ],
+      ),
     );
   }
 }

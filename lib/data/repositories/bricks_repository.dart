@@ -1,6 +1,7 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter_arhitect/data/services/bricks_generator_service.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
+import 'package:flutter_arhitect/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final bricksRepositoryProvider = Provider<BricksRepository>(
@@ -29,6 +30,8 @@ class BricksRepositoryImpl extends BricksRepository {
       await _bricksGeneratorService.generateBrickLocallyFrom(
         baseArhitectureElement: element,
         savePath: savePath,
+        projectName: projectName,
+        featureName: featureName,
       );
     }
   }
