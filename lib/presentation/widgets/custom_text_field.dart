@@ -199,7 +199,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return FormBuilderField<String>(
       name: widget.name,
       validator: widget.validator,
-      initialValue: 'DAAJJ NETSTO',
       autovalidateMode:
           widget.autoValidateMode ?? AutovalidateMode.onUserInteraction,
       builder: (field) {

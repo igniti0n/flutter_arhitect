@@ -2,11 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
-import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
-import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
+import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form_widget.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -83,7 +82,7 @@ class _BodyState extends ConsumerState<_Body> {
             children: [
               const SizedBox(height: 40),
               CustomTextField.normal(
-                name: '', //AuthForm.emailKey,
+                name: 'name',
                 text: 'Name',
                 onChanged: (newText) {
                   ref
@@ -102,12 +101,10 @@ class _BodyState extends ConsumerState<_Body> {
                 // isRequiredValidatorErrorText: 'Name is required',
               ),
               const SizedBox(height: 16),
-              for (final method in arhitectureElement.methods)
-                _MethodFormRow(method),
-              const _AddMethodButton(),
+              const MethodsAndParametersFormWidget(),
               const SizedBox(height: 16),
               CustomTextField.multilineDescription(
-                name: '', //AuthForm.emailKey,
+                name: 'description',
                 text: 'Description',
                 textInputType: TextInputType.multiline,
                 isRequired: false,
@@ -118,270 +115,14 @@ class _BodyState extends ConsumerState<_Body> {
               TextButton(
                 child: const Text('Save'),
                 onPressed: () {
-                  _formKey.currentState?.saveAndValidate();
-                  if (_formKey.currentState?.isValid == true) {
-                    // ref.read(authNotifierProvider.notifier).submitLoginForm(
-                    //       formMap: _formKey.currentState!.value,
-                    //     );
+                  if (_formKey.currentState?.saveAndValidate() == true) {
+                    log('form: ${_formKey.currentState?.value}, fields: ${_formKey.currentState?.fields}');
                   }
                 },
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _MethodFormRow extends ConsumerWidget {
-  final Method method;
-  const _MethodFormRow(this.method);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 16),
-              child: IconButton(
-                onPressed: () => ref
-                    .read(allArhitectureElementsNotifier.notifier)
-                    .removeArhitectureElementMethod(
-                      ref
-                              .read(
-                                currentlySelectedArhitectureElementStateProvider,
-                              )
-                              ?.id ??
-                          '',
-                      method.id,
-                    ),
-                icon: const Icon(
-                  Icons.remove_circle_outline_rounded,
-                ),
-              ),
-            ),
-            Expanded(
-              child: CustomTextField.normal(
-                name: 'return_value_${method.id}',
-                text: 'Return value',
-                isRequired: true,
-                onChanged: (newValue) {
-                  ref
-                      .read(allArhitectureElementsNotifier.notifier)
-                      .updateArhitectureElementMethod(
-                        ref
-                                .read(
-                                  currentlySelectedArhitectureElementStateProvider,
-                                )
-                                ?.id ??
-                            '',
-                        method.copyWith(type: newValue ?? ''),
-                      );
-                },
-                // textEditingController:
-                //     TextEditingController(text: method.returnValue),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: CustomTextField.normal(
-                name: 'method_name_${method.id}',
-                text: 'Method name',
-                isRequired: true,
-                onChanged: (newValue) {
-                  ref
-                      .read(allArhitectureElementsNotifier.notifier)
-                      .updateArhitectureElementMethod(
-                        ref
-                                .read(
-                                  currentlySelectedArhitectureElementStateProvider,
-                                )
-                                ?.id ??
-                            '',
-                        method.copyWith(methodName: newValue ?? ''),
-                      );
-                },
-                // textEditingController:
-                //     TextEditingController(text: method.methodName),
-              ),
-            ),
-          ],
-        ),
-        ExpansionTile(
-          leading: const Icon(Icons.arrow_drop_down),
-          title: const Text(
-            'Parameters',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          children: [
-            for (final parameter in method.parameters)
-              _ParameterFormRow(
-                method: method,
-                parameter: parameter,
-              ),
-            const SizedBox(height: 16),
-            Container(
-              margin: const EdgeInsets.only(left: 30),
-              child: _AddParameterButton(method: method),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-      ],
-    );
-  }
-}
-
-class _AddMethodButton extends ConsumerWidget {
-  const _AddMethodButton();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
-      onPressed: () => ref
-          .read(allArhitectureElementsNotifier.notifier)
-          .addArhitectureElementMethod(ref
-                  .read(
-                    currentlySelectedArhitectureElementStateProvider,
-                  )
-                  ?.id ??
-              ''),
-      child: Row(
-        children: const [
-          Icon(
-            Icons.add_circle_outline_rounded,
-          ),
-          SizedBox(width: 8),
-          Text('Add new method'),
-        ],
-      ),
-    );
-  }
-}
-
-class _ParameterFormRow extends ConsumerWidget {
-  final Method method;
-  final Parameter parameter;
-  const _ParameterFormRow({
-    Key? key,
-    required this.method,
-    required this.parameter,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            width: 20,
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 16),
-            child: IconButton(
-              onPressed: () => ref
-                  .read(allArhitectureElementsNotifier.notifier)
-                  .removeArhitectureElementParameter(
-                    ref
-                            .read(
-                              currentlySelectedArhitectureElementStateProvider,
-                            )
-                            ?.id ??
-                        '',
-                    method,
-                    parameter,
-                  ),
-              icon: const Icon(
-                Icons.remove_circle_outline_rounded,
-              ),
-            ),
-          ),
-          Expanded(
-            child: CustomTextField.normal(
-              name: 'type_${method.id}_${parameter.id}',
-              text: 'Type',
-              isRequired: true,
-              onChanged: (newValue) {
-                ref
-                    .read(allArhitectureElementsNotifier.notifier)
-                    .updateArhitectureElementParameter(
-                      ref
-                              .read(
-                                currentlySelectedArhitectureElementStateProvider,
-                              )
-                              ?.id ??
-                          '',
-                      method,
-                      parameter.copyWith(type: newValue ?? ''),
-                    );
-              },
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            flex: 2,
-            child: CustomTextField.normal(
-              name: 'parameter_name_${method.id}_${parameter.id}',
-              text: 'Parameter name',
-              isRequired: true,
-              onChanged: (newValue) {
-                ref
-                    .read(allArhitectureElementsNotifier.notifier)
-                    .updateArhitectureElementParameter(
-                      ref
-                              .read(
-                                currentlySelectedArhitectureElementStateProvider,
-                              )
-                              ?.id ??
-                          '',
-                      method,
-                      parameter.copyWith(parameterName: newValue ?? ''),
-                    );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AddParameterButton extends ConsumerWidget {
-  final Method method;
-
-  const _AddParameterButton({required this.method});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
-      onPressed: () => ref
-          .read(allArhitectureElementsNotifier.notifier)
-          .addArhitectureElementParameter(
-            ref
-                    .read(
-                      currentlySelectedArhitectureElementStateProvider,
-                    )
-                    ?.id ??
-                '',
-            method,
-          ),
-      child: Row(
-        children: const [
-          Icon(
-            Icons.add_circle_outline_rounded,
-          ),
-          SizedBox(width: 8),
-          Text('Add new parameter'),
-        ],
       ),
     );
   }
