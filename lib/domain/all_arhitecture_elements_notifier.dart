@@ -184,11 +184,14 @@ class AllArhitectureElementsNotifier
           return element.copyWith(
             methods: [...element.methods]
               ..removeAt(index)
-              ..add(method.copyWith(
-                parameters: [...method.parameters]..removeWhere(
-                    (element) => element.id == parameter.id,
-                  ),
-              )),
+              ..insert(
+                index,
+                method.copyWith(
+                  parameters: [...method.parameters]..removeWhere(
+                      (element) => element.id == parameter.id,
+                    ),
+                ),
+              ),
           );
         }
         return element;
@@ -212,11 +215,14 @@ class AllArhitectureElementsNotifier
           return element.copyWith(
             methods: [...element.methods]
               ..removeAt(index)
-              ..add(method.copyWith(
-                parameters: [...method.parameters]
-                  ..removeAt(index2)
-                  ..add(parameter),
-              )),
+              ..insert(
+                index,
+                method.copyWith(
+                  parameters: [...method.parameters]
+                    ..removeAt(index2)
+                    ..insert(index2, parameter),
+                ),
+              ),
           );
         }
         return element;
