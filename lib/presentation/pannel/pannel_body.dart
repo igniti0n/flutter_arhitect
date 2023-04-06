@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
+import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form_widget.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final formKeyProvider = Provider<GlobalKey<FormBuilderState>>((ref) {
+  return GlobalKey<FormBuilderState>();
+});
 
 class PannelBody extends ConsumerWidget {
   const PannelBody({Key? key}) : super(key: key);
@@ -35,8 +40,6 @@ class PannelBody extends ConsumerWidget {
                 Expanded(child: _Body()),
                 SizedBox(width: 120),
                 SizedBox(width: 24),
-                // Expanded(child: _Body()),
-                // AnimationTimeDelaySlider(),
               ],
             ),
           ),
@@ -46,23 +49,11 @@ class PannelBody extends ConsumerWidget {
   }
 }
 
-class _Body extends ConsumerStatefulWidget {
+class _Body extends ConsumerWidget {
   const _Body();
 
   @override
-  ConsumerState<_Body> createState() => _BodyState();
-}
-
-/// Tittle
-/// dependencies
-/// methods + parameters
-/// description
-
-class _BodyState extends ConsumerState<_Body> {
-  final _formKey = GlobalKey<FormBuilderState>();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final initialValue = ref.read(
           currentlySelectedArhitectureElementStateProvider,
         ) ??
@@ -72,8 +63,9 @@ class _BodyState extends ConsumerState<_Body> {
 
     log('Initial value: $initialValue, architecture element: $arhitectureElement');
 
+    final formKey = ref.watch(formKeyProvider);
     return FormBuilder(
-      key: _formKey,
+      key: formKey,
       child: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -82,7 +74,7 @@ class _BodyState extends ConsumerState<_Body> {
             children: [
               const SizedBox(height: 40),
               CustomTextField.normal(
-                name: 'name',
+                name: ArchitectureElementForm.nameKey,
                 text: 'Name',
                 onChanged: (newText) {
                   ref
@@ -92,31 +84,26 @@ class _BodyState extends ConsumerState<_Body> {
                         newText ?? '',
                       );
                 },
-                // textEditingController: TextEditingController(
-                //   text: initialValue.name,
-                // ),
                 autoValidateMode: AutovalidateMode.onUserInteraction,
                 isRequired: true,
-
                 // isRequiredValidatorErrorText: 'Name is required',
               ),
               const SizedBox(height: 16),
               const MethodsAndParametersFormWidget(),
               const SizedBox(height: 16),
               CustomTextField.multilineDescription(
-                name: 'description',
+                name: ArchitectureElementForm.descriptionKey,
                 text: 'Description',
                 textInputType: TextInputType.multiline,
                 isRequired: false,
-
                 // isRequiredValidatorErrorText: 'Name is required',
               ),
               const SizedBox(height: 16),
               TextButton(
                 child: const Text('Save'),
                 onPressed: () {
-                  if (_formKey.currentState?.saveAndValidate() == true) {
-                    log('form: ${_formKey.currentState?.value}, fields: ${_formKey.currentState?.fields}');
+                  if (formKey.currentState?.saveAndValidate() == true) {
+                    log('form: ${formKey.currentState?.value}');
                   }
                 },
               ),

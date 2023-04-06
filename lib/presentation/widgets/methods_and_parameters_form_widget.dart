@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
+import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -38,11 +39,7 @@ class _MethodFormRow extends ConsumerWidget {
             Container(
               margin: const EdgeInsets.only(top: 16),
               child: IconButton(
-                onPressed: () => ref
-                    .read(currentMethodsAndParametersStateProvider.notifier)
-                    .update((state) => [...state]..removeWhere(
-                        (element) => element.value1.key == methodKey,
-                      )),
+                onPressed: () => removeMethod(ref),
                 icon: const Icon(
                   Icons.remove_circle_outline_rounded,
                 ),
@@ -50,7 +47,9 @@ class _MethodFormRow extends ConsumerWidget {
             ),
             Expanded(
               child: CustomTextField.normal(
-                name: 'method_return-value_${methodKey.value}',
+                name: ArchitectureElementForm.methodReturnValueForKey(
+                  methodKey: methodKey.value,
+                ),
                 text: 'Return value',
                 isRequired: true,
               ),
@@ -59,7 +58,9 @@ class _MethodFormRow extends ConsumerWidget {
             Expanded(
               flex: 2,
               child: CustomTextField.normal(
-                name: 'method_name_${methodKey.value}',
+                name: ArchitectureElementForm.methodNameForKey(
+                  methodKey: methodKey.value,
+                ),
                 text: 'Method name',
                 isRequired: true,
               ),
@@ -80,6 +81,33 @@ class _MethodFormRow extends ConsumerWidget {
       ],
     );
   }
+
+  void removeMethod(WidgetRef ref) {
+    ArchitectureElementForm.removeMethodFromForm(
+      methodKey: methodKey.value,
+      ref: ref,
+    );
+    ref
+        .read(currentMethodsAndParametersStateProvider.notifier)
+        .update((state) => [...state]..removeWhere(
+            (element) {
+              if (element.value1.key == methodKey) {
+                for (final parameterWidget in element.value2) {
+                  final String? key = (parameterWidget.key as ValueKey).value;
+                  if (key != null) {
+                    ArchitectureElementForm.removeParameterFromForm(
+                      methodKey: methodKey.value,
+                      parameterKey: key,
+                      ref: ref,
+                    );
+                  }
+                }
+                return true;
+              }
+              return false;
+            },
+          ));
+  }
 }
 
 class _AddMethodButton extends ConsumerWidget {
@@ -93,7 +121,9 @@ class _AddMethodButton extends ConsumerWidget {
           .update((state) => [
                 ...state,
                 Tuple2(
-                    _MethodFormRow(methodKey: ValueKey(const Uuid().v4())), []),
+                  _MethodFormRow(methodKey: ValueKey(const Uuid().v4())),
+                  [],
+                ),
               ]),
       child: Row(
         children: const [
@@ -125,7 +155,10 @@ class _ParameterFormWidget extends ConsumerWidget {
     return Column(
       children: [
         for (var parameterWidget in tuple.value2) parameterWidget,
-        _AddParameterButton(methodKey: methodKey),
+        Container(
+          margin: const EdgeInsets.only(left: 20),
+          child: _AddParameterButton(methodKey: methodKey),
+        ),
       ],
     );
   }
@@ -153,17 +186,7 @@ class _ParameterFormRow extends ConsumerWidget {
           Container(
             margin: const EdgeInsets.only(top: 16),
             child: IconButton(
-              onPressed: () => ref
-                  .read(currentMethodsAndParametersStateProvider.notifier)
-                  .update((state) {
-                final list = [...state];
-                final index = list
-                    .indexWhere((element) => element.value1.key == methodKey);
-                list[index]
-                    .value2
-                    .removeWhere((element) => element.key == parameterKey);
-                return list;
-              }),
+              onPressed: () => removeParameter(ref),
               icon: const Icon(
                 Icons.remove_circle_outline_rounded,
               ),
@@ -171,7 +194,10 @@ class _ParameterFormRow extends ConsumerWidget {
           ),
           Expanded(
             child: CustomTextField.normal(
-              name: 'parameter_type_${methodKey.value}_${parameterKey.value}',
+              name: ArchitectureElementForm.parameterTypeForKey(
+                methodKey: methodKey.value,
+                parameterKey: parameterKey.value,
+              ),
               text: 'Type',
               isRequired: true,
             ),
@@ -180,7 +206,10 @@ class _ParameterFormRow extends ConsumerWidget {
           Expanded(
             flex: 2,
             child: CustomTextField.normal(
-              name: 'parameter_name_${methodKey.value}_${parameterKey.value}',
+              name: ArchitectureElementForm.parameterNameForKey(
+                methodKey: methodKey.value,
+                parameterKey: parameterKey.value,
+              ),
               text: 'Parameter name',
               isRequired: true,
             ),
@@ -188,6 +217,21 @@ class _ParameterFormRow extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  void removeParameter(WidgetRef ref) {
+    ref.read(currentMethodsAndParametersStateProvider.notifier).update((state) {
+      ArchitectureElementForm.removeParameterFromForm(
+        methodKey: methodKey.value,
+        parameterKey: parameterKey.value,
+        ref: ref,
+      );
+      final list = [...state];
+      final index =
+          list.indexWhere((element) => element.value1.key == methodKey);
+      list[index].value2.removeWhere((element) => element.key == parameterKey);
+      return list;
+    });
   }
 }
 
