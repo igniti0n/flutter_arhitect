@@ -8,9 +8,12 @@ class PannelPully extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => ref
-          .read(currentlySelectedArhitectureElementStateProvider.notifier)
-          .state = null,
+      onTap: () {
+        ref
+            .read(currentlySelectedArhitectureElementStateProvider.notifier)
+            .state = null;
+        ref.invalidate(currentMethodsAndParametersStateProvider);
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.blueGrey[700],

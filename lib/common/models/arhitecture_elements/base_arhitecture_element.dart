@@ -13,6 +13,7 @@ class BaseArhitectureElement extends Equatable {
   final GlobalKey widgetsGlobalKey;
   final ArhitectureLayer layer;
   final String name;
+  final String description;
   final List<BaseArhitectureElement> dependencies;
   final List<Method> methods;
   final String dataValue;
@@ -24,6 +25,7 @@ class BaseArhitectureElement extends Equatable {
     required this.widgetsGlobalKey,
     required this.layer,
     required this.name,
+    required this.description,
     required this.dependencies,
     required this.methods,
     required this.dataValue,
@@ -36,6 +38,7 @@ class BaseArhitectureElement extends Equatable {
         widgetsGlobalKey: GlobalKey(),
         layer: ArhitectureLayer.data,
         name: 'unnamed',
+        description: '',
         dependencies: const [],
         methods: const [],
         dataValue: '',
@@ -54,6 +57,7 @@ class BaseArhitectureElement extends Equatable {
     GlobalKey? widgetsGlobalKey,
     ArhitectureLayer? layer,
     String? name,
+    String? description,
     List<BaseArhitectureElement>? dependencies,
     List<Method>? methods,
     String? dataValue,
@@ -68,6 +72,7 @@ class BaseArhitectureElement extends Equatable {
         layer: layer ?? this.layer,
         methods: methods ?? this.methods,
         name: name ?? this.name,
+        description: description ?? this.description,
         widgetsGlobalKey: widgetsGlobalKey ?? this.widgetsGlobalKey,
         canvasPosition: canvasPosition ?? this.canvasPosition,
       );
@@ -78,6 +83,7 @@ class BaseArhitectureElement extends Equatable {
         widgetsGlobalKey,
         layer,
         name,
+        description,
         dependencies,
         methods,
         dataValue,

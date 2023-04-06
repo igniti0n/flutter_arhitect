@@ -76,14 +76,6 @@ class _Body extends ConsumerWidget {
               CustomTextField.normal(
                 name: ArchitectureElementForm.nameKey,
                 text: 'Name',
-                onChanged: (newText) {
-                  ref
-                      .read(allArhitectureElementsNotifier.notifier)
-                      .updateArhitectureElementName(
-                        arhitectureElement.id,
-                        newText ?? '',
-                      );
-                },
                 autoValidateMode: AutovalidateMode.onUserInteraction,
                 isRequired: true,
                 // isRequiredValidatorErrorText: 'Name is required',
@@ -96,14 +88,18 @@ class _Body extends ConsumerWidget {
                 text: 'Description',
                 textInputType: TextInputType.multiline,
                 isRequired: false,
-                // isRequiredValidatorErrorText: 'Name is required',
               ),
               const SizedBox(height: 16),
               TextButton(
                 child: const Text('Save'),
                 onPressed: () {
                   if (formKey.currentState?.saveAndValidate() == true) {
-                    log('form: ${formKey.currentState?.value}');
+                    ref
+                        .read(allArhitectureElementsNotifier.notifier)
+                        .onFormSubmitted(
+                          arhitectureElement: arhitectureElement,
+                          formMap: formKey.currentState!.value,
+                        );
                   }
                 },
               ),

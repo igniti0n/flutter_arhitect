@@ -2,21 +2,25 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
-import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
-import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
+import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 typedef AllArhitectureElements = List<BaseArhitectureElement>;
 
 final allArhitectureElementsNotifier = StateNotifierProvider<
-    AllArhitectureElementsNotifier, AllArhitectureElements>((ref) {
-  return AllArhitectureElementsNotifier();
-});
+    AllArhitectureElementsNotifier, AllArhitectureElements>(
+  (ref) => AllArhitectureElementsNotifier(
+    ref.watch(architectureElementMapperProvider),
+  ),
+);
 
 class AllArhitectureElementsNotifier
     extends StateNotifier<AllArhitectureElements> {
-  AllArhitectureElementsNotifier() : super([]);
+  final ArchitectureElementMapper<BaseArhitectureElement>
+      _architectureElementMapper;
+
+  AllArhitectureElementsNotifier(this._architectureElementMapper) : super([]);
 
   void addArhitectureElementFromTemplate(Template template) {
     log('Adding arhitecture element from template: ${template.name}');
@@ -88,153 +92,17 @@ class AllArhitectureElementsNotifier
         .toList();
   }
 
-  void updateArhitectureElementName(String id, String name) {
+  void onFormSubmitted({
+    required BaseArhitectureElement arhitectureElement,
+    required Map<String, dynamic> formMap,
+  }) {
+    final updatedArchitectureElement =
+        _architectureElementMapper(arhitectureElement, formMap);
     state = state
         .map(
-          (element) =>
-              element.id == id ? element.copyWith(name: name) : element,
-        )
-        .toList();
-  }
-
-  void addArhitectureElementMethod(String id) {
-    state = state
-        .map(
-          (element) => element.id == id
-              ? element.copyWith(
-                  methods: [...element.methods, Method.defaultMethod()],
-                )
+          (element) => element.id == arhitectureElement.id
+              ? updatedArchitectureElement
               : element,
-        )
-        .toList();
-  }
-
-  void removeArhitectureElementMethod(
-    String id,
-    String methodId,
-  ) {
-    state = state
-        .map(
-          (element) => element.id == id
-              ? element.copyWith(
-                  methods: [...element.methods]..removeWhere(
-                      (element) => element.id == methodId,
-                    ),
-                )
-              : element,
-        )
-        .toList();
-  }
-
-  void updateArhitectureElementMethod(String id, Method method) {
-    state = state.map(
-      (element) {
-        if (element.id == id) {
-          final index =
-              element.methods.indexWhere((element) => element.id == method.id);
-          return element.copyWith(
-            methods: [...element.methods]
-              ..removeAt(index)
-              ..add(method),
-          );
-        }
-        return element;
-      },
-    ).toList();
-  }
-
-  void addArhitectureElementParameter(String id, Method method) {
-    log('initial state: $state');
-    state = state.map(
-      (element) {
-        if (element.id == id) {
-          final index =
-              element.methods.indexWhere((element) => element.id == method.id);
-          return element.copyWith(
-            methods: [...element.methods]
-              ..removeAt(index)
-              ..insert(
-                index,
-                method.copyWith(
-                  parameters: [
-                    ...method.parameters,
-                    Parameter.defaultParameter(),
-                  ],
-                ),
-              ),
-          );
-        }
-        return element;
-      },
-    ).toList();
-    log('final state: $state');
-  }
-
-  void removeArhitectureElementParameter(
-    String id,
-    Method method,
-    Parameter parameter,
-  ) {
-    log('initial state: $state');
-    state = state.map(
-      (element) {
-        if (element.id == id) {
-          final index =
-              element.methods.indexWhere((element) => element.id == method.id);
-          return element.copyWith(
-            methods: [...element.methods]
-              ..removeAt(index)
-              ..insert(
-                index,
-                method.copyWith(
-                  parameters: [...method.parameters]..removeWhere(
-                      (element) => element.id == parameter.id,
-                    ),
-                ),
-              ),
-          );
-        }
-        return element;
-      },
-    ).toList();
-    log('final state: $state');
-  }
-
-  void updateArhitectureElementParameter(
-    String id,
-    Method method,
-    Parameter parameter,
-  ) {
-    state = state.map(
-      (element) {
-        if (element.id == id) {
-          final index =
-              element.methods.indexWhere((element) => element.id == method.id);
-          final index2 = method.parameters
-              .indexWhere((element) => element.id == parameter.id);
-          return element.copyWith(
-            methods: [...element.methods]
-              ..removeAt(index)
-              ..insert(
-                index,
-                method.copyWith(
-                  parameters: [...method.parameters]
-                    ..removeAt(index2)
-                    ..insert(index2, parameter),
-                ),
-              ),
-          );
-        }
-        return element;
-      },
-    ).toList();
-  }
-
-  void updateArhitectureElementDescription(String id, String description) {
-    state = state
-        .map(
-          (element) => //element.id == id ? element //.copyWith(description: description):
-              element,
         )
         .toList();
   }
