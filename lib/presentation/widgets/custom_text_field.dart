@@ -198,6 +198,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return FormBuilderField<String>(
       name: widget.name,
+      initialValue: widget.initialValue,
       validator: widget.validator,
       autovalidateMode:
           widget.autoValidateMode ?? AutovalidateMode.onUserInteraction,
@@ -221,10 +222,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
               const SizedBox(height: 4),
             ],
-            TextField(
+            TextFormField(
               textCapitalization:
                   widget.textCapitalization ?? TextCapitalization.none,
               controller: widget.textEditingController,
+              initialValue: widget.initialValue,
               onChanged: (value) {
                 field.didChange(value);
                 widget.onChanged?.call(value);

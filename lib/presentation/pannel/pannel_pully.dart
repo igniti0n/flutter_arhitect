@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PannelPully extends ConsumerWidget {
   const PannelPully({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class PannelPully extends ConsumerWidget {
         ref
             .read(currentlySelectedArhitectureElementStateProvider.notifier)
             .state = null;
-        ref.invalidate(currentMethodsAndParametersStateProvider);
+        Scaffold.of(context).closeEndDrawer();
       },
       child: Container(
         decoration: BoxDecoration(

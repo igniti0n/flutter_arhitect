@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 typedef AllArhitectureElements = List<BaseArhitectureElement>;
 

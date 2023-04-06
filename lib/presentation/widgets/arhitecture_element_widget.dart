@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
-import 'package:flutter_arhitect/domain/currently_selected_arhitecutre_element_state_provider.dart';
+import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/positioned_draggable.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ArhitectureElementWidget extends HookConsumerWidget {
@@ -13,9 +12,6 @@ class ArhitectureElementWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textController =
-        useTextEditingController(text: arhitectureElement.name);
-
     return PositionedDraggable(
       top: arhitectureElement.canvasPosition.dy,
       left: arhitectureElement.canvasPosition.dx,
@@ -54,10 +50,13 @@ class ArhitectureElementWidget extends HookConsumerWidget {
                 cursor: SystemMouseCursors
                     .click, // Change the cursor when entering the region
                 child: GestureDetector(
-                  onTap: () => ref
-                      .read(currentlySelectedArhitectureElementStateProvider
-                          .notifier)
-                      .state = arhitectureElement,
+                  onTap: () {
+                    ref
+                        .read(currentlySelectedArhitectureElementStateProvider
+                            .notifier)
+                        .state = arhitectureElement;
+                    Scaffold.of(context).openEndDrawer();
+                  },
                   child: Text(
                     arhitectureElement.name,
                   ),

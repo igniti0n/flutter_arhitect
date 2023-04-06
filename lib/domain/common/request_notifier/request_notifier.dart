@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_arhitect/domain/common/request_notifier/request_state.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class RequestNotifier<Value>
     extends StateNotifier<RequestState<Value>> {

@@ -2,7 +2,7 @@ import 'package:flutter_arhitect/common/models/arhitecture_elements/element_part
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/domain/common/request_notifier/request_notifier.dart';
 import 'package:flutter_arhitect/domain/common/request_notifier/request_state.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mason/mason.dart';
 import 'package:uuid/uuid.dart';
 

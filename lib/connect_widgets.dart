@@ -9,7 +9,7 @@ import 'package:flutter_arhitect/domain/files_generation_notifier.dart';
 import 'package:flutter_arhitect/presentation/painters/elements_connections_painter.dart';
 import 'package:flutter_arhitect/presentation/pannel/element_info_pannel.dart';
 import 'package:flutter_arhitect/presentation/widgets/arhitecture_element_widget.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ConnectWidgets extends ConsumerStatefulWidget {
   const ConnectWidgets({super.key});
@@ -27,6 +27,7 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[800],
+      endDrawer: const ElementInfoPannel(),
       body: Stack(
         fit: StackFit.passthrough,
         children: [
@@ -43,11 +44,6 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
               ),
               _DummyControls(),
             ],
-          ),
-          const Positioned(
-            top: 0,
-            right: 0,
-            child: ElementInfoPannel(),
           ),
         ],
       ),

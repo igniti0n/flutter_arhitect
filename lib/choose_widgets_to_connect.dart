@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/connectable_widget.dart';
 import 'package:flutter_arhitect/domain/connecting_widgets_notifier.dart';
 import 'package:flutter_arhitect/presentation/painters/user_connecting_line_painter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChooseWidgetsToConnect extends ConsumerWidget {
   const ChooseWidgetsToConnect({super.key});
