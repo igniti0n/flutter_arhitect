@@ -10,6 +10,9 @@ final currentlySelectedArhitectureElementStateProvider =
 final currentMethodsAndParametersStateProvider =
     StateProvider<List<Tuple2<Widget, List<Widget>>>>((ref) => []);
 
+final didChangeCurrentlySelectedArhitectureElementStateProvider =
+    StateProvider<bool>((ref) => false);
+
 final arhitectureElementProvider =
     Provider.family<BaseArhitectureElement, String>((ref, id) {
   final currentlySelectedArhitectureElement =

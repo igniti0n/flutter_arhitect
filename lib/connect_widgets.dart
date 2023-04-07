@@ -39,6 +39,9 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
         if (!isOpened) {
           ref.invalidate(currentlySelectedArhitectureElementStateProvider);
           ref.invalidate(currentMethodsAndParametersStateProvider);
+          ref.invalidate(
+            didChangeCurrentlySelectedArhitectureElementStateProvider,
+          );
         }
       },
       body: Stack(

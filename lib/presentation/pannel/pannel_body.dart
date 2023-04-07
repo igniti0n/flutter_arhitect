@@ -62,11 +62,13 @@ class _Body extends ConsumerWidget {
     final arhitectureElement =
         ref.watch(arhitectureElementProvider(initialValue.id));
 
-    log('Initial value: $initialValue, architecture element: $arhitectureElement');
-
     final formKey = ref.watch(formKeyProvider);
     return FormBuilder(
       key: formKey,
+      onChanged: () => ref
+          .read(didChangeCurrentlySelectedArhitectureElementStateProvider
+              .notifier)
+          .update((state) => true),
       child: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),

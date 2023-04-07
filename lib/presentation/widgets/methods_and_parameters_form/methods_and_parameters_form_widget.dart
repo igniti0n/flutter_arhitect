@@ -40,9 +40,7 @@ class _AddMethodButton extends ConsumerWidget {
               ]),
       child: Row(
         children: const [
-          Icon(
-            Icons.add_circle_outline_rounded,
-          ),
+          Icon(Icons.add_circle_outline_rounded),
           SizedBox(width: 8),
           Text('Add new method'),
         ],
