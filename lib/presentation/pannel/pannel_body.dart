@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
@@ -98,7 +96,6 @@ class _Body extends ConsumerWidget {
               TextButton(
                 child: const Text('Save'),
                 onPressed: () {
-                  log('formKey.currentState!.value: ${formKey.currentState!.value}');
                   if (formKey.currentState?.saveAndValidate() == true) {
                     ref
                         .read(allArhitectureElementsNotifier.notifier)

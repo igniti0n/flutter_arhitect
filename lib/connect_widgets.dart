@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/common/models/element_pair.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/all_templates_notifier.dart';
@@ -47,11 +48,16 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
       body: Stack(
         fit: StackFit.passthrough,
         children: [
-          CustomPaint(
-            painter: ElementsConnectionsPainter(
-              pairs: pairs,
+          GestureDetector(
+            onTapDown: (details) {
+              checkIfRemoveConnectionButtonIsTapped(details, pairs);
+            },
+            child: CustomPaint(
+              painter: ElementsConnectionsPainter(
+                pairs: pairs,
+              ),
+              child: const _Elements(),
             ),
-            child: const _Elements(),
           ),
           Column(
             children: const [
@@ -62,6 +68,44 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
         ],
       ),
     );
+  }
+
+  void checkIfRemoveConnectionButtonIsTapped(
+    TapDownDetails details,
+    List<ElementPair> pairs,
+  ) {
+    for (final pair in pairs) {
+      var first = pair.first;
+      var second = pair.second;
+      if (second.position.dy < first.position.dy) {
+        final temp = first;
+        first = second;
+        second = temp;
+      }
+      final midpoint = Offset(
+        (first.position.dx +
+                first.size.width / 2 +
+                second.position.dx +
+                second.size.width / 2) /
+            2,
+        (first.position.dy +
+                (first.size.height / 2) +
+                second.position.dy +
+                (second.size.height / 2)) /
+            2,
+      );
+      final tapPosition = (context.findRenderObject() as RenderBox)
+          .globalToLocal(details.globalPosition);
+      if ((tapPosition - midpoint).distance <= 10) {
+        ref
+            .read(allArhitectureElementsNotifier.notifier)
+            .removeDependencyFromArhitectureElement(
+              arhitectureElement: second.element,
+              dependency: first.element,
+            );
+        break;
+      }
+    }
   }
 }
 

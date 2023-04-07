@@ -35,15 +35,36 @@ class AllArhitectureElementsNotifier
   void removeArhitectureElement(BaseArhitectureElement arhitectureElement) {
     log('Removing arhitecture element: ${arhitectureElement.name}');
 
-    state = [...state]..removeWhere(
+    var newState = [...state]..removeWhere(
         (element) => element.id == arhitectureElement.id,
       );
+    for (final currentElement in newState) {
+      if (currentElement.dependencies
+              .indexWhere((element) => element.id == arhitectureElement.id) >
+          -1) {
+        newState = newState
+            .map(
+              (element) => element.id == currentElement.id
+                  ? element.copyWith(
+                      dependencies: [...element.dependencies]..removeWhere(
+                          (element) => element.id == arhitectureElement.id,
+                        ),
+                    )
+                  : element,
+            )
+            .toList();
+      }
+    }
+    state = newState;
   }
 
   void addDependencyToArhitectureElement({
     required BaseArhitectureElement arhitectureElement,
     required BaseArhitectureElement dependency,
   }) {
+    if (arhitectureElement == dependency) {
+      return;
+    }
     log('Updating dependency to arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');
     state = state.map(
       (element) {
@@ -69,8 +90,7 @@ class AllArhitectureElementsNotifier
         .map(
           (element) => element.id == arhitectureElement.id
               ? element.copyWith(
-                  dependencies: element.dependencies
-                    ..removeWhere(
+                  dependencies: [...element.dependencies]..removeWhere(
                       (element) => element.id == dependency.id,
                     ),
                 )

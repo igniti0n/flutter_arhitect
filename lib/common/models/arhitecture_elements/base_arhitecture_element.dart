@@ -14,6 +14,7 @@ import 'package:uuid/uuid.dart';
 class BaseArhitectureElement extends Equatable {
   final String id;
   final GlobalKey widgetsGlobalKey;
+  final Key positionedDraggableKey;
   final ArhitectureLayer layer;
   final String name;
   final String description;
@@ -26,6 +27,7 @@ class BaseArhitectureElement extends Equatable {
   const BaseArhitectureElement({
     required this.id,
     required this.widgetsGlobalKey,
+    required this.positionedDraggableKey,
     required this.layer,
     required this.name,
     required this.description,
@@ -39,6 +41,7 @@ class BaseArhitectureElement extends Equatable {
   factory BaseArhitectureElement.empty() => BaseArhitectureElement(
         id: const Uuid().v1(),
         widgetsGlobalKey: GlobalKey(),
+        positionedDraggableKey: Key(const Uuid().v1()),
         layer: ArhitectureLayer.data,
         name: 'unnamed',
         description: '',
@@ -78,6 +81,7 @@ class BaseArhitectureElement extends Equatable {
 
   BaseArhitectureElement copyWith({
     GlobalKey? widgetsGlobalKey,
+    GlobalKey? positionedDraggableKey,
     ArhitectureLayer? layer,
     String? name,
     String? description,
@@ -97,6 +101,8 @@ class BaseArhitectureElement extends Equatable {
         name: name ?? this.name,
         description: description ?? this.description,
         widgetsGlobalKey: widgetsGlobalKey ?? this.widgetsGlobalKey,
+        positionedDraggableKey:
+            positionedDraggableKey ?? this.positionedDraggableKey,
         canvasPosition: canvasPosition ?? this.canvasPosition,
       );
 
@@ -104,6 +110,7 @@ class BaseArhitectureElement extends Equatable {
   List<Object?> get props => [
         id,
         widgetsGlobalKey,
+        positionedDraggableKey,
         layer,
         name,
         description,

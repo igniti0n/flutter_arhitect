@@ -25,7 +25,8 @@ class BricksRepositoryImpl extends BricksRepository {
   Future<void> generateBricksFor({
     required AllArhitectureElements arhitectureElements,
   }) async {
-    final savePath = await getDirectoryPath() ?? '';
+    final savePath = await getDirectoryPath();
+    if (savePath == null) return;
     for (final element in arhitectureElements) {
       await _bricksGeneratorService.generateBrickLocallyFrom(
         baseArhitectureElement: element,
