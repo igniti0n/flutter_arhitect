@@ -52,9 +52,7 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
           ),
           Column(
             children: const [
-              SizedBox(
-                height: 60,
-              ),
+              SizedBox(height: 60),
               _DummyControls(),
             ],
           ),
@@ -85,9 +83,7 @@ class _DummyControls extends ConsumerWidget {
             child: Text(template.name),
           ),
         ),
-        const SizedBox(
-          width: 100,
-        ),
+        const SizedBox(width: 100),
         TextButton(
           onPressed: () =>
               ref.read(filesGenerationNotifier.notifier).generate(),

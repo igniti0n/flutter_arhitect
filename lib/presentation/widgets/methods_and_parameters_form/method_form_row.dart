@@ -55,6 +55,7 @@ class MethodFormRow extends ConsumerWidget {
           ],
         ),
         ExpansionTile(
+          initiallyExpanded: method?.parameters.isNotEmpty == true,
           leading: const Icon(Icons.arrow_drop_down),
           title: const Text(
             'Parameters',

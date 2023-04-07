@@ -24,9 +24,7 @@ class ParameterFormRow extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            width: 20,
-          ),
+          const SizedBox(width: 20),
           Container(
             margin: const EdgeInsets.only(top: 16),
             child: IconButton(
