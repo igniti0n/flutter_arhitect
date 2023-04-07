@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PannelPully extends ConsumerWidget {
@@ -8,12 +7,7 @@ class PannelPully extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {
-        ref
-            .read(currentlySelectedArhitectureElementStateProvider.notifier)
-            .state = null;
-        Scaffold.of(context).closeEndDrawer();
-      },
+      onTap: Scaffold.of(context).closeEndDrawer,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.blueGrey[700],

@@ -8,7 +8,7 @@ final currentlySelectedArhitectureElementStateProvider =
     StateProvider<BaseArhitectureElement?>((ref) => null);
 
 final currentMethodsAndParametersStateProvider =
-    StateProvider.autoDispose<List<Tuple2<Widget, List<Widget>>>>((ref) => []);
+    StateProvider<List<Tuple2<Widget, List<Widget>>>>((ref) => []);
 
 final arhitectureElementProvider =
     Provider.family<BaseArhitectureElement, String>((ref, id) {

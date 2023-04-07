@@ -55,6 +55,10 @@ class ArhitectureElementWidget extends HookConsumerWidget {
                         .read(currentlySelectedArhitectureElementStateProvider
                             .notifier)
                         .state = arhitectureElement;
+                    ref
+                        .read(currentMethodsAndParametersStateProvider.notifier)
+                        .update((state) =>
+                            arhitectureElement.methodsAndParametersWidgetList);
                     Scaffold.of(context).openEndDrawer();
                   },
                   child: Text(

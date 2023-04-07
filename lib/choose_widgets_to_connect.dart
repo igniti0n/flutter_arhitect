@@ -59,7 +59,7 @@ class ChooseWidgetsToConnect extends ConsumerWidget {
 }
 
 class _PainterWidget extends ConsumerWidget {
-  const _PainterWidget({super.key});
+  const _PainterWidget();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,7 +77,7 @@ class _PainterWidget extends ConsumerWidget {
 }
 
 class _WidgetA extends ConsumerStatefulWidget {
-  const _WidgetA({super.key});
+  const _WidgetA();
 
   @override
   ConsumerState createState() => _WidgetAState();

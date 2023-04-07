@@ -16,7 +16,7 @@ class MethodsAndParametersFormWidget extends ConsumerWidget {
         ref.watch(currentMethodsAndParametersStateProvider);
     return Column(
       children: [
-        for (var tuple in methodsAndParameters) tuple.value1,
+        for (final tuple in methodsAndParameters) tuple.value1,
         const _AddMethodButton(),
       ],
     );

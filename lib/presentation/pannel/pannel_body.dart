@@ -104,6 +104,7 @@ class _Body extends ConsumerWidget {
                           arhitectureElement: arhitectureElement,
                           formMap: formKey.currentState!.value,
                         );
+                    Scaffold.of(context).closeEndDrawer();
                   }
                 },
               ),

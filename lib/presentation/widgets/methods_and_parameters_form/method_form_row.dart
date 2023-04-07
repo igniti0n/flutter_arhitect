@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
@@ -7,7 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MethodFormRow extends ConsumerWidget {
   final ValueKey methodKey;
-  const MethodFormRow({required this.methodKey}) : super(key: methodKey);
+  final Method? method;
+
+  const MethodFormRow({required this.methodKey, this.method})
+      : super(key: methodKey);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +36,7 @@ class MethodFormRow extends ConsumerWidget {
                   methodKey: methodKey.value,
                 ),
                 text: 'Return value',
+                initialValue: method?.returnValue,
                 isRequired: true,
               ),
             ),
@@ -43,6 +48,7 @@ class MethodFormRow extends ConsumerWidget {
                   methodKey: methodKey.value,
                 ),
                 text: 'Method name',
+                initialValue: method?.methodName,
                 isRequired: true,
               ),
             ),

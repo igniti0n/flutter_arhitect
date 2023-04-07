@@ -5,6 +5,7 @@ import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/all_templates_notifier.dart';
 import 'package:flutter_arhitect/domain/arhitecture_element_pairs_provider.dart';
+import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/domain/files_generation_notifier.dart';
 import 'package:flutter_arhitect/presentation/painters/elements_connections_painter.dart';
 import 'package:flutter_arhitect/presentation/pannel/element_info_pannel.dart';
@@ -27,7 +28,19 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[800],
-      endDrawer: const ElementInfoPannel(),
+      endDrawer: Container(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: const [ElementInfoPannel()],
+        ),
+      ),
+      onEndDrawerChanged: (isOpened) {
+        if (!isOpened) {
+          ref.invalidate(currentlySelectedArhitectureElementStateProvider);
+          ref.invalidate(currentMethodsAndParametersStateProvider);
+        }
+      },
       body: Stack(
         fit: StackFit.passthrough,
         children: [

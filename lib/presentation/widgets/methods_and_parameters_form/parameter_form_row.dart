@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
@@ -7,9 +8,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class ParameterFormRow extends ConsumerWidget {
   final ValueKey methodKey;
   final ValueKey parameterKey;
+  final Parameter? parameter;
+
   const ParameterFormRow({
     required this.methodKey,
     required this.parameterKey,
+    this.parameter,
   }) : super(key: parameterKey);
 
   @override
@@ -39,6 +43,7 @@ class ParameterFormRow extends ConsumerWidget {
                 parameterKey: parameterKey.value,
               ),
               text: 'Type',
+              initialValue: parameter?.type,
               isRequired: true,
             ),
           ),
@@ -51,6 +56,7 @@ class ParameterFormRow extends ConsumerWidget {
                 parameterKey: parameterKey.value,
               ),
               text: 'Parameter name',
+              initialValue: parameter?.parameterName,
               isRequired: true,
             ),
           ),
