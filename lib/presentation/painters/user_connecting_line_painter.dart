@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class UserConnectingLinePainter extends CustomPainter {
@@ -10,15 +8,9 @@ class UserConnectingLinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // log('Start point $startPoint, end point $endPoint');
     if (startPoint == null || endPoint == null) {
-      //   final paint = Paint()
-      //     ..color = Colors.black
-      //     ..strokeWidth = 5;
-      //   canvas.drawLine(startPoint!, endPoint!, paint);
       return;
     }
-    log('PAINTING STUFFFF');
 
     final paint = Paint()
       ..color = Colors.red

@@ -46,7 +46,6 @@ class ElementsConnectionsPainter extends CustomPainter {
   }) {
     final path = Path();
     final linePaint = Paint()
-      // ..color = Colors.deepPurpleAccent[100]!
       ..shader = ui.Gradient.linear(
         Offset(size.width / 2, 100),
         Offset(size.width / 2, size.height - 100),
@@ -54,7 +53,6 @@ class ElementsConnectionsPainter extends CustomPainter {
       )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
-
     final anchorHeight = widget1Size.height / 1;
     final firstWidth = widget1Size.width / 2;
     final firstHeight = anchorHeight + 20;
@@ -69,7 +67,6 @@ class ElementsConnectionsPainter extends CustomPainter {
     /// To adjust the connection point when connecting multiple elements, for elements further away in the X axis, the anchor point should be
     /// further down, so the connection looks more smooth
     final diffX = firstPositionX - secondPositionX;
-    final addedOffsetToAnchorY = diffX.abs() / 9; //math.min(diffX / 10, 20);
     log('Diff X: $diffX');
 
     // First element
@@ -77,24 +74,6 @@ class ElementsConnectionsPainter extends CustomPainter {
       firstPositionX + firstWidth,
       firstPositionY + widget1Size.height / 2,
     );
-
-    // // Connection (anchor)
-    // path.lineTo(
-    //   secondPositionX + secondWidth,
-    //   math.min(
-    //     secondPositionY + secondHeight,
-    //     firstPositionY + anchorHeight + addedOffsetToAnchorY,
-    //   ),
-    // );
-
-    // Second element
-    path.lineTo(
-      secondPositionX + secondWidth,
-      secondPositionY + secondHeight,
-    );
-
-    canvas.drawPath(path, linePaint);
-
     // Draw the circle
     final midpoint = Offset(
       (firstPositionX + firstWidth + secondPositionX + secondWidth) / 2,
@@ -104,12 +83,35 @@ class ElementsConnectionsPainter extends CustomPainter {
               (widget2Size.height / 2)) /
           2,
     );
+    // Center From first elemnt to midpoint
+    final firstHalfMid = Offset(
+      (firstPositionX + firstWidth + midpoint.dx) / 2,
+      (firstPositionY + (widget1Size.height / 2) + midpoint.dy) / 2,
+    );
+    // Center From midpoint to second element
+    final secondHalfMid = Offset(
+      (secondPositionX + firstWidth + midpoint.dx) / 2,
+      (secondPositionY + (widget1Size.height / 2) + midpoint.dy) / 2,
+    );
+    path.quadraticBezierTo(
+      firstHalfMid.dx + diffX / 5,
+      firstHalfMid.dy,
+      midpoint.dx,
+      midpoint.dy,
+    );
+    path.quadraticBezierTo(
+      secondHalfMid.dx - diffX / 5,
+      secondHalfMid.dy,
+      secondPositionX + secondWidth,
+      secondPositionY + secondHeight,
+    );
+    canvas.drawPath(path, linePaint);
 
     final circlePaint = Paint()
       ..color = Colors.blue
       ..style = PaintingStyle.fill;
     const radius = 12.0;
-
+    // Draw the circle X in the middle
     canvas.drawCircle(midpoint, radius, circlePaint);
     const xPadding = 5;
     final xPaint = Paint()

@@ -4,7 +4,6 @@ import 'package:flutter_arhitect/domain/mouse_position_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/domain/user_connecting_positions_provider.dart';
 import 'package:flutter_arhitect/presentation/painters/user_connecting_line_painter.dart';
-import 'package:flutter_arhitect/scale_update_details_state_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const projectName = 'starter';
@@ -26,12 +25,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:
-            //const ChooseWidgetsToConnect(),
-
-            const _Screen(),
-
-        // const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const _Screen(),
       ),
     );
   }
@@ -43,8 +37,6 @@ class _Screen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userConnectingLinePoints = ref.watch(userConnectingPositionsProvider);
-
-    // log('Changed positions ${userConnectingLinePoints.first} : ${userConnectingLinePoints.second} ');
 
     return MouseRegion(
       onHover: (event) =>
@@ -58,110 +50,6 @@ class _Screen extends ConsumerWidget {
           onTap: () => ref.read(selectedWidgetsNotifier.notifier).reset(),
           child: const ConnectWidgets(),
         ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: _Viewer(counter: _counter),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class _Viewer extends ConsumerWidget {
-  const _Viewer({
-    required int counter,
-  }) : _counter = counter;
-
-  final int _counter;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return InteractiveViewer(
-      minScale: 0.4,
-      maxScale: 2.8,
-      onInteractionUpdate: (scaleUpdateDetails) => ref
-          .read(scaleUpdateDetailsStateProvider.notifier)
-          .state = scaleUpdateDetails,
-      constrained: false,
-      child: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 4000,
-                  height: 600,
-                  color: Colors.red,
-                ),
-                Container(
-                  width: 1000,
-                  height: 800,
-                  color: Colors.blue,
-                ),
-                Draggable(
-                  childWhenDragging: Container(),
-                  feedback: Container(
-                    width: 200,
-                    height: 200,
-                    color: Colors.green[900],
-                  ),
-                  child: Container(
-                    width: 200,
-                    height: 200,
-                    color: Colors.green[900],
-                  ),
-                ),
-                Container(
-                  width: 1000,
-                  height: 600,
-                  color: Colors.green[900],
-                ),
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
-            ),
-          ),
-          // const PositionedDraggableIcon(
-          //   top: 100,
-          //   left: 100,
-          // ),
-        ],
       ),
     );
   }
