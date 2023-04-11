@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/mouse_position_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/extensions/global_key_extension.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final userConnectingPositionsProvider = Provider<ConnectingPositions>((ref) {
   final selectedWidgets = ref.watch(selectedWidgetsNotifier);
@@ -19,6 +19,7 @@ final userConnectingPositionsProvider = Provider<ConnectingPositions>((ref) {
   return ConnectingPositions(first: screenOffset, second: mouseOffset);
 });
 
+// ignore: prefer-match-file-name
 class ConnectingPositions {
   final Offset? first;
   final Offset? second;

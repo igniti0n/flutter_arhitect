@@ -22,8 +22,148 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    - prefer_single_quotes
+    - cancel_subscriptions
+    - close_sinks
+    - eol_at_end_of_file
+    - sized_box_for_whitespace
+    - avoid_unnecessary_containers
+    - avoid_print
+    - parameter_assignments
+    - avoid_relative_lib_imports
+    - always_use_package_imports
+    - avoid_empty_else
+    - always_declare_return_types
+    - avoid_void_async
+    - prefer_void_to_null
+    - use_key_in_widget_constructors
+    - prefer_null_aware_method_calls
+    - unnecessary_await_in_return
+    - prefer_final_locals
+    - prefer_final_in_for_each
+    - constant_identifier_names
+
+analyzer:
+  plugins:
+    - dart_code_metrics
+
+  errors:
+    prefer_single_quotes: error
+    cancel_subscriptions: error
+    close_sinks: error
+    eol_at_end_of_file: error
+    sized_box_for_whitespace: error
+    avoid_unnecessary_containers: error
+    dead_code: error
+    unused_import: error
+    duplicate_import: error
+    avoid_print: error
+    parameter_assignments: error
+    avoid_relative_lib_imports: error
+    always_use_package_imports: error
+    avoid_empty_else: error
+    always_declare_return_types: error
+    avoid_void_async: error
+    prefer_void_to_null: error
+    use_key_in_widget_constructors: error
+
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.gr.dart"
+    - "**/*.freezed.dart"
+    - "**/*.config.dart"
+    - "**/generated/**"
+    - "**/main_reusable_widgets.dart"
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+dart_code_metrics:
+  metrics-exclude:
+    - test/**
+
+  # For clarification please visit: https://dartcodemetrics.dev/docs/rules/overview
+  rules:
+    # Common Dart rules
+    - avoid-dynamic
+    - avoid-global-state:
+        severity: error
+    - avoid-missing-enum-constant-in-map:
+        severity: error
+    - avoid-nested-conditional-expressions:
+        acceptable-level: 2
+        severity: error
+    - avoid-throw-in-catch-block
+    - avoid-unrelated-type-assertions
+    - avoid-unused-parameters
+    - avoid-nested-conditional-expressions:
+        acceptable-level: 2
+    - avoid-redundant-async
+    - avoid-throw-in-catch-block
+    - avoid-unnecessary-conditionals
+    - avoid-unnecessary-type-casts
+    - ban-name:
+        entries:
+          - ident: l
+            description: Please use failure instead
+          - ident: r
+            description: Please use some more descriptive name for success
+        severity: error
+    - binary-expression-operand-order
+    - member-ordering:
+        order:
+          - public-fields
+          - private-fields
+          - constructors
+          - public-methods
+          - private-methods
+        widgets-order:
+          - init-state-method
+          - did-change-dependencies-method
+          - did-update-widget-method
+          - dispose-method
+          - build-method
+    - no-boolean-literal-compare
+    - no-equal-then-else:
+        severity: error
+    - no-object-declaration
+    - prefer-correct-identifier-length:
+        min-identifier-length: 2
+        exceptions:
+          [
+            "i"
+          ]
+        severity: error
+    - prefer-correct-test-file-name
+    - prefer-correct-type-name:
+        min-length: 3
+        severity: error
+    - prefer-first
+    - prefer-immediate-return
+    - prefer-iterable-of
+    - prefer-last
+    - prefer-match-file-name:
+        exclude:
+          - "**/main.dart"
+    - prefer-trailing-comma:
+        break-on: 4
+
+    # Flutter rules
+    - always-remove-listener
+    - avoid-border-all
+    - avoid-returning-widgets
+    - avoid-unnecessary-setstate
+    - avoid-wrapping-in-padding
+    - prefer-const-border-radius
+    - prefer-correct-edge-insets-constructor
+    - prefer-single-widget-per-file:
+        ignore-private-widgets: true
+    - use-setstate-synchronously
+
+  # For clarification please visit: https://dartcodemetrics.dev/docs/metrics/overview
+  metrics:
+    cyclomatic-complexity: 3
+    source-lines-of-code: 10
+    number-of-parameters: 4
+    maximum-nesting-level: 3
+    number-of-methods: 7

@@ -3,31 +3,12 @@ import 'dart:developer';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/extensions/global_key_extension.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final selectedWidgetsNotifier =
     StateNotifierProvider<SelectedWidgetsNotifier, SelectedElements>((ref) {
   return SelectedWidgetsNotifier(ref);
 });
-
-class SelectedElements {
-  final BaseArhitectureElement? first;
-  final BaseArhitectureElement? second;
-
-  SelectedElements({
-    this.first,
-    this.second,
-  });
-
-  SelectedElements copyWith({
-    BaseArhitectureElement? first,
-    BaseArhitectureElement? second,
-  }) =>
-      SelectedElements(
-        first: first ?? this.first,
-        second: second ?? this.second,
-      );
-}
 
 class SelectedWidgetsNotifier extends StateNotifier<SelectedElements> {
   final Ref _ref;
@@ -69,4 +50,23 @@ class SelectedWidgetsNotifier extends StateNotifier<SelectedElements> {
   }
 
   void reset() => state = SelectedElements();
+}
+
+class SelectedElements {
+  final BaseArhitectureElement? first;
+  final BaseArhitectureElement? second;
+
+  SelectedElements({
+    this.first,
+    this.second,
+  });
+
+  SelectedElements copyWith({
+    BaseArhitectureElement? first,
+    BaseArhitectureElement? second,
+  }) =>
+      SelectedElements(
+        first: first ?? this.first,
+        second: second ?? this.second,
+      );
 }

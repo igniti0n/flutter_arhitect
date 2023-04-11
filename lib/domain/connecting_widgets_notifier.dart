@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final connectingWidgetsNotifier =
     StateNotifierProvider<ConnectingWidgetsNotifier, WidgetsConnectionDetails>(
@@ -32,8 +31,10 @@ class WidgetsConnectionDetails {
   final Offset? firstPoint;
   final Offset? secondPoint;
 
-  WidgetsConnectionDetails(
-      {required this.firstPoint, required this.secondPoint});
+  WidgetsConnectionDetails({
+    required this.firstPoint,
+    required this.secondPoint,
+  });
 
   factory WidgetsConnectionDetails.empty() =>
       WidgetsConnectionDetails(firstPoint: null, secondPoint: null);

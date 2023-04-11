@@ -23,8 +23,11 @@ class UserConnectingLinePainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.red
       ..strokeWidth = 5;
-    canvas.drawLine(startPoint ?? const Offset(100, 200),
-        endPoint ?? const Offset(300, 300), paint);
+    canvas.drawLine(
+      startPoint ?? const Offset(100, 200),
+      endPoint ?? const Offset(300, 300),
+      paint,
+    );
   }
 
   @override

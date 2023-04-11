@@ -1,32 +1,41 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:uuid/uuid.dart';
 
-class Method {
-  Method({
+class Method extends Equatable {
+  final String id;
+  final String methodName;
+  final String returnValue;
+  final List<Parameter> parameters;
+
+  const Method({
     required this.id,
     required this.methodName,
     required this.returnValue,
     required this.parameters,
   });
-  final String id;
-  String methodName;
-  String returnValue;
-  List<Parameter> parameters;
 
   factory Method.defaultMethod() => Method(
         id: const Uuid().v1(),
         methodName: 'methodName',
         returnValue: 'void',
-        parameters: [],
+        parameters: const [],
       );
 
   factory Method.fromMap(Map<String, dynamic> json) => Method(
-        id: json["id"],
-        methodName: json["methodName"],
-        returnValue: json["type"],
+        id: json['id'],
+        methodName: json['methodName'],
+        returnValue: json['type'],
         parameters: List<Parameter>.from(
-            json["parameters"].map((x) => Parameter.fromMap(x))),
+          json['parameters'].map((x) => Parameter.fromMap(x)),
+        ),
       );
+
+  Map<String, dynamic> toMap() => {
+        'methodName': methodName,
+        'type': returnValue,
+        'parameters': List.from(parameters.map((x) => x.toMap())),
+      };
 
   Method copyWith({
     String? methodName,
@@ -40,28 +49,11 @@ class Method {
         parameters: parameters ?? this.parameters,
       );
 
-  Map<String, dynamic> toMap() => {
-        "methodName": methodName,
-        "type": returnValue,
-        "parameters": List<dynamic>.from(parameters.map((x) => x.toMap())),
-      };
-
   @override
-  bool operator ==(covariant Method other) {
-    if (identical(this, other)) return true;
-
-    return other.methodName == methodName &&
-        other.returnValue == returnValue &&
-        other.parameters == parameters;
-  }
-
-  @override
-  int get hashCode {
-    return methodName.hashCode ^ returnValue.hashCode ^ parameters.hashCode;
-  }
-
-  @override
-  String toString() {
-    return '$returnValue $methodName(${parameters.map((e) => e.toString()).join(', ')})';
-  }
+  List<Object?> get props => [
+        id,
+        methodName,
+        returnValue,
+        parameters,
+      ];
 }

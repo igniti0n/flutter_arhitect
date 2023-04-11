@@ -8,11 +8,12 @@ class ConnectableWidget extends StatelessWidget {
   final Widget child;
   final globalKey = GlobalKey();
 
-  ConnectableWidget(
-      {super.key,
-      required this.onTapDown,
-      required this.onTapUp,
-      required this.child});
+  ConnectableWidget({
+    super.key,
+    required this.onTapDown,
+    required this.onTapUp,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +30,12 @@ class ConnectableWidget extends StatelessWidget {
   Offset getPosition() {
     final RenderBox? renderBox =
         globalKey.currentContext?.findRenderObject() as RenderBox?;
-    final position = renderBox?.localToGlobal(Offset.zero) ?? Offset.zero;
-    // log('Position: $position');
-    return position;
+    return renderBox?.localToGlobal(Offset.zero) ?? Offset.zero;
   }
 
   Size getSize() {
     final RenderBox? renderBox =
         globalKey.currentContext?.findRenderObject() as RenderBox?;
-    final size = renderBox?.size ?? const Size(0, 0);
-    // log('Size: $size');
-    return size;
+    return renderBox?.size ?? const Size(0, 0);
   }
 }

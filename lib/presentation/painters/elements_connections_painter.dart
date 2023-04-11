@@ -2,7 +2,6 @@
 // import 'dart:math';
 
 import 'dart:developer';
-import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class ElementsConnectionsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (var pair in pairs) {
+    for (final pair in pairs) {
       var first = pair.first.position;
       var second = pair.second.position;
       if (second.dy < first.dy) {
@@ -36,120 +35,6 @@ class ElementsConnectionsPainter extends CustomPainter {
       );
     }
   }
-
-  // void connectWidgets({
-  //   required Canvas canvas,
-  //   required Size size,
-  //   required Offset widget1Position,
-  //   required Offset widget2Position,
-  //   required Size widget1Size,
-  //   required Size widget2Size,
-  // }) {
-  //   final path = Path();
-  //   final anchorHeight = widget1Size.height + 10;
-  //   final firstWidth = widget1Size.width / 2;
-  //   final firstHeight = anchorHeight + 20;
-  //   final secondWidth = widget2Size.width / 2;
-  //   final secondHeight = widget2Size.height / 2;
-
-  //   final firstPositionX = widget1Position.dx;
-  //   final firstPositionY = widget1Position.dy;
-  //   final secondPositionX = widget2Position.dx;
-  //   final secondPositionY = widget2Position.dy;
-
-  //   // log('Move to: $firstPositionX - $firstPositionY');
-  //   // log('Move to: $secondPositionX - $secondPositionY');
-
-  //   // // canvas.drawCircle(const Offset(40, 40), 60, paint);
-  //   // // Move to the center of widget1
-  //   // path.moveTo(
-  //   //   firstPositionX + firstWidth,
-  //   //   firstPositionY + widget1Size.height / 2,
-  //   // );
-
-  //   // path.lineTo(
-  //   //   firstPositionX + firstWidth,
-  //   //   firstPositionY + anchorHeight,
-  //   // );
-
-  //   path.moveTo(
-  //     firstPositionX + firstWidth,
-  //     firstPositionY + widget1Size.height / 2,
-  //   );
-
-  //   // Draw horizontal line to the same Y coordinate as widget2
-  //   // path.quadraticBezierTo(
-  //   //   secondPositionX + secondWidth + 20,
-  //   //   firstPositionY + anchorHeight + 20,
-  //   //   secondPositionX + secondWidth,
-  //   //   firstPositionY + anchorHeight,
-  //   // );
-
-  //   // // Draw horizontal line to the same Y coordinate as widget2
-  //   // path.quadraticBezierTo(
-  //   //   secondPositionX + secondWidth - 40,
-  //   //   firstPositionY + firstHeight - 40,
-  //   //   secondPositionX + secondWidth,
-  //   //   firstPositionY + firstHeight,
-  //   // );
-
-  //   var diffX = (firstPositionX + firstWidth) - (secondPositionX + secondWidth);
-  //   diffX = min(diffX.abs() / 4, 60);
-  //   double diffY = (firstPositionY + firstHeight / 2) -
-  //       (secondPositionY + secondHeight / 2);
-  //   diffY = min(diffY.abs() / 2.4, 20);
-
-  //   dev.log('Diff Y: $diffY');
-
-  //   canvas.drawCircle(
-  //       Offset(
-  //         firstPositionX + firstWidth,
-  //         firstPositionY + widget1Size.height / 2,
-  //       ),
-  //       10,
-  //       linePaint);
-
-  //   // Draw vertical line to the center of widget2
-  //   path.cubicTo(
-  //     firstPositionX + firstWidth - diffX * (diffY / 10),
-  //     firstPositionY + firstHeight / 2, // - diffY,
-  //     secondPositionX + secondWidth + diffX * (diffY / 10),
-  //     (secondPositionY + secondHeight / 2), // + diffY),
-  //     (secondPositionX + secondWidth),
-  //     (secondPositionY + secondHeight),
-  //   );
-
-  //   canvas.drawPath(
-  //     path,
-  //     linePaint,
-  //   );
-
-  //   final circlePaint = Paint()..color = Colors.red[800]!;
-
-  //   canvas.drawCircle(
-  //       Offset(
-  //         firstPositionX + firstWidth - diffX * (diffY / 10),
-  //         firstPositionY + firstHeight, // -
-  //       ),
-  //       20,
-  //       circlePaint);
-
-  //   canvas.drawCircle(
-  //       Offset(
-  //         secondPositionX + secondWidth + diffX * (diffY / 10),
-  //         (secondPositionY + secondHeight),
-  //       ),
-  //       20,
-  //       circlePaint);
-
-  //   canvas.drawCircle(
-  //       Offset(
-  //         (secondPositionX + secondWidth), // - diffX),
-  //         (secondPositionY + secondHeight), //
-  //       ),
-  //       20,
-  //       circlePaint);
-  // }
 
   void connectWidgets({
     required Canvas canvas,
@@ -193,14 +78,14 @@ class ElementsConnectionsPainter extends CustomPainter {
       firstPositionY + widget1Size.height / 2,
     );
 
-    // Connection (anchor)
-    path.lineTo(
-      secondPositionX + secondWidth,
-      math.min(
-        secondPositionY + secondHeight,
-        firstPositionY + anchorHeight + addedOffsetToAnchorY,
-      ),
-    );
+    // // Connection (anchor)
+    // path.lineTo(
+    //   secondPositionX + secondWidth,
+    //   math.min(
+    //     secondPositionY + secondHeight,
+    //     firstPositionY + anchorHeight + addedOffsetToAnchorY,
+    //   ),
+    // );
 
     // Second element
     path.lineTo(
@@ -208,9 +93,37 @@ class ElementsConnectionsPainter extends CustomPainter {
       secondPositionY + secondHeight,
     );
 
-    canvas.drawPath(
-      path,
-      linePaint,
+    canvas.drawPath(path, linePaint);
+
+    // Draw the circle
+    final midpoint = Offset(
+      (firstPositionX + firstWidth + secondPositionX + secondWidth) / 2,
+      (firstPositionY +
+              (widget1Size.height / 2) +
+              secondPositionY +
+              (widget2Size.height / 2)) /
+          2,
+    );
+
+    final circlePaint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.fill;
+    const radius = 12.0;
+
+    canvas.drawCircle(midpoint, radius, circlePaint);
+    const xPadding = 5;
+    final xPaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2.5;
+    canvas.drawLine(
+      Offset(midpoint.dx - radius + xPadding, midpoint.dy - radius + xPadding),
+      Offset(midpoint.dx + radius - xPadding, midpoint.dy + radius - xPadding),
+      xPaint,
+    );
+    canvas.drawLine(
+      Offset(midpoint.dx - radius + xPadding, midpoint.dy + radius - xPadding),
+      Offset(midpoint.dx + radius - xPadding, midpoint.dy - radius + xPadding),
+      xPaint,
     );
   }
 

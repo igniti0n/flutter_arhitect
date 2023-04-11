@@ -1,44 +1,54 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:flutter/foundation.dart';
+import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/brick_model.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/method_form_row.dart';
+import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/parameter_form_row.dart';
+import 'package:mason/mason.dart';
 import 'package:uuid/uuid.dart';
 
-class BaseArhitectureElement {
+class BaseArhitectureElement extends Equatable {
   final String id;
   final GlobalKey widgetsGlobalKey;
+  final Key positionedDraggableKey;
   final ArhitectureLayer layer;
   final String name;
+  final String description;
   final List<BaseArhitectureElement> dependencies;
   final List<Method> methods;
   final String dataValue;
   final Offset canvasPosition;
-  final String brickBundleName;
+  final Brick brick;
 
-  BaseArhitectureElement({
+  const BaseArhitectureElement({
     required this.id,
     required this.widgetsGlobalKey,
+    required this.positionedDraggableKey,
     required this.layer,
     required this.name,
+    required this.description,
     required this.dependencies,
     required this.methods,
     required this.dataValue,
-    required this.brickBundleName,
+    required this.brick,
     this.canvasPosition = const Offset(100, 100),
   });
 
   factory BaseArhitectureElement.empty() => BaseArhitectureElement(
         id: const Uuid().v1(),
         widgetsGlobalKey: GlobalKey(),
+        positionedDraggableKey: Key(const Uuid().v1()),
         layer: ArhitectureLayer.data,
         name: 'unnamed',
-        dependencies: [],
-        methods: [],
+        description: '',
+        dependencies: const [],
+        methods: const [],
         dataValue: '',
-        brickBundleName: '',
+        brick: Brick.path(''),
       );
 
   BrickModel toBrickModel() => BrickModel(
@@ -49,52 +59,65 @@ class BaseArhitectureElement {
         methods: methods,
       );
 
+  List<Tuple2<Widget, List<Widget>>> get methodsAndParametersWidgetList {
+    final methodsAndParameters = <Tuple2<Widget, List<Widget>>>[];
+    for (final method in methods) {
+      final methodKey = ValueKey(const Uuid().v4());
+      final parametersWidgetList = <Widget>[];
+      for (final parameter in method.parameters) {
+        parametersWidgetList.add(ParameterFormRow(
+          methodKey: methodKey,
+          parameterKey: ValueKey(const Uuid().v4()),
+          parameter: parameter,
+        ));
+      }
+      methodsAndParameters.add(Tuple2(
+        MethodFormRow(methodKey: methodKey, method: method),
+        parametersWidgetList,
+      ));
+    }
+    return methodsAndParameters;
+  }
+
   BaseArhitectureElement copyWith({
     GlobalKey? widgetsGlobalKey,
+    GlobalKey? positionedDraggableKey,
     ArhitectureLayer? layer,
     String? name,
+    String? description,
     List<BaseArhitectureElement>? dependencies,
     List<Method>? methods,
     String? dataValue,
     Offset? canvasPosition,
-    String? brickBundleName,
+    Brick? brick,
   }) =>
       BaseArhitectureElement(
         id: id,
-        brickBundleName: brickBundleName ?? this.brickBundleName,
+        brick: brick ?? this.brick,
         dataValue: dataValue ?? this.dataValue,
         dependencies: dependencies ?? this.dependencies,
         layer: layer ?? this.layer,
         methods: methods ?? this.methods,
         name: name ?? this.name,
+        description: description ?? this.description,
         widgetsGlobalKey: widgetsGlobalKey ?? this.widgetsGlobalKey,
+        positionedDraggableKey:
+            positionedDraggableKey ?? this.positionedDraggableKey,
         canvasPosition: canvasPosition ?? this.canvasPosition,
       );
 
   @override
-  bool operator ==(covariant BaseArhitectureElement other) {
-    if (identical(this, other)) return true;
-
-    return other.widgetsGlobalKey == widgetsGlobalKey &&
-        other.layer == layer &&
-        other.name == name &&
-        listEquals(other.dependencies, dependencies) &&
-        listEquals(other.methods, methods) &&
-        other.dataValue == dataValue;
-  }
-
-  @override
-  int get hashCode {
-    return widgetsGlobalKey.hashCode ^
-        layer.hashCode ^
-        name.hashCode ^
-        dependencies.hashCode ^
-        methods.hashCode ^
-        dataValue.hashCode;
-  }
-
-  @override
-  String toString() {
-    return 'BaseArhitectureElement(widgetsGlobalKey: $widgetsGlobalKey, layer: $layer, name: $name, dependencies: $dependencies, methods: ${methods.fold('', (previousValue, element) => '$previousValue\n $element')})}, dataValue: $dataValue)';
-  }
+  List<Object?> get props => [
+        id,
+        widgetsGlobalKey,
+        positionedDraggableKey,
+        layer,
+        name,
+        description,
+        dependencies,
+        methods,
+        dataValue,
+        canvasPosition,
+        brick,
+      ];
 }
