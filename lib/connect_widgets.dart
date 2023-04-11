@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/element_pair.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
@@ -24,8 +22,6 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
   @override
   Widget build(BuildContext context) {
     final pairs = ref.watch(arhitectureElementPairsProvider);
-
-    log('Pairs $pairs');
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[800],
