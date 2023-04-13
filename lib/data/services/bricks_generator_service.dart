@@ -38,15 +38,6 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
         ..addAll({
           'project_name': projectName,
           'feature_name': featureName,
-          // 'methods': [
-          //   {
-          //     'methodName': 'logMe',
-          //     'type': 'String?',
-          //     'parameters': [
-          //       {'parameterName': 'email', 'type': 'List<int?>?'},
-          //     ],
-          //   },
-          // ],
         }),
 
       //  {

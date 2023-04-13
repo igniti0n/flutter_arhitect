@@ -118,13 +118,38 @@ class AllArhitectureElementsNotifier
   }) {
     final updatedArchitectureElement =
         _architectureElementMapper(arhitectureElement, formMap);
-    state = state
+
+    var newState = state
         .map(
           (element) => element.id == arhitectureElement.id
               ? updatedArchitectureElement
               : element,
         )
         .toList();
+    for (final currentElement in newState) {
+      if (currentElement.dependencies
+              .indexWhere((element) => element.id == arhitectureElement.id) >
+          -1) {
+        newState = newState.map(
+          (element) {
+            if (element.id != updatedArchitectureElement.id) {
+              final index = element.dependencies.indexWhere(
+                (element) => element.id == updatedArchitectureElement.id,
+              );
+              if (index > -1) {
+                return element.copyWith(
+                  dependencies: [...element.dependencies]
+                    ..removeAt(index)
+                    ..insert(index, updatedArchitectureElement),
+                );
+              }
+            }
+            return element;
+          },
+        ).toList();
+      }
+    }
+    state = newState;
   }
 
   void reset() => state = [];
