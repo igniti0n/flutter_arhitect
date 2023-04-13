@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -62,7 +63,8 @@ class AllArhitectureElementsNotifier
     required BaseArhitectureElement arhitectureElement,
     required BaseArhitectureElement dependency,
   }) {
-    if (arhitectureElement == dependency) {
+    if (arhitectureElement == dependency ||
+        !arhitectureElement.layer.canConnectWithLayer(dependency.layer)) {
       return;
     }
     log('Updating dependency to arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');

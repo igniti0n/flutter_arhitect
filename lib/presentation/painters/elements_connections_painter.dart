@@ -1,7 +1,6 @@
 // import 'dart:developer' as dev;
 // import 'dart:math';
 
-import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -67,8 +66,6 @@ class ElementsConnectionsPainter extends CustomPainter {
     /// To adjust the connection point when connecting multiple elements, for elements further away in the X axis, the anchor point should be
     /// further down, so the connection looks more smooth
     final diffX = firstPositionX - secondPositionX;
-    log('Diff X: $diffX');
-
     // First element
     path.moveTo(
       firstPositionX + firstWidth,

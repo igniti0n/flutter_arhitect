@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_arhitect/data/repositories/bricks_repository.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/common/request_notifier/request_notifier.dart';
+import 'package:flutter_arhitect/domain/global_info_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final filesGenerationNotifier =
@@ -19,7 +20,7 @@ class FilesGenerationNotifier extends RequestNotifier<void> {
   FilesGenerationNotifier(
     this._bricksRepository,
     this._ref,
-  ) : super();
+  ) : super(_ref);
 
   void generate() => executeRequest(
         requestBuilder: () async {
@@ -31,5 +32,9 @@ class FilesGenerationNotifier extends RequestNotifier<void> {
             arhitectureElements: allArhitectureElements,
           );
         },
+        globalLoading: true,
+        dataHandler: (data) => setGlobalInfo(
+          const GlobalInfo(message: 'Bricks generated successfully'),
+        ),
       );
 }

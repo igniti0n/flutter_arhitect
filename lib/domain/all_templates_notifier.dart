@@ -10,7 +10,7 @@ typedef AllTemplates = List<Template>;
 
 final allTemplatesNotifier =
     StateNotifierProvider<AllTemplatesNotifier, RequestState<AllTemplates>>(
-  (ref) => AllTemplatesNotifier(),
+  (ref) => AllTemplatesNotifier(ref),
 );
 
 class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
@@ -20,8 +20,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       layer: ArhitectureLayer.data,
       name: 'Repository',
       brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'clean_repository',
+        'https://github.com/Q-Agency/QBricks',
+        path: 'bricks/repository',
       )),
     ),
     Template(
@@ -29,55 +29,48 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       layer: ArhitectureLayer.data,
       name: 'Service',
       brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'clean_service',
+        'https://github.com/Q-Agency/QBricks',
+        path: 'bricks/service',
       )),
     ),
     Template(
       id: const Uuid().v1(),
-      layer: ArhitectureLayer.data,
-      name: 'Provider',
+      layer: ArhitectureLayer.domain,
+      name: 'BaseStateNotifier',
       brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'provider',
+        'https://github.com/Q-Agency/QBricks',
+        path: 'bricks/notifier',
       )),
     ),
     Template(
       id: const Uuid().v1(),
-      layer: ArhitectureLayer.data,
-      name: 'StateProvider',
+      layer: ArhitectureLayer.domain,
+      name: 'SimpleStateNotifier',
       brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'state_provider',
+        'https://github.com/Q-Agency/QBricks',
+        path: 'bricks/simple_state_notifier',
       )),
     ),
     Template(
       id: const Uuid().v1(),
-      layer: ArhitectureLayer.data,
-      name: 'Notifier',
-      brick: Brick.git(const GitPath(
-        'https://github.com/igniti0n/bricks',
-        path: 'notifier',
-      )),
-    ),
-    Template(
-      id: const Uuid().v1(),
-      layer: ArhitectureLayer.data,
+      layer: ArhitectureLayer.presentation,
       name: 'Page',
       brick: Brick.git(
-        const GitPath('https://github.com/igniti0n/bricks', path: 'page'),
+        const GitPath(
+          'https://github.com/Q-Agency/QBricks',
+          path: 'bricks/page',
+        ),
       ),
     ),
   ];
 
-  AllTemplatesNotifier() : super() {
+  AllTemplatesNotifier(Ref ref) : super(ref) {
     getAllTemplates();
   }
 
   Future<void> getAllTemplates() async => executeRequest(
+        globalLoading: false,
         requestBuilder: () async {
-          await Future.delayed(const Duration(milliseconds: 400));
-
           return mockedTemplates;
         },
       );
