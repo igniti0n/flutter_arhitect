@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
@@ -26,29 +25,18 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
     required String projectName,
     required String featureName,
   }) async {
-    log('Generating....!');
     final generator =
         await MasonGenerator.fromBrick(baseArhitectureElement.brick);
     // generator.hooks.preGen(workingDirectory: path);
 
     final directory = Directory.fromUri(Uri.parse(savePath));
-    final generatedFiles = await generator.generate(
+    await generator.generate(
       DirectoryGeneratorTarget(directory),
       vars: baseArhitectureElement.toBrickModel().toMap()
         ..addAll({
           'project_name': projectName,
           'feature_name': featureName,
-          // 'methods': [
-          //   {
-          //     'methodName': 'logMe',
-          //     'type': 'String?',
-          //     'parameters': [
-          //       {'parameterName': 'email', 'type': 'List<int?>?'},
-          //     ],
-          //   },
-          // ],
         }),
-
       //  {
       //   "name": "ime_neko",
       //   "dependencies": [
@@ -73,6 +61,5 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
       //   ]
       // },
     );
-    log('generatedFiles: $generatedFiles');
   }
 }

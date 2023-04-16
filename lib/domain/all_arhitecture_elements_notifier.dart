@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -62,7 +63,8 @@ class AllArhitectureElementsNotifier
     required BaseArhitectureElement arhitectureElement,
     required BaseArhitectureElement dependency,
   }) {
-    if (arhitectureElement == dependency) {
+    if (arhitectureElement == dependency ||
+        !arhitectureElement.layer.canConnectWithLayer(dependency.layer)) {
       return;
     }
     log('Updating dependency to arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');
@@ -118,13 +120,38 @@ class AllArhitectureElementsNotifier
   }) {
     final updatedArchitectureElement =
         _architectureElementMapper(arhitectureElement, formMap);
-    state = state
+
+    var newState = state
         .map(
           (element) => element.id == arhitectureElement.id
               ? updatedArchitectureElement
               : element,
         )
         .toList();
+    for (final currentElement in newState) {
+      if (currentElement.dependencies
+              .indexWhere((element) => element.id == arhitectureElement.id) >
+          -1) {
+        newState = newState.map(
+          (element) {
+            if (element.id != updatedArchitectureElement.id) {
+              final index = element.dependencies.indexWhere(
+                (element) => element.id == updatedArchitectureElement.id,
+              );
+              if (index > -1) {
+                return element.copyWith(
+                  dependencies: [...element.dependencies]
+                    ..removeAt(index)
+                    ..insert(index, updatedArchitectureElement),
+                );
+              }
+            }
+            return element;
+          },
+        ).toList();
+      }
+    }
+    state = newState;
   }
 
   void reset() => state = [];

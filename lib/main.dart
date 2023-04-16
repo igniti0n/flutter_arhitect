@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/connect_widgets.dart';
+import 'package:flutter_arhitect/domain/global_info_provider.dart';
+import 'package:flutter_arhitect/domain/global_loading_provider.dart';
 import 'package:flutter_arhitect/domain/mouse_position_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/domain/user_connecting_positions_provider.dart';
+import 'package:flutter_arhitect/domain/utils/toast.dart';
 import 'package:flutter_arhitect/presentation/painters/user_connecting_line_painter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -36,21 +39,47 @@ class _Screen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.globalInfoListener();
     final userConnectingLinePoints = ref.watch(userConnectingPositionsProvider);
-
-    return MouseRegion(
-      onHover: (event) =>
-          ref.read(mousePositionStateProvider.notifier).state = event.position,
-      child: CustomPaint(
-        foregroundPainter: UserConnectingLinePainter(
-          startPoint: userConnectingLinePoints.first,
-          endPoint: userConnectingLinePoints.second,
+    final showLoading = ref.watch(globalLoadingProvider);
+    return Stack(
+      children: [
+        MouseRegion(
+          onHover: (event) => ref
+              .read(mousePositionStateProvider.notifier)
+              .state = event.position,
+          child: CustomPaint(
+            foregroundPainter: UserConnectingLinePainter(
+              startPoint: userConnectingLinePoints.first,
+              endPoint: userConnectingLinePoints.second,
+            ),
+            child: GestureDetector(
+              onTap: () => ref.read(selectedWidgetsNotifier.notifier).reset(),
+              child: const ConnectWidgets(),
+            ),
+          ),
         ),
-        child: GestureDetector(
-          onTap: () => ref.read(selectedWidgetsNotifier.notifier).reset(),
-          child: const ConnectWidgets(),
-        ),
-      ),
+        if (showLoading)
+          Container(
+            color: Colors.black.withOpacity(0.5),
+            height: double.infinity,
+            width: double.infinity,
+            child: const Center(child: CircularProgressIndicator()),
+          ),
+      ],
     );
+  }
+}
+
+extension _WidgetRefExtensions on WidgetRef {
+  void globalInfoListener() {
+    listen<GlobalInfo?>(globalInfoProvider, (_, globalInfo) {
+      if (globalInfo == null) return;
+      Toast().show(
+        context: context,
+        message: globalInfo.message,
+        isError: globalInfo.isError,
+      );
+    });
   }
 }

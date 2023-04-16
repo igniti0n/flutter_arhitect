@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
@@ -40,7 +41,7 @@ class ArhitectureElementWidget extends HookConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.green[600],
+                    color: arhitectureElement.layer.color,
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black38,

@@ -44,6 +44,7 @@ dependencies:
   mason: ^0.1.0-dev.47
   mason_cli: ^0.1.0-dev.49
   uuid: ^3.0.7
+  another_flushbar: ^1.12.29
 
 dev_dependencies:
   build_runner: ^2.3.3
