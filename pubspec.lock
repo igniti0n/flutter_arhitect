@@ -157,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: cli_completion
-      sha256: "6f0c5920a85878652a84ad48c722655a7ea7fe6cd7074452a7c1e3efa389307b"
+      sha256: "595b192451285749369e99b3c2fd9a9aea7d74ed1aba61cddeb9ad8c84a44812"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.3.0"
   cli_util:
     dependency: transitive
     description:
@@ -237,10 +237,10 @@ packages:
     dependency: "direct dev"
     description:
       name: dart_code_metrics
-      sha256: "728b1835a8c5b994ae8111148b427236f2f89954eebcb62baf4c476909b3d02d"
+      sha256: "873890861a3d7e06fd5a6cd17d802e215ee1301dfb7cbcc7aeab9576e69330d0"
       url: "https://pub.dev"
     source: hosted
-    version: "5.7.0"
+    version: "5.7.2"
   dart_code_metrics_presets:
     dependency: transitive
     description:
@@ -370,10 +370,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_form_builder
-      sha256: "9551c7379adc01a3a3a1100057396407c9534ea8adc937d14a0edd96fcd9e1dc"
+      sha256: "236c96dad143a0e67c0f11522606d6b17b6510e97530cb73af355b018ded7c10"
       url: "https://pub.dev"
     source: hosted
-    version: "7.8.0"
+    version: "8.0.0"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -399,18 +399,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_reorderable_list
-      sha256: "7bb60836a2712fffa23dc71d86ae3c77c72d216ef818b4c7b764424c4f28cafe"
+      sha256: "0400ef34fa00b7cac69f71efc92d7e49727f425bc1080180ebe70bf47618afe0"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.1"
   flutter_riverpod:
     dependency: transitive
     description:
       name: flutter_riverpod
-      sha256: "3ea325c2de7ef2589023413c489875467730b2c1d822759efedd3e0e28a906c9"
+      sha256: b83ac5827baadefd331ea1d85110f34645827ea234ccabf53a655f41901a9bf4
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.6"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -421,14 +421,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  form_builder:
-    dependency: "direct main"
-    description:
-      name: form_builder
-      sha256: "47d69d9fb286018ea3e9bbd49d696c1cd27766f777d78f7503559ae7eb081169"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   form_builder_validators:
     dependency: "direct main"
     description:
@@ -481,10 +473,10 @@ packages:
     dependency: "direct main"
     description:
       name: hooks_riverpod
-      sha256: f62f1450c0f5b6f8914cc9d971488c6fb0f1e36e5e1c9b726e8f95688d6ee462
+      sha256: be68cf7653fcab798500f9047ac58c3f109287a1595012412f4a0d654a9bb9c5
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.6"
   html:
     dependency: transitive
     description:
@@ -569,10 +561,10 @@ packages:
     dependency: "direct main"
     description:
       name: mason
-      sha256: b4030d8799f255caa914beb2604dcd749d0ebd815c3f0209ed223f9370098c10
+      sha256: c6c25b83c61c628fc9946be39f01291808342d8e8df75c61fc7b6a671bd0a8f8
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0-dev.47"
+    version: "0.1.0-dev.49"
   mason_api:
     dependency: transitive
     description:
@@ -585,10 +577,10 @@ packages:
     dependency: "direct main"
     description:
       name: mason_cli
-      sha256: "8c604303f77e181847c50d8730412f64d7abc4d65bfbbe768bbc2a86f09a0822"
+      sha256: ee426089ea0df8053a288ffbc8a97810cd70ffa4d1a5461d0587d18151b6c4af
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0-dev.49"
+    version: "0.1.0-dev.50"
   mason_logger:
     dependency: transitive
     description:
@@ -657,10 +649,10 @@ packages:
     dependency: "direct dev"
     description:
       name: path_provider
-      sha256: "04890b994ee89bfa80bf3080bfec40d5a92c5c7a785ebb02c13084a099d2b6f9"
+      sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.13"
+    version: "2.0.14"
   path_provider_android:
     dependency: transitive
     description:
@@ -773,22 +765,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
-  recase:
-    dependency: transitive
-    description:
-      name: recase
-      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   riverpod:
     dependency: transitive
     description:
       name: riverpod
-      sha256: "7da5a0febdb7fd0e4340f7b7023cb8f17cf7acd405b1e67a0e98bf574085bfa5"
+      sha256: "80e48bebc83010d5e67a11c9514af6b44bbac1ec77b4333c8ea65dbc79e2d8ef"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.6"
   shelf:
     dependency: transitive
     description:
