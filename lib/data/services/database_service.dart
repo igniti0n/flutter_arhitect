@@ -9,7 +9,7 @@ final databaseServiceProvider = Provider<DatabaseService>((ref) {
 abstract class DatabaseService {
   Future<List<BaseArhitectureElement>> getStoredArhitectureElements();
   Future<void> addArhitectureElement({required BaseArhitectureElement element});
-  Future<BaseArhitectureElement> deleteArhitectureElements({
+  Future<BaseArhitectureElement> deleteArhitectureElement({
     required String id,
   });
 }
@@ -52,10 +52,10 @@ class DatabaseServiceImpl extends DatabaseService {
   }
 
   @override
-  Future<BaseArhitectureElement> deleteArhitectureElements({
+  Future<BaseArhitectureElement> deleteArhitectureElement({
     required String id,
   }) {
-    // TODO: implement deleteArhitectureElements
+    // TODO: implement deleteArhitectureElement
     throw UnimplementedError();
   }
 }

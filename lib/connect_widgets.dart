@@ -9,6 +9,7 @@ import 'package:flutter_arhitect/domain/files_generation_notifier.dart';
 import 'package:flutter_arhitect/presentation/painters/elements_connections_painter.dart';
 import 'package:flutter_arhitect/presentation/pannel/element_info_pannel.dart';
 import 'package:flutter_arhitect/presentation/widgets/arhitecture_element_widget.dart';
+import 'package:flutter_arhitect/presentation/widgets/features_tab/features_chips_horizontal_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ConnectWidgets extends ConsumerStatefulWidget {
@@ -115,22 +116,37 @@ class _DummyControls extends ConsumerWidget {
           success: (result) => result,
         );
 
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ...allTemplates.map(
-          (template) => TextButton(
-            onPressed: () => ref
-                .read(allArhitectureElementsNotifier.notifier)
-                .addArhitectureElementFromTemplate(template),
-            child: Text(template.name),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(width: 100),
+            const SizedBox(width: 100),
+            TextButton(
+              onPressed: () =>
+                  ref.read(filesGenerationNotifier.notifier).generate(),
+              child: const Text('GENERATE'),
+            ),
+            const SizedBox(width: 100),
+            const Expanded(child: FeaturesChipsHorizontalList()),
+          ],
         ),
-        const SizedBox(width: 100),
-        TextButton(
-          onPressed: () =>
-              ref.read(filesGenerationNotifier.notifier).generate(),
-          child: const Text('GENERATE'),
+        const SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: allTemplates
+              .map(
+                (template) => TextButton(
+                  onPressed: () => ref
+                      .read(allArhitectureElementsNotifier.notifier)
+                      .addArhitectureElementFromTemplate(template),
+                  child: Text(template.name),
+                ),
+              )
+              .toList(),
         ),
       ],
     );

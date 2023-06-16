@@ -4,6 +4,10 @@ import 'dart:math' as math;
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
+import 'package:flutter_arhitect/data/database_models/base_architecture_element_storage.dart';
+import 'package:flutter_arhitect/data/database_models/feature_storage.dart';
+import 'package:flutter_arhitect/data/managers/database_manager.dart';
+import 'package:flutter_arhitect/domain/features_selection/selected_feature_tab_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -13,6 +17,8 @@ final allArhitectureElementsNotifier = StateNotifierProvider<
     AllArhitectureElementsNotifier, AllArhitectureElements>(
   (ref) => AllArhitectureElementsNotifier(
     ref.watch(architectureElementMapperProvider),
+    ref.watch(databaseFeaturesManagerProvider),
+    ref.watch(selectedFeatureTabProviderProvider),
   ),
 );
 
@@ -20,11 +26,38 @@ class AllArhitectureElementsNotifier
     extends StateNotifier<AllArhitectureElements> {
   final ArchitectureElementMapper<BaseArhitectureElement>
       _architectureElementMapper;
+  final DatabaseManager<FeatureStorage> _databaseFeaturesManager;
+  final String _selectedFeatureTab;
 
-  AllArhitectureElementsNotifier(this._architectureElementMapper) : super([]);
+  AllArhitectureElementsNotifier(
+    this._architectureElementMapper,
+    this._databaseFeaturesManager,
+    this._selectedFeatureTab,
+  ) : super([]) {
+    _getDataFromDatabaseForCurrentlySelectedFeature();
+    // Refres the state after the keys are assignes to the widgets
+    Future.delayed(const Duration(milliseconds: 100), () {
+      state = [...state];
+    });
+  }
+
+  Future<void> saveCurrentStateToDatabase() async {
+    log('Saving current state to database...');
+    final featuresStorage = FeatureStorage(
+      elements: state
+          .map((e) =>
+              BaseArchitectureElementStorage.fromBaseArchitectureElement(e))
+          .toList(),
+      addedAt: DateTime.now(),
+    );
+    await _databaseFeaturesManager.addToCache(
+      key: _selectedFeatureTab,
+      boxName: FeatureStorage.boxName,
+      cachedObject: featuresStorage,
+    );
+  }
 
   void addArhitectureElementFromTemplate(Template template) {
-    log('Adding arhitecture element from template: ${template.name}');
     final arhitectureElement = template.generateArhitectureElement();
 
     final randomNumber = math.Random().nextInt(100);
@@ -34,8 +67,6 @@ class AllArhitectureElementsNotifier
   }
 
   void removeArhitectureElement(BaseArhitectureElement arhitectureElement) {
-    log('Removing arhitecture element: ${arhitectureElement.name}');
-
     var newState = [...state]..removeWhere(
         (element) => element.id == arhitectureElement.id,
       );
@@ -57,6 +88,7 @@ class AllArhitectureElementsNotifier
       }
     }
     state = newState;
+    saveCurrentStateToDatabase();
   }
 
   void addDependencyToArhitectureElement({
@@ -67,7 +99,14 @@ class AllArhitectureElementsNotifier
         !arhitectureElement.layer.canConnectWithLayer(dependency.layer)) {
       return;
     }
-    log('Updating dependency to arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');
+    if (arhitectureElement.dependencies
+        .any((element) => element.id == dependency.id)) {
+      return;
+    }
+    if (dependency.dependencies
+        .any((element) => element.id == arhitectureElement.id)) {
+      return;
+    }
     state = state.map(
       (element) {
         if (element.id != arhitectureElement.id) {
@@ -81,13 +120,13 @@ class AllArhitectureElementsNotifier
         );
       },
     ).toList();
+    saveCurrentStateToDatabase();
   }
 
   void removeDependencyFromArhitectureElement({
     required BaseArhitectureElement arhitectureElement,
     required BaseArhitectureElement dependency,
   }) {
-    log('Removing dependency from arhitecture element: ${arhitectureElement.name} -> ${dependency.name}');
     state = state
         .map(
           (element) => element.id == arhitectureElement.id
@@ -99,6 +138,7 @@ class AllArhitectureElementsNotifier
               : element,
         )
         .toList();
+    saveCurrentStateToDatabase();
   }
 
   void updateArhitectureElementCanvasPosition(
@@ -112,6 +152,7 @@ class AllArhitectureElementsNotifier
               : element,
         )
         .toList();
+    saveCurrentStateToDatabase();
   }
 
   void onFormSubmitted({
@@ -152,7 +193,25 @@ class AllArhitectureElementsNotifier
       }
     }
     state = newState;
+    saveCurrentStateToDatabase();
   }
 
   void reset() => state = [];
+
+  void _getDataFromDatabaseForCurrentlySelectedFeature() {
+    _databaseFeaturesManager
+        .getFromCache(
+      key: _selectedFeatureTab,
+      boxName: FeatureStorage.boxName,
+    )
+        .then((featuresStorage) {
+      if (featuresStorage != null) {
+        state = (featuresStorage.elements)
+            .map(
+              (storageElement) => storageElement.toBaseArchitectureElement(),
+            )
+            .toList();
+      }
+    });
+  }
 }

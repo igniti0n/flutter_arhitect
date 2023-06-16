@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "Flutter Dev",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/app/main.dart",
+          
+        },
+       
+    ]
+}

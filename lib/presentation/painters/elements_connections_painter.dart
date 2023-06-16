@@ -16,9 +16,9 @@ class ElementsConnectionsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (final pair in pairs) {
-      var first = pair.first.position;
-      var second = pair.second.position;
-      if (second.dy < first.dy) {
+      var first = pair.first;
+      var second = pair.second;
+      if (second.position.dy < first.position.dy) {
         final temp = first;
         first = second;
         second = temp;
@@ -27,10 +27,10 @@ class ElementsConnectionsPainter extends CustomPainter {
       connectWidgets(
         canvas: canvas,
         size: size,
-        widget1Position: first,
-        widget2Position: second,
-        widget1Size: pair.first.size,
-        widget2Size: pair.second.size,
+        widget1Position: first.position,
+        widget2Position: second.position,
+        widget1Size: first.size,
+        widget2Size: second.size,
       );
     }
   }
@@ -52,9 +52,7 @@ class ElementsConnectionsPainter extends CustomPainter {
       )
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
-    final anchorHeight = widget1Size.height / 1;
     final firstWidth = widget1Size.width / 2;
-    final firstHeight = anchorHeight + 20;
     final secondWidth = widget2Size.width / 2;
     final secondHeight = widget2Size.height / 2;
 

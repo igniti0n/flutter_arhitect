@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_arhitect/app/hive_init.dart';
 import 'package:flutter_arhitect/connect_widgets.dart';
 import 'package:flutter_arhitect/domain/global_info_provider.dart';
 import 'package:flutter_arhitect/domain/global_loading_provider.dart';
@@ -12,7 +13,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 const projectName = 'starter';
 const featureName = 'login';
 
-void main() {
+void main() async {
+  await hiveInit();
   runApp(const MyApp());
 }
 

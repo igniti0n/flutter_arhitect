@@ -44,7 +44,7 @@ class AppColors {
   static const Color greyDark700 = Color(0xFF191919);
 
   //Variables
-  static const Color appBodyPrimaryBg = white;
+  static const Color appBodyPrimaryBg = AppColors.greyDark600;
   static const Color appBodySecondaryBg = Color(0xFFF6F6F6);
 
   static const Color appSectionDefaultBg = Colors.transparent;
@@ -52,7 +52,7 @@ class AppColors {
   static const Color appSectionSecondaryBg = AppColors.brandPrimaryDefault;
   static const Color appSectionTertiaryBg = AppColors.greyDark600;
 
-  static const Color appTextPrimary = greyDark700;
+  static const Color appTextPrimary = greyLight300;
   static const Color appTextSecondary = grey;
   static const Color appTextTertiary = white;
 
@@ -120,7 +120,7 @@ class AppColors {
 
   static const Color inputDefaultBorder = greyLight400;
   static const Color inputActiveBorder = brandSecondaryLight;
-  static const Color inputDisabledBorder = greyLight400;
+  static const Color inputDisabledBorder = greyLight700;
   static const Color inputDefaultBg = white;
   static const Color inputActiveBg = white;
   static const Color inputDisabledBg = greyLight100;

@@ -22,6 +22,7 @@ class BaseArhitectureElement extends Equatable {
   final List<Method> methods;
   final String dataValue;
   final Offset canvasPosition;
+  final Size size;
   final Brick brick;
 
   const BaseArhitectureElement({
@@ -35,6 +36,7 @@ class BaseArhitectureElement extends Equatable {
     required this.methods,
     required this.dataValue,
     required this.brick,
+    this.size = const Size(50, 30),
     this.canvasPosition = const Offset(100, 100),
   });
 
@@ -90,6 +92,7 @@ class BaseArhitectureElement extends Equatable {
     String? dataValue,
     Offset? canvasPosition,
     Brick? brick,
+    Size? size,
   }) =>
       BaseArhitectureElement(
         id: id,
@@ -104,6 +107,7 @@ class BaseArhitectureElement extends Equatable {
         positionedDraggableKey:
             positionedDraggableKey ?? this.positionedDraggableKey,
         canvasPosition: canvasPosition ?? this.canvasPosition,
+        size: size ?? this.size,
       );
 
   @override

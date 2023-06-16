@@ -1,0 +1,11 @@
+{
+    "dart.flutterSdkPath": "/Users/davorstajcer/fvm/versions/3.7.9",
+    // Remove .fvm files from search
+    "search.exclude": {
+      "**/.fvm": true
+    },
+    // Remove from file watching
+    "files.watcherExclude": {
+      "**/.fvm": true
+    }
+  }

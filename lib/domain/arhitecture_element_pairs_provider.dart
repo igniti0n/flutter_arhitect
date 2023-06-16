@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_arhitect/common/models/element_pair.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/extensions/global_key_extension.dart';
@@ -7,18 +9,23 @@ final arhitectureElementPairsProvider = Provider<List<ElementPair>>((ref) {
   final allArhitectureElements = ref.watch(allArhitectureElementsNotifier);
   final List<ElementPair> pairs = [];
 
+  log('Rebuilding....');
+
   /// Make a pair of (element -> dependency) for each dependency of an element
   for (final element in allArhitectureElements) {
     for (final dependency in element.dependencies) {
+      final currentDependency = allArhitectureElements.firstWhere(
+        (element) => element.id == dependency.id,
+      );
       final first = WidgetScreenData(
         element.widgetsGlobalKey.getPosition(),
         element.widgetsGlobalKey.getSize(),
         element,
       );
       final second = WidgetScreenData(
-        dependency.widgetsGlobalKey.getPosition(),
-        dependency.widgetsGlobalKey.getSize(),
-        dependency,
+        currentDependency.widgetsGlobalKey.getPosition(),
+        currentDependency.widgetsGlobalKey.getSize(),
+        currentDependency,
       );
       final pair = ElementPair(second, first);
       pairs.add(pair);
@@ -26,24 +33,3 @@ final arhitectureElementPairsProvider = Provider<List<ElementPair>>((ref) {
   }
   return pairs;
 });
-
-// final elementsNotifier =
-//     StateNotifierProvider<ElementPairsNotifier, List<ElementPair>>((ref) {
-//   return ElementPairsNotifier();
-// });
-
-// class ElementPairsNotifier extends StateNotifier<List<ElementPair>> {
-//   ElementPairsNotifier() : super([]);
-
-//   void addPair(ElementPair pair) => state = [...state, pair];
-
-//   void removePair(ElementPair pair) => state = [...state]..removeWhere(
-//       (element) => element.id == pair.id,
-//     );
-
-//   void updatePair(ElementPair pair) => state = state
-//       .map(
-//         (oldPair) => oldPair.id == pair.id ? pair : oldPair,
-//       )
-//       .toList();
-// }

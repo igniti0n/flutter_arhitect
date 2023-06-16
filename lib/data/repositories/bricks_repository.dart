@@ -1,7 +1,7 @@
 import 'package:file_selector/file_selector.dart';
+import 'package:flutter_arhitect/app/main.dart';
 import 'package:flutter_arhitect/data/services/bricks_generator_service.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
-import 'package:flutter_arhitect/main.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final bricksRepositoryProvider = Provider<BricksRepository>(

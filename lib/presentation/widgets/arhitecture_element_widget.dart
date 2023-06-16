@@ -7,28 +7,38 @@ import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/positioned_draggable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ArhitectureElementWidget extends HookConsumerWidget {
+class ArhitectureElementWidget extends ConsumerStatefulWidget {
   final BaseArhitectureElement arhitectureElement;
   const ArhitectureElementWidget({super.key, required this.arhitectureElement});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ArhitectureElementWidget> createState() =>
+      _ArhitectureElementWidgetState();
+}
+
+class _ArhitectureElementWidgetState
+    extends ConsumerState<ArhitectureElementWidget> {
+  @override
+  Widget build(BuildContext context) {
     return PositionedDraggable(
-      key: arhitectureElement.positionedDraggableKey,
-      top: arhitectureElement.canvasPosition.dy,
-      left: arhitectureElement.canvasPosition.dx,
-      onChange: (newOffset) => ref
-          .read(allArhitectureElementsNotifier.notifier)
-          .updateArhitectureElementCanvasPosition(
-            arhitectureElement.copyWith(
-              canvasPosition: newOffset,
-            ),
-          ),
+      key: widget.arhitectureElement.positionedDraggableKey,
+      top: widget.arhitectureElement.canvasPosition.dy,
+      left: widget.arhitectureElement.canvasPosition.dx,
+      onChange: (newOffset) {
+        ref
+            .read(allArhitectureElementsNotifier.notifier)
+            .updateArhitectureElementCanvasPosition(
+              widget.arhitectureElement.copyWith(
+                canvasPosition: newOffset,
+                size: widget.arhitectureElement.size,
+              ),
+            );
+      },
       child: GestureDetector(
-        key: arhitectureElement.widgetsGlobalKey,
+        key: widget.arhitectureElement.widgetsGlobalKey,
         onTap: () => ref
             .read(selectedWidgetsNotifier.notifier)
-            .selectWidget(arhitectureElement),
+            .selectWidget(widget.arhitectureElement),
         child: Stack(
           alignment: Alignment.topRight,
           children: [
@@ -41,7 +51,7 @@ class ArhitectureElementWidget extends HookConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: arhitectureElement.layer.color,
+                    color: widget.arhitectureElement.layer.color,
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black38,
@@ -63,16 +73,16 @@ class ArhitectureElementWidget extends HookConsumerWidget {
                                 currentlySelectedArhitectureElementStateProvider
                                     .notifier,
                               )
-                              .state = arhitectureElement;
+                              .state = widget.arhitectureElement;
                           ref
                               .read(currentMethodsAndParametersStateProvider
                                   .notifier)
-                              .update((state) => arhitectureElement
+                              .update((state) => widget.arhitectureElement
                                   .methodsAndParametersWidgetList);
                           Scaffold.of(context).openEndDrawer();
                         },
                         child: Text(
-                          arhitectureElement.name,
+                          widget.arhitectureElement.name,
                         ),
                       ),
                     ),
@@ -92,7 +102,7 @@ class ArhitectureElementWidget extends HookConsumerWidget {
             TextButton(
               onPressed: () => ref
                   .read(allArhitectureElementsNotifier.notifier)
-                  .removeArhitectureElement(arhitectureElement),
+                  .removeArhitectureElement(widget.arhitectureElement),
               child: Container(
                 width: 30,
                 decoration: const BoxDecoration(
