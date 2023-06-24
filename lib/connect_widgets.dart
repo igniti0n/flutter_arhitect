@@ -6,6 +6,8 @@ import 'package:flutter_arhitect/domain/all_templates_notifier.dart';
 import 'package:flutter_arhitect/domain/arhitecture_element_pairs_provider.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/domain/files_generation_notifier.dart';
+import 'package:flutter_arhitect/presentation/common/app_button.dart';
+import 'package:flutter_arhitect/presentation/common/app_colors.dart';
 import 'package:flutter_arhitect/presentation/painters/elements_connections_painter.dart';
 import 'package:flutter_arhitect/presentation/pannel/element_info_pannel.dart';
 import 'package:flutter_arhitect/presentation/widgets/arhitecture_element_widget.dart';
@@ -25,7 +27,7 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
     final pairs = ref.watch(arhitectureElementPairsProvider);
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey[800],
+      backgroundColor: AppColors.background1,
       endDrawer: Container(
         color: Colors.transparent,
         child: Row(
@@ -42,25 +44,21 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
           );
         }
       },
-      body: Stack(
-        fit: StackFit.passthrough,
+      body: Column(
         children: [
-          GestureDetector(
-            onTapDown: (details) {
-              checkIfRemoveConnectionButtonIsTapped(details, pairs);
-            },
-            child: CustomPaint(
-              painter: ElementsConnectionsPainter(
-                pairs: pairs,
+          const _DummyControls(),
+          Expanded(
+            child: GestureDetector(
+              onTapDown: (details) {
+                checkIfRemoveConnectionButtonIsTapped(details, pairs);
+              },
+              child: CustomPaint(
+                painter: ElementsConnectionsPainter(
+                  pairs: pairs,
+                ),
+                child: const _Elements(),
               ),
-              child: const _Elements(),
             ),
-          ),
-          Column(
-            children: const [
-              SizedBox(height: 60),
-              _DummyControls(),
-            ],
           ),
         ],
       ),
@@ -72,13 +70,8 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
     List<ElementPair> pairs,
   ) {
     for (final pair in pairs) {
-      var first = pair.first;
-      var second = pair.second;
-      if (second.position.dy < first.position.dy) {
-        final temp = first;
-        first = second;
-        second = temp;
-      }
+      final first = pair.first;
+      final second = pair.second;
       final midpoint = Offset(
         (first.position.dx +
                 first.size.width / 2 +
@@ -116,39 +109,55 @@ class _DummyControls extends ConsumerWidget {
           success: (result) => result,
         );
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(width: 100),
-            const SizedBox(width: 100),
-            TextButton(
-              onPressed: () =>
-                  ref.read(filesGenerationNotifier.notifier).generate(),
-              child: const Text('GENERATE'),
-            ),
-            const SizedBox(width: 100),
-            const Expanded(child: FeaturesChipsHorizontalList()),
-          ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.grey[800],
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
         ),
-        const SizedBox(height: 40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: allTemplates
-              .map(
-                (template) => TextButton(
-                  onPressed: () => ref
-                      .read(allArhitectureElementsNotifier.notifier)
-                      .addArhitectureElementFromTemplate(template),
-                  child: Text(template.name),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+            child: FeaturesChipsHorizontalList(),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              const SizedBox(width: 16),
+              AppButton.primary(
+                text: 'GENERATE',
+                onPressed: () =>
+                    ref.read(filesGenerationNotifier.notifier).generate(),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: allTemplates
+                      .map(
+                        (template) => Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: AppButton.secondary(
+                            onPressed: () => ref
+                                .read(allArhitectureElementsNotifier.notifier)
+                                .addArhitectureElementFromTemplate(template),
+                            text: template.name,
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
-              )
-              .toList(),
-        ),
-      ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
+import 'package:flutter_arhitect/presentation/common/app_colors.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/methods_and_parameters_form_widget.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -21,7 +22,7 @@ class PannelBody extends ConsumerWidget {
     return SizedBox.expand(
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.blueGrey[700],
+          color: AppColors.background2,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(20),
             bottomRight: Radius.circular(20),
@@ -34,6 +35,7 @@ class PannelBody extends ConsumerWidget {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
+                SizedBox(height: 32),
                 Expanded(child: _Body()),
                 SizedBox(width: 120),
                 SizedBox(width: 24),

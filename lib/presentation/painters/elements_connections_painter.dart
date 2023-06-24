@@ -1,6 +1,7 @@
 // import 'dart:developer' as dev;
 // import 'dart:math';
 
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class ElementsConnectionsPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    canvas.translate(0, -165);
     for (final pair in pairs) {
       var first = pair.first;
       var second = pair.second;
@@ -23,7 +25,6 @@ class ElementsConnectionsPainter extends CustomPainter {
         first = second;
         second = temp;
       }
-
       connectWidgets(
         canvas: canvas,
         size: size,
@@ -32,7 +33,76 @@ class ElementsConnectionsPainter extends CustomPainter {
         widget1Size: first.size,
         widget2Size: second.size,
       );
+      drawDependencyDirectionArrow(
+        canvas: canvas,
+        widget1Position: pair.first.position,
+        widget2Position: pair.second.position,
+        widget1Size: pair.first.size,
+        widget2Size: pair.second.size,
+      );
     }
+  }
+
+  void drawDependencyDirectionArrow({
+    required Canvas canvas,
+    required Offset widget1Position,
+    required Offset widget2Position,
+    required Size widget1Size,
+    required Size widget2Size,
+  }) {
+    final firstWidth = widget1Size.width / 2;
+    final secondWidth = widget2Size.width / 2;
+    final firstPositionX = widget1Position.dx;
+    final firstPositionY = widget1Position.dy;
+    final secondPositionX = widget2Position.dx;
+    final secondPositionY = widget2Position.dy;
+    // Draw the circle
+    final midpoint = Offset(
+      (firstPositionX + firstWidth + secondPositionX + secondWidth) / 2,
+      (firstPositionY +
+              (widget1Size.height / 2) +
+              secondPositionY +
+              (widget2Size.height / 2)) /
+          2,
+    );
+    final distX =
+        ((firstPositionX + firstWidth) - (secondPositionX + secondWidth));
+    final distY = ((firstPositionY + (widget1Size.height / 2)) -
+        (secondPositionY + (widget2Size.height / 2)));
+
+    final tang = atan2(distY, distX);
+    final angle = tang * (180 / pi);
+
+    final circlePaint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.fill;
+    const radius = 12.0;
+    // canvas.drawCircle(midpoint, radius, circlePaint);
+
+    const xPadding = 5;
+    final xPaint = Paint()
+      ..color = Colors.white.withOpacity(0.6)
+      ..strokeWidth = 2.5;
+
+    final radiansAngle = tang - pi / 2;
+    canvas.translate(midpoint.dx, midpoint.dy);
+    canvas.rotate(radiansAngle);
+    canvas.drawLine(
+      const Offset(0, -radius + xPadding),
+      const Offset(radius - xPadding, radius - xPadding),
+      // Offset(midpoint.dx, midpoint.dy - radius + xPadding),
+      // Offset(midpoint.dx + radius - xPadding, midpoint.dy + radius - xPadding),
+      xPaint,
+    );
+    canvas.drawLine(
+      const Offset(-radius + xPadding, radius - xPadding),
+      const Offset(0, -radius + xPadding),
+      // Offset(midpoint.dx - radius + xPadding, midpoint.dy + radius - xPadding),
+      // Offset(midpoint.dx, midpoint.dy - radius + xPadding),
+      xPaint,
+    );
+    canvas.rotate(-(radiansAngle));
+    canvas.translate(-midpoint.dx, -midpoint.dy);
   }
 
   void connectWidgets({
@@ -107,21 +177,21 @@ class ElementsConnectionsPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
     const radius = 12.0;
     // Draw the circle X in the middle
-    canvas.drawCircle(midpoint, radius, circlePaint);
+    // canvas.drawCircle(midpoint, radius, circlePaint);
     const xPadding = 5;
     final xPaint = Paint()
       ..color = Colors.white
       ..strokeWidth = 2.5;
-    canvas.drawLine(
-      Offset(midpoint.dx - radius + xPadding, midpoint.dy - radius + xPadding),
-      Offset(midpoint.dx + radius - xPadding, midpoint.dy + radius - xPadding),
-      xPaint,
-    );
-    canvas.drawLine(
-      Offset(midpoint.dx - radius + xPadding, midpoint.dy + radius - xPadding),
-      Offset(midpoint.dx + radius - xPadding, midpoint.dy - radius + xPadding),
-      xPaint,
-    );
+    // canvas.drawLine(
+    //   Offset(midpoint.dx - radius + xPadding, midpoint.dy - radius + xPadding),
+    //   Offset(midpoint.dx + radius - xPadding, midpoint.dy + radius - xPadding),
+    //   xPaint,
+    // );
+    // canvas.drawLine(
+    //   Offset(midpoint.dx - radius + xPadding, midpoint.dy + radius - xPadding),
+    //   Offset(midpoint.dx + radius - xPadding, midpoint.dy - radius + xPadding),
+    //   xPaint,
+    // );
   }
 
   @override

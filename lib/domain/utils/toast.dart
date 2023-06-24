@@ -26,8 +26,7 @@ class Toast {
     _flushbar = Flushbar(
       flushbarStyle: FlushbarStyle.FLOATING,
       borderWidth: 2,
-      backgroundColor:
-          isError ? AppColors.alertErrorDark : AppColors.alertSuccessDark,
+      backgroundColor: isError ? AppColors.darkBackground : AppColors.success,
       messageText: Text(message),
       mainButton: GestureDetector(
         onTap: _dismissToast,

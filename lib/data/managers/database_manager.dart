@@ -26,6 +26,9 @@ abstract class DatabaseManager<T> {
     required dynamic key,
     required String boxName,
   });
+  Future<List<String>> getAllFromCache({
+    required String boxName,
+  });
 }
 
 class DatabaseManagerImpl<T extends DatabaseStorage>
@@ -57,6 +60,15 @@ class DatabaseManagerImpl<T extends DatabaseStorage>
     log('Cache empty or invalid, returning nothing...');
 
     return null;
+  }
+
+  @override
+  Future<List<String>> getAllFromCache({
+    required String boxName,
+  }) async {
+    final box = Hive.box<T>(boxName);
+
+    return box.keys.cast<String>().toList();
   }
 
   @override

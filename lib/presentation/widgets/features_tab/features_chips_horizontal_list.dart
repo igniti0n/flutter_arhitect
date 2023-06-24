@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_arhitect/domain/features_selection/features_provider.dart';
+import 'package:flutter_arhitect/domain/features_selection/features_notifier.dart';
 import 'package:flutter_arhitect/domain/features_selection/selected_feature_tab_provider.dart';
+import 'package:flutter_arhitect/presentation/widgets/features_tab/add_feature_chip.dart';
 import 'package:flutter_arhitect/presentation/widgets/features_tab/feature_chip.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,23 +30,18 @@ class _GroupDatesHorizontalListState
     });
 
     return SizedBox(
-      height: 44,
-      child: Row(
+      height: 48,
+      child: ListView(
+        controller: _controller,
+        scrollDirection: Axis.horizontal,
         children: [
           const SizedBox(width: 16),
-          Expanded(
-            child: ListView(
-              controller: _controller,
-              scrollDirection: Axis.horizontal,
-              children: [
-                ...features
-                    .map(
-                      (date) => FeatureChip.enabeld(date),
-                    )
-                    .toList(),
-              ],
-            ),
-          ),
+          const AddFeatureChip(),
+          ...features
+              .map(
+                (date) => FeatureChip.enabeld(date),
+              )
+              .toList(),
         ],
       ),
     );

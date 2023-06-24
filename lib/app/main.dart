@@ -11,7 +11,6 @@ import 'package:flutter_arhitect/presentation/painters/user_connecting_line_pain
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const projectName = 'starter';
-const featureName = 'login';
 
 void main() async {
   await hiveInit();

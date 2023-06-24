@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_arhitect/common/models/element_pair.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/extensions/global_key_extension.dart';
@@ -8,8 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final arhitectureElementPairsProvider = Provider<List<ElementPair>>((ref) {
   final allArhitectureElements = ref.watch(allArhitectureElementsNotifier);
   final List<ElementPair> pairs = [];
-
-  log('Rebuilding....');
 
   /// Make a pair of (element -> dependency) for each dependency of an element
   for (final element in allArhitectureElements) {

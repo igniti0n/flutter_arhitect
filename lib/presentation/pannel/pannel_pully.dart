@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
+import 'package:flutter_arhitect/presentation/common/app_button.dart';
+import 'package:flutter_arhitect/presentation/common/app_colors.dart';
+import 'package:flutter_arhitect/presentation/common/app_text_styles.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PannelPully extends ConsumerWidget {
@@ -20,7 +23,7 @@ class PannelPully extends ConsumerWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blueGrey[700],
+          color: AppColors.background2,
           backgroundBlendMode: BlendMode.src,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(20),
@@ -29,9 +32,13 @@ class PannelPully extends ConsumerWidget {
         ),
         height: 58,
         width: 64,
-        child: const Icon(
-          Icons.close_rounded,
-          size: 68,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Icon(
+            Icons.close_rounded,
+            color: AppColors.icon4,
+            size: 68,
+          ),
         ),
       ),
     );
@@ -41,18 +48,29 @@ class PannelPully extends ConsumerWidget {
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: const Text('Prompt'),
-          content: const Text(
+          backgroundColor: AppColors.background4,
+          title: Text(
+            'Discard changes?',
+            style: AppTextStyles.medium,
+          ),
+          content: Text(
             'Are you sure you want to exit drawer before saving?',
+            style: AppTextStyles.base.copyWith(
+              color: AppColors.text4,
+            ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('No'),
+            IntrinsicWidth(
+              child: AppButton.secondary(
+                onPressed: () => Navigator.of(context).pop(false),
+                text: 'No',
+              ),
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Yes'),
+            IntrinsicWidth(
+              child: AppButton.primary(
+                onPressed: () => Navigator.of(context).pop(true),
+                text: 'Yes',
+              ),
             ),
           ],
         ),

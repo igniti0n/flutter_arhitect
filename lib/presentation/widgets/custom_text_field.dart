@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_arhitect/presentation/common/app_colors.dart';
+import 'package:flutter_arhitect/presentation/common/app_text_styles.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
@@ -214,8 +215,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     widget.text!.toUpperCase(),
                     style: TextStyle(
                       color: field.hasError && !field.isValid
-                          ? AppColors.inputValidationErrorPlaceholderLabel
-                          : AppColors.inputPlaceholderLabel,
+                          ? AppColors.error
+                          : AppColors.text4,
                     ),
                   ),
                 ),
@@ -232,7 +233,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 widget.onChanged?.call(value);
               },
               inputFormatters: widget.inputFormatters,
-              style: widget.style ?? Theme.of(context).textTheme.titleMedium,
+              style: widget.style ?? AppTextStyles.base,
               obscureText: isHidden,
               enableSuggestions: !isHidden,
               textInputAction: TextInputAction.done,
@@ -241,6 +242,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
               minLines: widget.isMultilineDescription ? 3 : null,
               decoration: InputDecoration(
                 hintText: widget.hint,
+                hintStyle: AppTextStyles.base.copyWith(
+                  color: AppColors.text3,
+                ),
                 suffixIcon: widget.isPassword
                     ? IconButton(
                         icon: Icon(
@@ -248,8 +252,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                               ? Icons.visibility_off_outlined
                               : Icons.visibility_outlined,
                           color: field.hasError && !field.isValid
-                              ? AppColors.inputValidationErrorIcon
-                              : AppColors.inputDefaultIcon,
+                              ? AppColors.error
+                              : AppColors.icon4,
                         ),
                         onPressed: _changeTextVisibility,
                       )
@@ -257,15 +261,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: field.hasError && !field.isValid
-                        ? AppColors.inputValidationErrorDefaultBorder
-                        : AppColors.inputDefaultBorder,
+                        ? AppColors.error
+                        : AppColors.border4,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: field.hasError && !field.isValid
-                        ? AppColors.inputValidationErrorDefaultBorder
-                        : AppColors.inputDefaultBorder,
+                        ? AppColors.error
+                        : AppColors.border4,
                   ),
                 ),
               ),
@@ -275,7 +279,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               Text(
                 field.errorText!,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.inputValidationErrorPlaceholderLabel,
+                      color: AppColors.error,
                     ),
               ),
             ],

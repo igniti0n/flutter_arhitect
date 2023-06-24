@@ -29,7 +29,7 @@ class _ArhitectureElementWidgetState
             .read(allArhitectureElementsNotifier.notifier)
             .updateArhitectureElementCanvasPosition(
               widget.arhitectureElement.copyWith(
-                canvasPosition: newOffset,
+                canvasPosition: newOffset - const Offset(0, 165),
                 size: widget.arhitectureElement.size,
               ),
             );
@@ -86,15 +86,6 @@ class _ArhitectureElementWidgetState
                         ),
                       ),
                     ),
-                    //  TextField(
-                    //   textAlign: TextAlign.center,
-                    //   decoration: const InputDecoration(
-                    //     focusColor: Colors.red,
-                    //     border: InputBorder.none,
-                    //     focusedBorder: OutlineInputBorder(),
-                    //   ),
-                    //   controller: textController,
-                    // ),
                   ),
                 ),
               ),

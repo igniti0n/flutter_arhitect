@@ -47,14 +47,6 @@ class _PositionedDraggablenState extends ConsumerState<PositionedDraggable> {
 
   @override
   Widget build(BuildContext context) {
-    // final scaleUpdateDetails = ref.watch(scaleUpdateDetailsStateProvider);
-
-    // final verticalScale = scaleUpdateDetails.verticalScale;
-    // final horizontalScale = scaleUpdateDetails.horizontalScale;
-
-    // log('Update: vertical $verticalScale');
-    // log('Update: horizontal $horizontalScale');
-
     return Positioned(
       key: _key,
       top: top,

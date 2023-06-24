@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
@@ -42,7 +41,6 @@ class AllArhitectureElementsNotifier
   }
 
   Future<void> saveCurrentStateToDatabase() async {
-    log('Saving current state to database...');
     final featuresStorage = FeatureStorage(
       elements: state
           .map((e) =>
@@ -127,6 +125,7 @@ class AllArhitectureElementsNotifier
     required BaseArhitectureElement arhitectureElement,
     required BaseArhitectureElement dependency,
   }) {
+    // log('Removing dependency ${dependency.name} from arhitecture element: ${arhitectureElement.name}');
     state = state
         .map(
           (element) => element.id == arhitectureElement.id
@@ -144,7 +143,7 @@ class AllArhitectureElementsNotifier
   void updateArhitectureElementCanvasPosition(
     BaseArhitectureElement arhitectureElement,
   ) {
-    log('Updating arhitecture element: ${arhitectureElement.name}');
+    // log('Updating arhitecture element: ${arhitectureElement.name}');
     state = state
         .map(
           (element) => element.id == arhitectureElement.id

@@ -12,6 +12,7 @@ final bricksRepositoryProvider = Provider<BricksRepository>(
 
 abstract class BricksRepository {
   Future<void> generateBricksFor({
+    required String featureName,
     required AllArhitectureElements arhitectureElements,
   });
 }
@@ -23,6 +24,7 @@ class BricksRepositoryImpl extends BricksRepository {
 
   @override
   Future<void> generateBricksFor({
+    required String featureName,
     required AllArhitectureElements arhitectureElements,
   }) async {
     final savePath = await getDirectoryPath();
