@@ -5,7 +5,10 @@ This tool is ment to be a powerful and intuitive solution for designing, visuali
 
 Feel free to contribute by opening some PR's :fire:
 
+From this structure in the tool
 ![](https://github.com/igniti0n/flutter_arhitect/blob/main/assets/images/preview.png)
+
+The tool can generate something like this
 ![](https://github.com/igniti0n/flutter_arhitect/blob/main/assets/images/arch_preview.png)
 
 
