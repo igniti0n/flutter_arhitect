@@ -5,8 +5,8 @@ This tool is ment to be a powerful and intuitive solution for designing, visuali
 
 Feel free to contribute by opening some PR's :fire:
 
-![](https://github.com/igniti0n/flutter_arhitect/blob/main/assets/preview.png)
-![](https://github.com/igniti0n/flutter_arhitect/blob/main/assets/arch_preview.png)
+![](https://github.com/igniti0n/flutter_arhitect/blob/main/assets/images/preview.png)
+![](https://github.com/igniti0n/flutter_arhitect/blob/main/assets/images/arch_preview.png)
 
 
 
