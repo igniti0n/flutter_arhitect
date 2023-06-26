@@ -1,11 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/brick_model.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
+import 'package:flutter_arhitect/data/extensions.dart';
 import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/method_form_row.dart';
 import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/parameter_form_row.dart';
 import 'package:mason/mason.dart';
@@ -52,6 +55,45 @@ class BaseArhitectureElement extends Equatable {
         dataValue: '',
         brick: Brick.path(''),
       );
+
+  factory BaseArhitectureElement.fromMap(Map<String, dynamic> map) {
+    return BaseArhitectureElement(
+      widgetsGlobalKey: GlobalKey(),
+      positionedDraggableKey: Key(const Uuid().v1()),
+      id: map['id'],
+      layer: ArhitectureLayer.values.firstWhere(
+        (layer) => layer.toString() == map['layer'],
+      ),
+      name: map['name'],
+      description: map['description'],
+      dependencies: (jsonDecode(map['dependencies']) as List)
+          .map((stringMap) =>
+              BaseArhitectureElement.fromMap(jsonDecode(stringMap)))
+          .toList(),
+      methods: (jsonDecode(map['methods']) as List).cast<Method>(),
+      dataValue: map['dataValue'],
+      canvasPosition: OffsetMapping.fromMap(jsonDecode(map['canvasPosition'])),
+      size: SizeMapping.fromMap(jsonDecode(map['size'])),
+      brick: BrickMapping.fromMap(jsonDecode(map['brick'])),
+    );
+  }
+
+  Map<String, String> toMap() {
+    return {
+      'id': id,
+      'layer': layer.toString(),
+      'name': name,
+      'description': description,
+      'dependencies': jsonEncode(dependencies
+          .map((dependency) => jsonEncode(dependency.toMap()))
+          .toList()),
+      'methods': jsonEncode(methods.map((method) => method.toMap()).toList()),
+      'dataValue': dataValue,
+      'canvasPosition': jsonEncode(canvasPosition.toMap()),
+      'size': jsonEncode(size.toMap()),
+      'brick': jsonEncode(brick.toMap()),
+    };
+  }
 
   BrickModel toBrickModel() => BrickModel(
         name: name,

@@ -1,11 +1,11 @@
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/arhitecture_layer.dart';
 import 'package:flutter_arhitect/common/models/template.dart';
-import 'package:flutter_arhitect/data/database_models/base_architecture_element_storage.dart';
 import 'package:flutter_arhitect/data/database_models/feature_storage.dart';
-import 'package:flutter_arhitect/data/managers/database_manager.dart';
+import 'package:flutter_arhitect/data/services/file_service.dart';
 import 'package:flutter_arhitect/domain/features_selection/selected_feature_tab_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,7 +16,7 @@ final allArhitectureElementsNotifier = StateNotifierProvider<
     AllArhitectureElementsNotifier, AllArhitectureElements>(
   (ref) => AllArhitectureElementsNotifier(
     ref.watch(architectureElementMapperProvider),
-    ref.watch(databaseFeaturesManagerProvider),
+    ref.watch(fileServiceProvider),
     ref.watch(selectedFeatureTabProviderProvider),
   ),
 );
@@ -25,33 +25,32 @@ class AllArhitectureElementsNotifier
     extends StateNotifier<AllArhitectureElements> {
   final ArchitectureElementMapper<BaseArhitectureElement>
       _architectureElementMapper;
-  final DatabaseManager<FeatureStorage> _databaseFeaturesManager;
+  final FileService _fileService;
   final String _selectedFeatureTab;
 
   AllArhitectureElementsNotifier(
     this._architectureElementMapper,
-    this._databaseFeaturesManager,
+    this._fileService,
     this._selectedFeatureTab,
   ) : super([]) {
     _getDataFromDatabaseForCurrentlySelectedFeature();
     // Refres the state after the keys are assignes to the widgets
     Future.delayed(const Duration(milliseconds: 100), () {
+      if (!mounted) {
+        return;
+      }
       state = [...state];
     });
   }
 
   Future<void> saveCurrentStateToDatabase() async {
     final featuresStorage = FeatureStorage(
-      elements: state
-          .map((e) =>
-              BaseArchitectureElementStorage.fromBaseArchitectureElement(e))
-          .toList(),
+      elements: state,
       addedAt: DateTime.now(),
     );
-    await _databaseFeaturesManager.addToCache(
-      key: _selectedFeatureTab,
-      boxName: FeatureStorage.boxName,
-      cachedObject: featuresStorage,
+    await _fileService.writeData(
+      _selectedFeatureTab,
+      featuresStorage.toMap(),
     );
   }
 
@@ -126,17 +125,35 @@ class AllArhitectureElementsNotifier
     required BaseArhitectureElement dependency,
   }) {
     // log('Removing dependency ${dependency.name} from arhitecture element: ${arhitectureElement.name}');
-    state = state
-        .map(
-          (element) => element.id == arhitectureElement.id
-              ? element.copyWith(
-                  dependencies: [...element.dependencies]..removeWhere(
-                      (element) => element.id == dependency.id,
-                    ),
-                )
-              : element,
-        )
-        .toList();
+    // state = state
+    //     .map(
+    //       (element) => element.id == arhitectureElement.id
+    //           ? element.copyWith(
+    //               dependencies: [...element.dependencies]..removeWhere(
+    //                   (element) => element.id == dependency.id,
+    //                 ),
+    //             )
+    //           : element,
+    //     )
+    //     .toList();
+    state = state.map(
+      (element) {
+        if (element.id == arhitectureElement.id) {
+          return element.copyWith(
+            dependencies: [...element.dependencies]..removeWhere(
+                (element) => element.id == dependency.id,
+              ),
+          );
+        } else if (element.id == dependency.id) {
+          return element.copyWith(
+            dependencies: [...element.dependencies]..removeWhere(
+                (element) => element.id == arhitectureElement.id,
+              ),
+          );
+        }
+        return element;
+      },
+    ).toList();
     saveCurrentStateToDatabase();
   }
 
@@ -197,20 +214,14 @@ class AllArhitectureElementsNotifier
 
   void reset() => state = [];
 
-  void _getDataFromDatabaseForCurrentlySelectedFeature() {
-    _databaseFeaturesManager
-        .getFromCache(
-      key: _selectedFeatureTab,
-      boxName: FeatureStorage.boxName,
-    )
-        .then((featuresStorage) {
-      if (featuresStorage != null) {
-        state = (featuresStorage.elements)
-            .map(
-              (storageElement) => storageElement.toBaseArchitectureElement(),
-            )
-            .toList();
-      }
-    });
+  Future<void> _getDataFromDatabaseForCurrentlySelectedFeature() async {
+    log('Getting data from database for feature: $_selectedFeatureTab');
+    final featuresStorage = await _fileService.readData(_selectedFeatureTab);
+    log('Features storage: $featuresStorage');
+    if (featuresStorage.isEmpty) {
+      return;
+    }
+    final storage = FeatureStorage.fromMap(featuresStorage);
+    state = storage.elements;
   }
 }

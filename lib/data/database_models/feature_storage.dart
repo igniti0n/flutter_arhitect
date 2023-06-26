@@ -1,20 +1,31 @@
-import 'package:flutter_arhitect/data/database_models/base_architecture_element_storage.dart';
-import 'package:flutter_arhitect/data/database_models/database_storage.dart';
-import 'package:hive/hive.dart';
+import 'dart:convert';
 
-part 'feature_storage.g.dart';
+import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 
-@HiveType(typeId: 1)
-class FeatureStorage extends HiveObject with DatabaseStorage {
-  static const boxName = 'feature_storage';
-  @HiveField(0)
-  final List<BaseArchitectureElementStorage> elements;
-  @override
-  @HiveField(1)
+class FeatureStorage {
+  final List<BaseArhitectureElement> elements;
   final DateTime addedAt;
 
   FeatureStorage({
     required this.elements,
     required this.addedAt,
   });
+
+  @override
+  factory FeatureStorage.fromMap(Map<String, dynamic> map) {
+    return FeatureStorage(
+      elements: (jsonDecode(map['elements']) as List)
+          .map((e) => BaseArhitectureElement.fromMap(e))
+          .toList(),
+      addedAt: DateTime.parse(map['addedAt']),
+    );
+  }
+
+  @override
+  Map<String, String> toMap() {
+    return {
+      'elements': jsonEncode(elements.map((e) => e.toMap()).toList()),
+      'addedAt': addedAt.toIso8601String(),
+    };
+  }
 }

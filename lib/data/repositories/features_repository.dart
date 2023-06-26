@@ -1,11 +1,11 @@
-import 'package:flutter_arhitect/data/database_models/feature_storage.dart';
-import 'package:flutter_arhitect/data/managers/database_manager.dart';
+import 'package:flutter_arhitect/data/services/file_service.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final featuresRepositoryProvider = Provider<FeaturesRepository>(
   (ref) => FeaturesRepositoryImpl(
-    ref.watch(databaseFeaturesManagerProvider),
+    ref.watch(fileServiceProvider),
+    // ref.watch(databaseFeaturesManagerProvider),
   ),
 );
 
@@ -23,32 +23,24 @@ abstract class FeaturesRepository {
 }
 
 class FeaturesRepositoryImpl extends FeaturesRepository {
-  final DatabaseManager<FeatureStorage> _databaseFeaturesManager;
+  // final DatabaseManager<FeatureStorage> _databaseFeaturesManager;
+  final FileService _fileService;
 
-  FeaturesRepositoryImpl(this._databaseFeaturesManager);
+  FeaturesRepositoryImpl(this._fileService);
 
   @override
   Future<List<String>> getFeatrues() {
-    return _databaseFeaturesManager.getAllFromCache(
-      boxName: FeatureStorage.boxName,
-    );
+    return _fileService.listFiles();
   }
 
   @override
   Future<void> addFeature({required String featureName}) {
-    return _databaseFeaturesManager.addToCache(
-      key: featureName,
-      cachedObject: FeatureStorage(elements: [], addedAt: DateTime.now()),
-      boxName: FeatureStorage.boxName,
-    );
+    return _fileService.writeData(featureName, {});
   }
 
   @override
   Future<void> deleteFeature({required String featureName}) {
-    return _databaseFeaturesManager.deleteCache(
-      key: featureName,
-      boxName: FeatureStorage.boxName,
-    );
+    return _fileService.deleteData(featureName);
   }
 
   @override
