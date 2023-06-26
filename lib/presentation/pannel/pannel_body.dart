@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
+import 'package:flutter_arhitect/presentation/common/app_button.dart';
 import 'package:flutter_arhitect/presentation/common/app_colors.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/methods_and_parameters_form_widget.dart';
@@ -95,19 +96,22 @@ class _Body extends ConsumerWidget {
                 isRequired: false,
               ),
               const SizedBox(height: 16),
-              TextButton(
-                child: const Text('Save'),
-                onPressed: () {
-                  if (formKey.currentState?.saveAndValidate() == true) {
-                    ref
-                        .read(allArhitectureElementsNotifier.notifier)
-                        .onFormSubmitted(
-                          arhitectureElement: arhitectureElement,
-                          formMap: formKey.currentState!.value,
-                        );
-                    Scaffold.of(context).closeEndDrawer();
-                  }
-                },
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 200),
+                child: AppButton.primary(
+                  text: 'Save',
+                  onPressed: () {
+                    if (formKey.currentState?.saveAndValidate() == true) {
+                      ref
+                          .read(allArhitectureElementsNotifier.notifier)
+                          .onFormSubmitted(
+                            arhitectureElement: arhitectureElement,
+                            formMap: formKey.currentState!.value,
+                          );
+                      Scaffold.of(context).closeEndDrawer();
+                    }
+                  },
+                ),
               ),
             ],
           ),

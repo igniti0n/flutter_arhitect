@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -70,7 +71,9 @@ class BaseArhitectureElement extends Equatable {
           .map((stringMap) =>
               BaseArhitectureElement.fromMap(jsonDecode(stringMap)))
           .toList(),
-      methods: (jsonDecode(map['methods']) as List).cast<Method>(),
+      methods: (jsonDecode(map['methods']) as List)
+          .map((stringMap) => Method.fromMap(jsonDecode(stringMap)))
+          .toList(),
       dataValue: map['dataValue'],
       canvasPosition: OffsetMapping.fromMap(jsonDecode(map['canvasPosition'])),
       size: SizeMapping.fromMap(jsonDecode(map['size'])),
@@ -79,6 +82,8 @@ class BaseArhitectureElement extends Equatable {
   }
 
   Map<String, String> toMap() {
+    log('Method is $methods');
+
     return {
       'id': id,
       'layer': layer.toString(),
@@ -87,7 +92,8 @@ class BaseArhitectureElement extends Equatable {
       'dependencies': jsonEncode(dependencies
           .map((dependency) => jsonEncode(dependency.toMap()))
           .toList()),
-      'methods': jsonEncode(methods.map((method) => method.toMap()).toList()),
+      'methods': jsonEncode(
+          methods.map((method) => jsonEncode(method.toMap())).toList()),
       'dataValue': dataValue,
       'canvasPosition': jsonEncode(canvasPosition.toMap()),
       'size': jsonEncode(size.toMap()),

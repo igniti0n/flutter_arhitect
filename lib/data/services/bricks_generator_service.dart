@@ -37,29 +37,33 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
           'project_name': projectName,
           'feature_name': featureName,
         }),
-      //  {
-      //   "name": "ime_neko",
-      //   "dependencies": [
-      //     {
-      //       "dependencyName": "someDependency",
-      //     },
-      //     {
-      //       "dependencyName": "anotherDependency",
-      //     },
-      //   ],
-      //   "methods": [
-      //     {
-      //       "methodName": "methodName",
-      //       "type": "String",
-      //       "parameters": [
-      //         {
-      //           "parameterName": "parameterName",
-      //           "type": "int",
-      //         }
-      //       ],
-      //     },
-      //   ]
-      // },
     );
+    // final example =
+    // {
+    //   'feature_name': 'featureName',
+    //   'project_name': 'projectName',
+    //   'description': 'description',
+    //   'name': 'ime_neko',
+    //   'dependencies': [
+    //     {
+    //       'dependencyName': 'someDependency',
+    //     },
+    //     {
+    //       'dependencyName': 'anotherDependency',
+    //     },
+    //   ],
+    //   'methods': [
+    //     {
+    //       'methodName': 'methodName',
+    //       'type': 'String',
+    //       'parameters': [
+    //         {
+    //           'parameterName': 'parameterName',
+    //           'type': 'int',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // };
   }
 }

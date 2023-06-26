@@ -21,10 +21,12 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Repository',
-      brick: Brick.git(const GitPath(
-        gitUrl,
-        path: 'clean_repository',
-      )),
+      brick: Brick.git(
+        const GitPath(
+          gitUrl,
+          path: 'clean_repository',
+        ),
+      ),
     ),
     Template(
       id: const Uuid().v1(),
@@ -62,15 +64,7 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
         path: 'state_provider',
       )),
     ),
-    Template(
-      id: const Uuid().v1(),
-      layer: ArhitectureLayer.domain,
-      name: 'RequestProvider',
-      brick: Brick.git(const GitPath(
-        gitUrl,
-        path: 'request_provider',
-      )),
-    ),
+
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.presentation,

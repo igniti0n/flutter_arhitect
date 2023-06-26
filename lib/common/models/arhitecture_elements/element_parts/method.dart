@@ -32,9 +32,11 @@ class Method extends Equatable {
       );
 
   Map<String, dynamic> toMap() => {
+        'id': id,
         'methodName': methodName,
         'type': returnValue,
-        'parameters': List.from(parameters.map((x) => x.toMap())),
+        'parameters':
+            List.from(parameters.map((parameter) => parameter.toMap())),
       };
 
   Method copyWith({

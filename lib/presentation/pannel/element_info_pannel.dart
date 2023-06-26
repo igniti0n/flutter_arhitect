@@ -8,7 +8,7 @@ class ElementInfoPannel extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final maxPannelWidth = MediaQuery.of(context).size.width * 0.4;
+    final maxPannelWidth = MediaQuery.of(context).size.width * 0.5;
     return SizedBox(
       width: maxPannelWidth,
       child: Stack(
