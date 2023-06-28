@@ -14,7 +14,6 @@ class SelectedWidgetsNotifier extends StateNotifier<SelectedElements> {
   SelectedWidgetsNotifier(this._ref) : super(SelectedElements());
 
   void selectWidget(BaseArhitectureElement arhitectureElement) {
-    log('Selecting widget ${arhitectureElement.name}');
     final isFirstAlreadySelected = state.first != null;
     if (isFirstAlreadySelected) {
       state = state.copyWith(second: arhitectureElement);

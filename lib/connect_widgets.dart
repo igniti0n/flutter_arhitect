@@ -6,6 +6,7 @@ import 'package:flutter_arhitect/domain/all_templates_notifier.dart';
 import 'package:flutter_arhitect/domain/arhitecture_element_pairs_provider.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/domain/files_generation_notifier.dart';
+import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/presentation/common/app_button.dart';
 import 'package:flutter_arhitect/presentation/common/app_colors.dart';
 import 'package:flutter_arhitect/presentation/painters/elements_connections_painter.dart';
@@ -43,6 +44,9 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
             didChangeCurrentlySelectedArhitectureElementStateProvider,
           );
         }
+        ref.invalidate(
+          selectedWidgetsNotifier,
+        );
       },
       body: Column(
         children: [
@@ -95,6 +99,7 @@ class _ConnectWidgetsState extends ConsumerState<ConnectWidgets> {
             );
         break;
       }
+      ref.read(selectedWidgetsNotifier.notifier).reset();
     }
   }
 }
