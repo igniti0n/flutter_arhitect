@@ -27,16 +27,20 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
   }) async {
     final generator =
         await MasonGenerator.fromBrick(baseArhitectureElement.brick);
-    // generator.hooks.preGen(workingDirectory: path);
+
+    final variables = baseArhitectureElement.toBrickModel().toMap()
+      ..addAll({
+        'project_name': projectName,
+        'feature_name': featureName,
+      });
+    // log('Running pre gen...');
+    // await generator.hooks.preGen(vars: variables);
+    // log('Done!');
 
     final directory = Directory.fromUri(Uri.parse(savePath));
     await generator.generate(
       DirectoryGeneratorTarget(directory),
-      vars: baseArhitectureElement.toBrickModel().toMap()
-        ..addAll({
-          'project_name': projectName,
-          'feature_name': featureName,
-        }),
+      vars: variables,
     );
     // final example =
     // {

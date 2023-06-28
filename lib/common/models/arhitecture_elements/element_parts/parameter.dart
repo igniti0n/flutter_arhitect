@@ -24,11 +24,16 @@ class Parameter extends Equatable {
         type: json['type'],
       );
 
-  Map<String, dynamic> toMap() => {
-        'id': id,
-        'parameterName': parameterName,
-        'type': type,
-      };
+  Map<String, dynamic> toMap() {
+    final hasSpecial = type.contains('<') && type.contains('>');
+
+    return {
+      'id': id,
+      'parameterName': parameterName,
+      'type': type,
+      'hasSpecial': hasSpecial,
+    };
+  }
 
   Parameter copyWith({String? parameterName, String? type}) => Parameter(
         id: id,

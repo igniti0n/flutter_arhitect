@@ -31,13 +31,17 @@ class Method extends Equatable {
         ),
       );
 
-  Map<String, dynamic> toMap() => {
-        'id': id,
-        'methodName': methodName,
-        'type': returnValue,
-        'parameters':
-            List.from(parameters.map((parameter) => parameter.toMap())),
-      };
+  Map<String, dynamic> toMap() {
+    final hasSpecial = returnValue.contains('<') && returnValue.contains('>');
+
+    return {
+      'id': id,
+      'methodName': methodName,
+      'type': returnValue,
+      'hasSpecial': hasSpecial,
+      'parameters': List.from(parameters.map((parameter) => parameter.toMap())),
+    };
+  }
 
   Method copyWith({
     String? methodName,
