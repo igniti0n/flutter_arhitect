@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
@@ -36,7 +37,7 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
     // log('Running pre gen...');
     // await generator.hooks.preGen(vars: variables);
     // log('Done!');
-
+    log('Variables: $variables');
     final directory = Directory.fromUri(Uri.parse(savePath));
     await generator.generate(
       DirectoryGeneratorTarget(directory),

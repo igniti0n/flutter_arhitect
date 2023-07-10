@@ -10,15 +10,18 @@ class BrickModel extends Equatable {
   final String name;
   final List<Dependency> dependencies;
   final List<Method> methods;
+  final String description;
 
   const BrickModel({
     required this.name,
     required this.dependencies,
     required this.methods,
+    required this.description,
   });
 
   factory BrickModel.fromMap(Map<String, dynamic> json) => BrickModel(
         name: json['name'],
+        description: json['description'],
         dependencies: List<Dependency>.from(
           json['dependencies'].map((x) => Dependency.fromMap(x)),
         ),
@@ -28,6 +31,7 @@ class BrickModel extends Equatable {
 
   Map<String, dynamic> toMap() => {
         'name': name,
+        'description': description,
         'dependencies': List.from(dependencies.map((x) => x.toMap())),
         'methods': List.from(methods.map((x) => x.toMap())),
       };

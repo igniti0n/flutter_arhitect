@@ -103,6 +103,7 @@ class BaseArhitectureElement extends Equatable {
 
   BrickModel toBrickModel() => BrickModel(
         name: name,
+        description: description,
         dependencies: dependencies
             .map((dependency) => Dependency(dependencyName: dependency.name))
             .toList(),
