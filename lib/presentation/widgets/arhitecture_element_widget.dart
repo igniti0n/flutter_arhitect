@@ -5,6 +5,8 @@ import 'package:flutter_arhitect/domain/all_arhitecture_elements_notifier.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/domain/selected_widgets_notifier.dart';
 import 'package:flutter_arhitect/positioned_draggable.dart';
+import 'package:flutter_arhitect/presentation/common/app_colors.dart';
+import 'package:flutter_arhitect/presentation/common/app_text_styles.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ArhitectureElementWidget extends ConsumerStatefulWidget {
@@ -83,6 +85,9 @@ class _ArhitectureElementWidgetState
                         },
                         child: Text(
                           widget.arhitectureElement.name,
+                          style: AppTextStyles.small.copyWith(
+                              color: AppColors.background1,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
