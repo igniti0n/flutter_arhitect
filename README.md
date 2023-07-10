@@ -17,35 +17,35 @@ The tool can generate something like this
 
 ###  What is the tool used for?
 
-- **Visualize the architecture of your app**
+- Visualize the architecture of your app
 
-- **Have a bird's-eye view of what you are doing**
+- Have a bird's-eye view of what you are doing
 
-- **Make easy changes on a high level**
+- Make easy changes on a high level
 
-- **Generate code based on the inputs you give**
+- Generate code based on the inputs you give
 
 
 ###  Why is it used?
 
-- **Reducing the time spent on writing boilerplate code**
+- Reducing the time spent on writing boilerplate code
 
-- **Boosting the speed of the development process**
+- Boosting the speed of the development process
 
-- **Enabling new developers to learn faster and easier**
+- Enabling new developers to learn faster and easier
 
-- **Easily maintaining a standard of code across the project**
+- Easily maintaining a standard of code across the project
 
 
 ###  How is it used?
 
 Using Flutter Architect is straightforward and intuitive. Here's how you can use it:
 
-- **Define the architecture of your app by adding elements to the canvas and connecting them**
+- Define the architecture of your app by adding elements to the canvas and connecting them
 
-- **Define the methods, inputs, outputs, and descriptions of every element**
+- Define the methods, inputs, outputs, and descriptions of every element
 
-- **Choose the location of the generated code and click the save button**
+- Choose the location of the generated code and click the save button
 
 
 
