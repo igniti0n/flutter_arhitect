@@ -41,6 +41,7 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
     await generator.generate(
       DirectoryGeneratorTarget(directory),
       vars: variables,
+      fileConflictResolution: FileConflictResolution.skip,
     );
     // final example =
     // {
