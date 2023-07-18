@@ -61,6 +61,7 @@ class AllArhitectureElementsNotifier
     arhitectureElement.copyWith(name: randomNumber.toString());
 
     state = [...state, arhitectureElement];
+    saveCurrentStateToDatabase();
   }
 
   void removeArhitectureElement(BaseArhitectureElement arhitectureElement) {

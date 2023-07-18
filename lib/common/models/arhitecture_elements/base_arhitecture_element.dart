@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
@@ -67,21 +66,31 @@ class BaseArhitectureElement extends Equatable {
       ),
       name: map['name'],
       description: map['description'],
-      dependencies: (jsonDecode(map['dependencies']) as List)
-          .map((stringMap) =>
-              BaseArhitectureElement.fromMap(jsonDecode(stringMap)))
+      dependencies: ((map['dependencies'] as List).cast<Map<String, dynamic>>())
+          .map((stringMap) => BaseArhitectureElement.fromMap((stringMap)))
           .toList(),
-      methods: (jsonDecode(map['methods']) as List)
-          .map((stringMap) => Method.fromMap(jsonDecode(stringMap)))
+      methods: ((map['methods'] as List).cast<Map<String, dynamic>>())
+          .map((stringMap) => Method.fromMap((stringMap)))
           .toList(),
       dataValue: map['dataValue'],
-      canvasPosition: OffsetMapping.fromMap(jsonDecode(map['canvasPosition'])),
-      size: SizeMapping.fromMap(jsonDecode(map['size'])),
-      brick: BrickMapping.fromMap(jsonDecode(map['brick'])),
+      canvasPosition: OffsetMapping.fromMap((map['canvasPosition'])),
+      size: SizeMapping.fromMap((map['size'])),
+      brick: BrickMapping.fromMap((map['brick'])),
+      // dependencies: (jsonDecode(map['dependencies']) as List)
+      //     .map((stringMap) =>
+      //         BaseArhitectureElement.fromMap(jsonDecode(stringMap)))
+      //     .toList(),
+      // methods: (jsonDecode(map['methods']) as List)
+      //     .map((stringMap) => Method.fromMap(jsonDecode(stringMap)))
+      //     .toList(),
+      // dataValue: map['dataValue'],
+      // canvasPosition: OffsetMapping.fromMap(jsonDecode(map['canvasPosition'])),
+      // size: SizeMapping.fromMap(jsonDecode(map['size'])),
+      // brick: BrickMapping.fromMap(jsonDecode(map['brick'])),
     );
   }
 
-  Map<String, String> toMap() {
+  Map<String, dynamic> toMap() {
     log('Method is $methods');
 
     return {
@@ -89,15 +98,21 @@ class BaseArhitectureElement extends Equatable {
       'layer': layer.toString(),
       'name': name,
       'description': description,
-      'dependencies': jsonEncode(dependencies
-          .map((dependency) => jsonEncode(dependency.toMap()))
-          .toList()),
-      'methods': jsonEncode(
-          methods.map((method) => jsonEncode(method.toMap())).toList()),
+      // 'dependencies': jsonEncode(dependencies
+      //     .map((dependency) => jsonEncode(dependency.toMap()))
+      //     .toList()),
+      'dependencies':
+          dependencies.map((dependency) => (dependency.toMap())).toList(),
+      // 'methods': jsonEncode(
+      //     methods.map((method) => jsonEncode(method.toMap())).toList()),
+      'methods': methods.map((method) => (method.toMap())).toList(),
       'dataValue': dataValue,
-      'canvasPosition': jsonEncode(canvasPosition.toMap()),
-      'size': jsonEncode(size.toMap()),
-      'brick': jsonEncode(brick.toMap()),
+      'canvasPosition': (canvasPosition.toMap()),
+      'size': (size.toMap()),
+      'brick': (brick.toMap()),
+      // 'canvasPosition': jsonEncode(canvasPosition.toMap()),
+      // 'size': jsonEncode(size.toMap()),
+      // 'brick': jsonEncode(brick.toMap()),
     };
   }
 

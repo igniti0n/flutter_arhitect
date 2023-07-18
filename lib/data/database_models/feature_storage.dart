@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_arhitect/common/models/arhitecture_elements/base_arhitecture_element.dart';
 
 class FeatureStorage {
@@ -14,7 +12,7 @@ class FeatureStorage {
   @override
   factory FeatureStorage.fromMap(Map<String, dynamic> map) {
     return FeatureStorage(
-      elements: (jsonDecode(map['elements']) as List)
+      elements: ((map['elements'] as List).cast<Map<String, dynamic>>())
           .map((e) => BaseArhitectureElement.fromMap(e))
           .toList(),
       addedAt: DateTime.parse(map['addedAt']),
@@ -22,9 +20,9 @@ class FeatureStorage {
   }
 
   @override
-  Map<String, String> toMap() {
+  Map<String, dynamic> toMap() {
     return {
-      'elements': jsonEncode(elements.map((e) => e.toMap()).toList()),
+      'elements': elements.map((e) => e.toMap()).toList(),
       'addedAt': addedAt.toIso8601String(),
     };
   }
