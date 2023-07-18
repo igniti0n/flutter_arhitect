@@ -31,8 +31,8 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
 
     final variables = baseArhitectureElement.toBrickModel().toMap()
       ..addAll({
-        'project_name': projectName,
-        'feature_name': featureName,
+        'projectName': projectName,
+        'featureName': featureName,
       });
     // log('Running pre gen...');
     // await generator.hooks.preGen(vars: variables);
@@ -50,6 +50,7 @@ class BricksGeneratorServiceImpl extends BricksGeneratorService {
     //   'project_name': 'projectName',
     //   'description': 'description',
     //   'name': 'ime_neko',
+    //   'outputValue': 'outputValue',
     //   'dependencies': [
     //     {
     //       'dependencyName': 'someDependency',

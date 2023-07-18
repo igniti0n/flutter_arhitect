@@ -36,79 +36,82 @@ class _ArhitectureElementWidgetState
               ),
             );
       },
-      child: GestureDetector(
-        key: widget.arhitectureElement.widgetsGlobalKey,
-        onTap: () => ref
-            .read(selectedWidgetsNotifier.notifier)
-            .selectWidget(widget.arhitectureElement),
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16, right: 26),
-              child: MouseRegion(
-                cursor: SystemMouseCursors.precise,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: widget.arhitectureElement.layer.color,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 1,
-                        spreadRadius: 0.5,
-                        offset: Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MouseRegion(
-                      cursor: SystemMouseCursors
-                          .click, // Change the cursor when entering the region
-                      child: GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(
-                                currentlySelectedArhitectureElementStateProvider
-                                    .notifier,
-                              )
-                              .state = widget.arhitectureElement;
-                          ref
-                              .read(currentMethodsAndParametersStateProvider
-                                  .notifier)
-                              .update((state) => widget.arhitectureElement
-                                  .methodsAndParametersWidgetList);
-                          Scaffold.of(context).openEndDrawer();
-                        },
-                        child: Text(
-                          widget.arhitectureElement.name,
-                          style: AppTextStyles.small.copyWith(
-                              color: AppColors.background1,
-                              fontWeight: FontWeight.bold),
+      child: Tooltip(
+        message: widget.arhitectureElement.templateName,
+        child: GestureDetector(
+          key: widget.arhitectureElement.widgetsGlobalKey,
+          onTap: () => ref
+              .read(selectedWidgetsNotifier.notifier)
+              .selectWidget(widget.arhitectureElement),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16, right: 26),
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.precise,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: widget.arhitectureElement.layer.color,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 1,
+                          spreadRadius: 0.5,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors
+                            .click, // Change the cursor when entering the region
+                        child: GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(
+                                  currentlySelectedArhitectureElementStateProvider
+                                      .notifier,
+                                )
+                                .state = widget.arhitectureElement;
+                            ref
+                                .read(currentMethodsAndParametersStateProvider
+                                    .notifier)
+                                .update((state) => widget.arhitectureElement
+                                    .methodsAndParametersWidgetList);
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          child: Text(
+                            widget.arhitectureElement.name,
+                            style: AppTextStyles.small.copyWith(
+                                color: AppColors.background1,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            TextButton(
-              onPressed: () => ref
-                  .read(allArhitectureElementsNotifier.notifier)
-                  .removeArhitectureElement(widget.arhitectureElement),
-              child: Container(
-                width: 30,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
+              TextButton(
+                onPressed: () => ref
+                    .read(allArhitectureElementsNotifier.notifier)
+                    .removeArhitectureElement(widget.arhitectureElement),
+                child: Container(
+                  width: 30,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.close, color: Colors.white),
                 ),
-                child: const Icon(Icons.close, color: Colors.white),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

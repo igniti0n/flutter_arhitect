@@ -16,6 +16,7 @@ final architectureElementMapperProvider =
 
 abstract class ArchitectureElementForm {
   static const nameKey = 'name';
+  static const outputValueKey = 'outputValue';
   static const descriptionKey = 'description';
   static const _methodReturnValuePattern = 'method_return_value_';
   static const _methodNamePattern = 'method_name_';
@@ -87,6 +88,7 @@ abstract class ArchitectureElementForm {
     }
     return baseArhitectureElement.copyWith(
       name: formMap[ArchitectureElementForm.nameKey],
+      outputValue: formMap[ArchitectureElementForm.outputValueKey],
       description: formMap[ArchitectureElementForm.descriptionKey],
       methods: methods,
     );
@@ -100,13 +102,11 @@ abstract class ArchitectureElementForm {
           ArchitectureElementForm.methodReturnValueForKey(
             methodKey: methodKey,
           ),
-          // isSetState: false,
         );
     ref.read(formKeyProvider).currentState?.removeInternalFieldValue(
           ArchitectureElementForm.methodNameForKey(
             methodKey: methodKey,
           ),
-          // isSetState: false,
         );
   }
 
@@ -120,14 +120,12 @@ abstract class ArchitectureElementForm {
             methodKey: methodKey,
             parameterKey: parameterKey,
           ),
-          // isSetState: false,
         );
     ref.read(formKeyProvider).currentState?.removeInternalFieldValue(
           ArchitectureElementForm.parameterTypeForKey(
             methodKey: methodKey,
             parameterKey: parameterKey,
           ),
-          // isSetState: false,
         );
   }
 }

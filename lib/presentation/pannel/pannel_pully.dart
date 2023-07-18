@@ -37,7 +37,7 @@ class PannelPully extends ConsumerWidget {
           child: Icon(
             Icons.close_rounded,
             color: AppColors.icon4,
-            size: 68,
+            size: 48,
           ),
         ),
       ),

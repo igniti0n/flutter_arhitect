@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/method.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
+import 'package:flutter_arhitect/presentation/common/app_colors.dart';
+import 'package:flutter_arhitect/presentation/common/app_text_styles.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_arhitect/presentation/widgets/methods_and_parameters_form/parameter_form_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,14 +21,16 @@ class MethodFormRow extends ConsumerWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               margin: const EdgeInsets.only(top: 16),
+              alignment: Alignment.center,
               child: IconButton(
                 onPressed: () => removeMethod(ref),
                 icon: const Icon(
                   Icons.remove_circle_outline_rounded,
+                  color: AppColors.red,
                 ),
               ),
             ),
@@ -56,10 +60,12 @@ class MethodFormRow extends ConsumerWidget {
         ),
         ExpansionTile(
           initiallyExpanded: method?.parameters.isNotEmpty == true,
-          leading: const Icon(Icons.arrow_drop_down),
-          title: const Text(
+          collapsedIconColor: AppColors.white,
+          iconColor: Colors.blue,
+          controlAffinity: ListTileControlAffinity.leading,
+          title: Text(
             'Parameters',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: AppTextStyles.base,
           ),
           children: [
             ParameterFormWidget(methodKey: methodKey),

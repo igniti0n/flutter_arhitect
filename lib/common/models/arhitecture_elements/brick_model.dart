@@ -11,12 +11,14 @@ class BrickModel extends Equatable {
   final List<Dependency> dependencies;
   final List<Method> methods;
   final String description;
+  final String outputValue;
 
   const BrickModel({
     required this.name,
     required this.dependencies,
     required this.methods,
     required this.description,
+    required this.outputValue,
   });
 
   factory BrickModel.fromMap(Map<String, dynamic> json) => BrickModel(
@@ -27,16 +29,25 @@ class BrickModel extends Equatable {
         ),
         methods:
             List<Method>.from(json['methods'].map((x) => Method.fromMap(x))),
+        outputValue: json['outputValue'] ?? '',
       );
 
   Map<String, dynamic> toMap() => {
         'name': name,
         'description': description,
-        'dependencies': List.from(dependencies.map((x) => x.toMap())),
+        ''
+            'dependencies': List.from(dependencies.map((x) => x.toMap())),
         'methods': List.from(methods.map((x) => x.toMap())),
+        'outputValue': outputValue,
       };
   @override
-  List<Object?> get props => [name, dependencies, methods];
+  List<Object?> get props => [
+        name,
+        dependencies,
+        methods,
+        description,
+        outputValue,
+      ];
 }
 
 @JsonSerializable()

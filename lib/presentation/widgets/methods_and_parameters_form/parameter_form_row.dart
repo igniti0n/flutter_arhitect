@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/common/models/arhitecture_elements/element_parts/parameter.dart';
 import 'package:flutter_arhitect/domain/currently_selected_arhitecture_element_state_provider.dart';
 import 'package:flutter_arhitect/forms/architecture_element_form.dart';
+import 'package:flutter_arhitect/presentation/common/app_colors.dart';
 import 'package:flutter_arhitect/presentation/widgets/custom_text_field.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -31,6 +32,7 @@ class ParameterFormRow extends ConsumerWidget {
               onPressed: () => removeParameter(ref),
               icon: const Icon(
                 Icons.remove_circle_outline_rounded,
+                color: AppColors.red,
               ),
             ),
           ),

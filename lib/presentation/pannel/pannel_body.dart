@@ -31,11 +31,11 @@ class PannelBody extends ConsumerWidget {
         ),
         child: SizedBox(
           width: maxPannelWidth,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 SizedBox(height: 32),
                 Expanded(child: _Body()),
                 SizedBox(width: 120),
@@ -77,16 +77,46 @@ class _Body extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-              CustomTextField.normal(
-                name: ArchitectureElementForm.nameKey,
-                text: 'Name',
-                initialValue: initialValue.name,
-                autoValidateMode: AutovalidateMode.onUserInteraction,
-                isRequired: true,
-                // isRequiredValidatorErrorText: 'Name is required',
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField.normal(
+                      name: ArchitectureElementForm.nameKey,
+                      text: 'Name',
+                      initialValue: initialValue.name,
+                      autoValidateMode: AutovalidateMode.disabled,
+                      isRequired: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Name is required';
+                        }
+                        if (value.contains(' ')) {
+                          return 'Name can\'t contain spaces';
+                        }
+
+                        return null;
+                      },
+                    ),
+                  ),
+                  if (arhitectureElement.hasOutputValue)
+                    const SizedBox(
+                      width: 16,
+                    ),
+                  if (arhitectureElement.hasOutputValue)
+                    Expanded(
+                      child: CustomTextField.normal(
+                        name: ArchitectureElementForm.outputValueKey,
+                        text: 'Output value',
+                        initialValue: initialValue.outputValue,
+                        autoValidateMode: AutovalidateMode.disabled,
+                        isRequired: true,
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: 16),
-              const MethodsAndParametersFormWidget(),
+              if (arhitectureElement.hasMethods)
+                const MethodsAndParametersFormWidget(),
               const SizedBox(height: 16),
               CustomTextField.multilineDescription(
                 name: ArchitectureElementForm.descriptionKey,

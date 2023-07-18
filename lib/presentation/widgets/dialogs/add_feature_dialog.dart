@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_arhitect/domain/features_selection/features_notifier.dart';
 import 'package:flutter_arhitect/domain/features_selection/selected_feature_tab_provider.dart';
@@ -52,10 +50,8 @@ class AddFeatureDialog extends ConsumerWidget {
                 constraints: const BoxConstraints(maxWidth: 200),
                 child: CustomTextField.normal(
                   name: 'featureName',
-                  // text: 'Feature name',
                   isRequired: true,
                   hint: 'Feature name',
-
                   style: AppTextStyles.base.copyWith(
                     color: AppColors.text4,
                   ),
@@ -68,9 +64,7 @@ class AddFeatureDialog extends ConsumerWidget {
                 child: AppButton.primary(
                   text: 'Add feature',
                   onPressed: () {
-                    log('formKey.currentState?.saveAndValidate() = ${formKey.currentState?.saveAndValidate()}');
                     if (formKey.currentState?.saveAndValidate() == true) {
-                      log('Valid form');
                       final featureName =
                           formKey.currentState?.value['featureName'] as String;
                       ref.read(featuresProvider.notifier).addFeature(

@@ -9,6 +9,8 @@ import 'package:uuid/uuid.dart';
 class Template extends Equatable {
   final String id;
   final ArhitectureLayer layer;
+  final bool hasOutputValue;
+  final bool hasMethods;
   final String name;
   final Brick brick;
 
@@ -17,6 +19,8 @@ class Template extends Equatable {
     required this.layer,
     required this.name,
     required this.brick,
+    required this.hasOutputValue,
+    required this.hasMethods,
   });
 
   factory Template.empty() => Template(
@@ -24,22 +28,34 @@ class Template extends Equatable {
         layer: ArhitectureLayer.data,
         name: 'unnamed',
         brick: Brick.path(''),
+        hasOutputValue: false,
+        hasMethods: false,
       );
 
   BaseArhitectureElement generateArhitectureElement() =>
-      BaseArhitectureElement.empty()
-          .copyWith(layer: layer, name: name, brick: brick);
+      BaseArhitectureElement.empty().copyWith(
+        name: name,
+        templateName: name,
+        layer: layer,
+        brick: brick,
+        hasOutputValue: hasOutputValue,
+        outputValue: '',
+        hasMethods: hasMethods,
+      );
 
   Template copyWith({
     ArhitectureLayer? layer,
     String? name,
     Brick? brick,
+    bool? hasOutputValue,
   }) =>
       Template(
         id: id,
         layer: layer ?? this.layer,
         name: name ?? this.name,
         brick: brick ?? this.brick,
+        hasOutputValue: hasOutputValue ?? this.hasOutputValue,
+        hasMethods: hasMethods,
       );
 
   @override
@@ -48,5 +64,6 @@ class Template extends Equatable {
         layer,
         name,
         brick,
+        hasOutputValue,
       ];
 }

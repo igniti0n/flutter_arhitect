@@ -16,11 +16,15 @@ import 'package:uuid/uuid.dart';
 
 class BaseArhitectureElement extends Equatable {
   final String id;
+  final String templateName;
   final GlobalKey widgetsGlobalKey;
   final Key positionedDraggableKey;
   final ArhitectureLayer layer;
   final String name;
   final String description;
+  final String outputValue;
+  final bool hasOutputValue;
+  final bool hasMethods;
   final List<BaseArhitectureElement> dependencies;
   final List<Method> methods;
   final String dataValue;
@@ -39,6 +43,10 @@ class BaseArhitectureElement extends Equatable {
     required this.methods,
     required this.dataValue,
     required this.brick,
+    required this.outputValue,
+    required this.hasOutputValue,
+    required this.hasMethods,
+    required this.templateName,
     this.size = const Size(50, 30),
     this.canvasPosition = const Offset(100, 100),
   });
@@ -54,6 +62,10 @@ class BaseArhitectureElement extends Equatable {
         methods: const [],
         dataValue: '',
         brick: Brick.path(''),
+        outputValue: '',
+        hasOutputValue: false,
+        templateName: '',
+        hasMethods: false,
       );
 
   factory BaseArhitectureElement.fromMap(Map<String, dynamic> map) {
@@ -76,6 +88,10 @@ class BaseArhitectureElement extends Equatable {
       canvasPosition: OffsetMapping.fromMap((map['canvasPosition'])),
       size: SizeMapping.fromMap((map['size'])),
       brick: BrickMapping.fromMap((map['brick'])),
+      outputValue: map['outputValue'] ?? '',
+      hasOutputValue: map['hasOutputValue'] ?? false,
+      templateName: map['templateName'] ?? '',
+      hasMethods: map['hasMethods'] ?? false,
       // dependencies: (jsonDecode(map['dependencies']) as List)
       //     .map((stringMap) =>
       //         BaseArhitectureElement.fromMap(jsonDecode(stringMap)))
@@ -98,9 +114,12 @@ class BaseArhitectureElement extends Equatable {
       'layer': layer.toString(),
       'name': name,
       'description': description,
+      'outputValue': outputValue,
+      'hasOutputValue': hasOutputValue,
       // 'dependencies': jsonEncode(dependencies
       //     .map((dependency) => jsonEncode(dependency.toMap()))
       //     .toList()),
+      'templateName': templateName,
       'dependencies':
           dependencies.map((dependency) => (dependency.toMap())).toList(),
       // 'methods': jsonEncode(
@@ -110,6 +129,7 @@ class BaseArhitectureElement extends Equatable {
       'canvasPosition': (canvasPosition.toMap()),
       'size': (size.toMap()),
       'brick': (brick.toMap()),
+      'hasMethods': hasMethods,
       // 'canvasPosition': jsonEncode(canvasPosition.toMap()),
       // 'size': jsonEncode(size.toMap()),
       // 'brick': jsonEncode(brick.toMap()),
@@ -123,6 +143,7 @@ class BaseArhitectureElement extends Equatable {
             .map((dependency) => Dependency(dependencyName: dependency.name))
             .toList(),
         methods: methods,
+        outputValue: outputValue,
       );
 
   List<Tuple2<Widget, List<Widget>>> get methodsAndParametersWidgetList {
@@ -157,6 +178,10 @@ class BaseArhitectureElement extends Equatable {
     Offset? canvasPosition,
     Brick? brick,
     Size? size,
+    String? outputValue,
+    bool? hasOutputValue,
+    String? templateName,
+    bool? hasMethods,
   }) =>
       BaseArhitectureElement(
         id: id,
@@ -172,6 +197,10 @@ class BaseArhitectureElement extends Equatable {
             positionedDraggableKey ?? this.positionedDraggableKey,
         canvasPosition: canvasPosition ?? this.canvasPosition,
         size: size ?? this.size,
+        outputValue: outputValue ?? this.outputValue,
+        hasOutputValue: hasOutputValue ?? this.hasOutputValue,
+        templateName: templateName ?? this.templateName,
+        hasMethods: hasMethods ?? this.hasMethods,
       );
 
   @override
@@ -187,5 +216,6 @@ class BaseArhitectureElement extends Equatable {
         dataValue,
         canvasPosition,
         brick,
+        size,
       ];
 }

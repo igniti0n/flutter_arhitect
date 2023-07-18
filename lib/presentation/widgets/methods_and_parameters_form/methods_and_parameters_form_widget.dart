@@ -29,6 +29,9 @@ class _AddMethodButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+      ),
       onPressed: () => ref
           .read(currentMethodsAndParametersStateProvider.notifier)
           .update((state) => [
@@ -38,8 +41,8 @@ class _AddMethodButton extends ConsumerWidget {
                   [],
                 ),
               ]),
-      child: Row(
-        children: const [
+      child: const Row(
+        children: [
           Icon(Icons.add_circle_outline_rounded),
           SizedBox(width: 8),
           Text('Add new method'),

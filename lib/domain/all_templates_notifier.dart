@@ -21,6 +21,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Repository',
+      hasOutputValue: false,
+      hasMethods: true,
       brick: Brick.git(
         const GitPath(
           gitUrl,
@@ -32,6 +34,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.data,
       name: 'Service',
+      hasOutputValue: false,
+      hasMethods: true,
       brick: Brick.git(const GitPath(
         gitUrl,
         path: 'clean_service',
@@ -41,6 +45,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.domain,
       name: 'Notifier',
+      hasOutputValue: true,
+      hasMethods: true,
       brick: Brick.git(const GitPath(
         gitUrl,
         path: 'notifier',
@@ -50,6 +56,8 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.domain,
       name: 'Provider',
+      hasOutputValue: true,
+      hasMethods: false,
       brick: Brick.git(const GitPath(
         gitUrl,
         path: 'provider',
@@ -59,16 +67,19 @@ class AllTemplatesNotifier extends RequestNotifier<AllTemplates> {
       id: const Uuid().v1(),
       layer: ArhitectureLayer.domain,
       name: 'StateProvider',
+      hasOutputValue: true,
+      hasMethods: false,
       brick: Brick.git(const GitPath(
         gitUrl,
         path: 'state_provider',
       )),
     ),
-
     Template(
       id: const Uuid().v1(),
       layer: ArhitectureLayer.presentation,
       name: 'Page',
+      hasOutputValue: false,
+      hasMethods: false,
       brick: Brick.git(
         const GitPath(
           gitUrl,
